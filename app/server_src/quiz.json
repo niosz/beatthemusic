@@ -1,0 +1,21 @@
+{
+  "quizData": {
+    "questions": [
+      {
+        "q": "Chi è Fabio?",
+        "answers": ["Batman", "Lillo", "Posaman", "MiaoMan"],
+        "answerIndex": 3
+      },
+      {
+        "q": "Quante azienda fa?",
+        "answers": [
+          "3 azienda fa",
+          "5 aziende fa",
+          "7 aziende fa",
+          "10 aziende fa"
+        ],
+        "answerIndex": 2
+      }
+    ]
+  }
+}

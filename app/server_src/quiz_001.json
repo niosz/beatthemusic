@@ -1,0 +1,30 @@
+{
+  "title": "Maluma Quiz",
+  "questions": [
+    {
+      "isTrueFalse": false,
+      "answer": 0,
+      "video": "video/test_001.mp4"
+    },
+    {
+      "isTrueFalse": false,
+      "answer": 0,
+      "video": "video/test_002.mp4"
+    },
+    {
+      "isTrueFalse": false,
+      "answer": 0,
+      "video": "video/test_003.mp4"
+    },
+    {
+      "isTrueFalse": false,
+      "answer": 0,
+      "video": "video/test_004.mp4"
+    },
+    {
+      "isTrueFalse": true,
+      "answer": 1,
+      "video": "video/test_005.mp4"
+    }
+  ]
+}

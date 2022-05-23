@@ -1,0 +1,35 @@
+{
+  "name": "beat-the-music",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.0.0",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@fontsource/exo-2": "^4.5.8",
+    "framer-motion": "^6",
+    "lodash": "^4.17.21",
+    "next": "12.1.6",
+    "next-i18next": "^11.0.0",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
+    "react-spring": "^9.4.5",
+    "socket.io": "^4.5.0",
+    "socket.io-client": "^4.5.0",
+    "zustand": "^4.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.33",
+    "@types/react": "18.0.9",
+    "@types/react-dom": "18.0.4",
+    "eslint": "8.15.0",
+    "eslint-config-next": "12.1.6",
+    "typescript": "4.6.4"
+  }
+}
