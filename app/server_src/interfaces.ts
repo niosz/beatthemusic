@@ -22,28 +22,13 @@ export interface QuizEntry {
 interface Question {
   isTrueFalse: boolean;
   answer: number;
-  answers: number;
   video: string;
 }
-
-// export interface QuizEntry {
-//   quizData: QuizData;
-// }
-
-// interface QuizData {
-//   questions: Question[];
-// }
 
 export interface QuizDataSend {
   q: string;
   answers: string[];
 }
-
-// interface Question {
-//   q: string;
-//   answers: number[];
-//   answerIndex: number;
-// }
 
 export interface Players {
   [id: string]: PlayerData;

@@ -154,7 +154,7 @@ export const events: EventData = {
         console.log(quizItem);
         gameState.quizData = {
           q: quizItem.video,
-          answers: _.range(0, quizItem.answers).map((i) => `q${i}`),
+          answers: _.range(0, quizItem.isTrueFalse ? 2 : 4).map((i) => `q${i}`),
         };
         io.emit("quiz-data", gameState.quizData);
         clearInterval(counterInterval);
