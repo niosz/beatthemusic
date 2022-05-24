@@ -54,31 +54,24 @@ export const getOnlinePlayers = (players: Players) => {
 };
 
 const getAnswerScore = (gameState: SocketData, answerIndex: number) => {
-  console.log("abc1");
   const qNumber = gameState.gameData.quizNumber;
   const correctAnswer = quiz.questions[qNumber].answer;
   const isCorrect = answerIndex === correctAnswer;
-  console.log("abc2");
   let score = 0;
   if (isCorrect) {
-    console.log("abc3");
     score = 1;
     const addrKeys = Object.keys(gameState.quizAnswers[qNumber]);
     if (addrKeys && addrKeys.length > 0) {
-      console.log("abc4");
       addrKeys.forEach((addr) => {
         const answerItem = gameState.quizAnswers[qNumber][addr];
         if (answerItem.answerIndex !== correctAnswer) {
-          console.log("abc5");
           score = 2;
         }
       });
     } else {
-      console.log("abc6");
       score = 2;
     }
   }
-  console.log("abc7");
   return score;
 };
 
@@ -136,7 +129,6 @@ export const emitData = (
   io.emit("quiz-data", gameState.quizData);
   io.emit("quiz-result", gameState.quizResult);
 
-  console.log(clientQuizAnswer);
   socket.emit("answer-data", {
     answerIndex: clientQuizAnswer.answerIndex,
     answerTime: clientQuizAnswer.answerTime.getTime(),
@@ -194,7 +186,6 @@ export const events: EventData = {
       io.emit("quiz-counter", gameState.counter);
       if (gameState.counter === 0) {
         const quizItem = quiz.questions[gameState.gameData.quizNumber];
-        console.log(quizItem);
         gameState.quizData = {
           q: quizItem.video,
           answers: _.range(0, quizItem.isTrueFalse ? 2 : 4).map((i) => `q${i}`),
@@ -242,7 +233,6 @@ export const events: EventData = {
     }
 
     gameState.quizAnswers[gameState.gameData.quizNumber][addr] = answerResult;
-    console.log(gameState.quizAnswers);
 
     updateData(gameState);
     emitData(gameState, io, socket);

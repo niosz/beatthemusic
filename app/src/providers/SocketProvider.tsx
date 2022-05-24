@@ -83,7 +83,6 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     });
 
     socketConnection.on("answer-data", (aData: AnswerData) => {
-      console.log(aData);
       setAnswerData(aData);
     });
 
