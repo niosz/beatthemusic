@@ -9,6 +9,8 @@ export interface QuizData {
 export interface AnswerData {
   answerTime: number;
   answerIndex: number;
+  answerScore: number;
+  answerElapsed: number;
 }
 
 interface GameState {
@@ -41,7 +43,12 @@ export const useGame = create<GameState>((set) => ({
   setQuizData: (q) => set({ quizData: q }),
   counter: -1,
   setCounter: (c) => set({ counter: c }),
-  answerData: { answerIndex: -1, answerTime: 0 },
+  answerData: {
+    answerIndex: -1,
+    answerTime: 0,
+    answerScore: 0,
+    answerElapsed: 0,
+  },
   setAnswerData: (a) => ({ answer: a }),
   quizResult: { answers: [], correctAnswer: -1, title: "" },
   setQuizResult: (qr) => set({ quizResult: qr }),

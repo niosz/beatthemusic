@@ -39,7 +39,12 @@ const SocketContext = createContext<ISocketContext>({
   startQuiz: () => {},
   answerQuestion: () => {},
   endQuiz: () => {},
-  answerData: { answerIndex: -1, answerTime: 0 },
+  answerData: {
+    answerIndex: -1,
+    answerTime: 0,
+    answerScore: 0,
+    answerElapsed: 0,
+  },
   pin: "",
   setPin: () => {},
   name: "",
@@ -51,6 +56,8 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   const [answerData, setAnswerData] = useState<AnswerData>({
     answerIndex: -1,
     answerTime: 0,
+    answerScore: 0,
+    answerElapsed: 0,
   });
   const {
     setOnlinePlayers,
@@ -76,6 +83,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     });
 
     socketConnection.on("answer-data", (aData: AnswerData) => {
+      console.log(aData);
       setAnswerData(aData);
     });
 

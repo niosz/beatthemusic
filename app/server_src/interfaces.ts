@@ -35,9 +35,13 @@ export interface Players {
 }
 
 export interface QuizAnswer {
-  [addr: string]: {
-    answerTime: Date;
-    answerIndex: number;
+  [q: number]: {
+    [addr: string]: {
+      answerTime: Date;
+      answerIndex: number;
+      answerScore: number;
+      answerElapsed: number;
+    };
   };
 }
 

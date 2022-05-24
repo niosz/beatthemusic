@@ -53,6 +53,35 @@ export const getOnlinePlayers = (players: Players) => {
   return _.pickBy(players, (user) => user.isOnline && user.isInRoom);
 };
 
+const getAnswerScore = (gameState: SocketData, answerIndex: number) => {
+  console.log("abc1");
+  const qNumber = gameState.gameData.quizNumber;
+  const correctAnswer = quiz.questions[qNumber].answer;
+  const isCorrect = answerIndex === correctAnswer;
+  console.log("abc2");
+  let score = 0;
+  if (isCorrect) {
+    console.log("abc3");
+    score = 1;
+    const addrKeys = Object.keys(gameState.quizAnswers[qNumber]);
+    if (addrKeys && addrKeys.length > 0) {
+      console.log("abc4");
+      addrKeys.forEach((addr) => {
+        const answerItem = gameState.quizAnswers[qNumber][addr];
+        if (answerItem.answerIndex !== correctAnswer) {
+          console.log("abc5");
+          score = 2;
+        }
+      });
+    } else {
+      console.log("abc6");
+      score = 2;
+    }
+  }
+  console.log("abc7");
+  return score;
+};
+
 export const connectPlayer = (
   gameState: SocketData,
   io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
@@ -85,18 +114,34 @@ export const emitData = (
   socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>
 ) => {
   const addr = socket.handshake.address;
-  const qAnswer = gameState.quizAnswers[addr] || {
+  const qNumber = gameState.gameData.quizNumber;
+  let clientQuizAnswer = {
     answerIndex: -1,
     answerTime: new Date(),
+    answerScore: 0,
+    answerElapsed: 0,
   };
+
+  if (
+    qNumber > -1 &&
+    gameState.quizAnswers[gameState.gameData.quizNumber][addr]
+  ) {
+    clientQuizAnswer =
+      gameState.quizAnswers[gameState.gameData.quizNumber][addr];
+  }
+
   io.emit("online-players", getOnlinePlayers(gameState.players));
   io.emit("game-data", gameState.gameData);
   io.emit("quiz-counter", gameState.counter);
   io.emit("quiz-data", gameState.quizData);
   io.emit("quiz-result", gameState.quizResult);
+
+  console.log(clientQuizAnswer);
   socket.emit("answer-data", {
-    answerIndex: qAnswer.answerIndex,
-    answerTime: qAnswer.answerTime.getTime(),
+    answerIndex: clientQuizAnswer.answerIndex,
+    answerTime: clientQuizAnswer.answerTime.getTime(),
+    answerScore: clientQuizAnswer.answerScore,
+    answerElapsed: clientQuizAnswer.answerElapsed,
   });
 };
 
@@ -142,7 +187,8 @@ export const events: EventData = {
     gameState.counter = 3;
     gameState.gameData.quizNumber = gameState.gameData.quizNumber + 1;
     gameState.gameData.quizStarted = true;
-    io.emit("game-data", gameState.gameData);
+    gameState.quizAnswers[gameState.gameData.quizNumber] = {};
+    emitData(gameState, io, socket);
     io.emit("quiz-counter", GAME_STARTING);
     const counterInterval = setInterval(() => {
       io.emit("quiz-counter", gameState.counter);
@@ -180,12 +226,23 @@ export const events: EventData = {
     updateData(gameState);
     emitData(gameState, io, socket);
   },
-  "answer-question": (io, socket, gameState, msg, updateData) => {
+  "answer-question": (io, socket, gameState, answerIndex, updateData) => {
     const addr = socket.handshake.address;
-    gameState.quizAnswers[addr] = {
-      answerIndex: msg,
+    const answerScore = getAnswerScore(gameState, answerIndex);
+
+    const answerResult = {
+      answerIndex,
       answerTime: new Date(),
+      answerScore,
+      answerElapsed: new Date().getTime() - gameState.gameData.startedTime,
     };
+
+    if (!gameState.quizAnswers[gameState.gameData.quizNumber]) {
+      gameState.quizAnswers[gameState.gameData.quizNumber] = {};
+    }
+
+    gameState.quizAnswers[gameState.gameData.quizNumber][addr] = answerResult;
+    console.log(gameState.quizAnswers);
 
     updateData(gameState);
     emitData(gameState, io, socket);
@@ -201,7 +258,9 @@ export const events: EventData = {
         answerCode: String.fromCharCode(65 + i),
         people: Object.keys(
           _.pickBy(gameState.quizAnswers, (q) => {
-            return q.answerIndex === i;
+            return _.pickBy(q, (addr) => {
+              return addr.answerIndex === i;
+            });
           })
         ).length,
       };

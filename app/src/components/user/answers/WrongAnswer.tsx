@@ -13,13 +13,13 @@ export const WrongAnswer: FC = () => {
   const me = meFiltered[Object.keys(meFiltered)[0]];
 
   return (
-    <VStack color="white" justifyContent="center" h="100%">
-      <Heading fontSize={"8xl"}>OPS</Heading>
-      <Heading fontSize={"6xl"}>{me?.name}</Heading>
-      <Heading fontWeight="normal" fontSize={"4xl"}>
+    <VStack textAlign="center" color="white" justifyContent="center" h="100%">
+      <Heading fontSize={"7xl"}>OPS</Heading>
+      <Heading fontSize={"5xl"}>{me?.name}</Heading>
+      <Heading fontWeight="normal" fontSize={"3xl"}>
         Non hai guadagnato alcun punto!
       </Heading>
-      <Heading fontWeight="normal" fontSize={"4xl"}>
+      <Heading fontWeight="normal" fontSize={"3xl"}>
         Il tuo tempo di risposta è{" "}
         {(answerData.answerTime - gameData.startedTime) / 1000}s
       </Heading>
