@@ -19,7 +19,7 @@ let gameData: GameData = {
   started: false,
   quizStarted: false,
   quizNumber: -1,
-  startedTime: new Date(),
+  startedTime: 0,
   pin: "",
 };
 let players: Players = {};

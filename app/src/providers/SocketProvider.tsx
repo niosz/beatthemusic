@@ -1,8 +1,14 @@
-import { createContext, FC, useCallback, useContext, useEffect } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { QuizResult } from "../../server_src/interfaces";
-import { useGame } from "../store/GameStore";
+import { AnswerData, QuizData, useGame } from "../store/GameStore";
 import { usePlayer } from "../store/PlayerStore";
 let socketConnection: Socket<DefaultEventsMap, DefaultEventsMap>;
 
@@ -14,6 +20,11 @@ interface ISocketContext {
   startQuiz: () => void;
   answerQuestion: (index: number) => void;
   endQuiz: () => void;
+  answerData: AnswerData;
+  pin: string;
+  setPin: (pin: string) => void;
+  name: string;
+  setName: (name: string) => void;
 }
 
 interface SocketProviderProps {
@@ -28,18 +39,29 @@ const SocketContext = createContext<ISocketContext>({
   startQuiz: () => {},
   answerQuestion: () => {},
   endQuiz: () => {},
+  answerData: { answerIndex: -1, answerTime: 0 },
+  pin: "",
+  setPin: () => {},
+  name: "",
+  setName: () => {},
 });
 
 export const SocketProvider = ({ children }: SocketProviderProps) => {
   const { setClientId } = usePlayer();
+  const [answerData, setAnswerData] = useState<AnswerData>({
+    answerIndex: -1,
+    answerTime: 0,
+  });
   const {
     setOnlinePlayers,
     setGameData,
     setCounter,
     setQuizData,
-    setAnswer,
+    // setAnswerData,
     setQuizResult,
   } = useGame();
+  const [pin, setPin] = useState("");
+  const [name, setName] = useState("");
 
   const socketInitializer = useCallback(async () => {
     await fetch("/api/socket");
@@ -53,6 +75,10 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
       setOnlinePlayers(msg);
     });
 
+    socketConnection.on("answer-data", (aData: AnswerData) => {
+      setAnswerData(aData);
+    });
+
     socketConnection.on("game-data", (msg) => {
       setGameData(msg);
     });
@@ -61,24 +87,15 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
       setCounter(counter);
     });
 
-    socketConnection.on("quiz-data", (quiz) => {
+    socketConnection.on("quiz-data", (quiz: QuizData) => {
       setQuizData(quiz);
     });
 
-    socketConnection.on(
-      "answer-data",
-      (answer: { answerIndex: number; answerTime: number }) => {
-        setAnswer({
-          answerIndex: answer.answerIndex,
-          answerTime: new Date(answer.answerTime),
-        });
-      }
-    );
     socketConnection.on("quiz-result", (qr: QuizResult) => {
       setQuizResult(qr);
     });
   }, [
-    setAnswer,
+    setAnswerData,
     setClientId,
     setCounter,
     setGameData,
@@ -127,11 +144,13 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     startQuiz,
     answerQuestion,
     endQuiz,
+    answerData,
+    pin,
+    setPin,
+    name,
+    setName,
   };
 
-  if (!socketConnection) {
-    return null;
-  }
   return (
     <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
   );

@@ -1,13 +1,13 @@
 import create from "zustand";
 import { GameData, Players, QuizResult } from "../../server_src/interfaces";
 
-interface QuizData {
+export interface QuizData {
   q: string;
   answers: string[];
 }
 
-interface AnswerData {
-  answerTime: Date;
+export interface AnswerData {
+  answerTime: number;
   answerIndex: number;
 }
 
@@ -20,8 +20,8 @@ interface GameState {
   setQuizData: (q: QuizData) => void;
   counter: number;
   setCounter: (c: number) => void;
-  answer: AnswerData;
-  setAnswer: (a: AnswerData) => void;
+  answerData: AnswerData;
+  setAnswerData: (a: AnswerData) => void;
   quizResult: QuizResult;
   setQuizResult: (qr: QuizResult) => void;
 }
@@ -33,7 +33,7 @@ export const useGame = create<GameState>((set) => ({
     pin: "",
     quizNumber: 0,
     started: false,
-    startedTime: new Date(),
+    startedTime: 0,
     quizStarted: false,
   },
   setGameData: (gd) => set({ gameData: gd }),
@@ -41,8 +41,8 @@ export const useGame = create<GameState>((set) => ({
   setQuizData: (q) => set({ quizData: q }),
   counter: -1,
   setCounter: (c) => set({ counter: c }),
-  answer: { answerIndex: -1, answerTime: new Date() },
-  setAnswer: (a) => ({ answer: a }),
+  answerData: { answerIndex: -1, answerTime: 0 },
+  setAnswerData: (a) => ({ answer: a }),
   quizResult: { answers: [], correctAnswer: -1, title: "" },
   setQuizResult: (qr) => set({ quizResult: qr }),
 }));

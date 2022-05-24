@@ -85,23 +85,19 @@ export const emitData = (
   socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>
 ) => {
   const addr = socket.handshake.address;
+  const qAnswer = gameState.quizAnswers[addr] || {
+    answerIndex: -1,
+    answerTime: new Date(),
+  };
   io.emit("online-players", getOnlinePlayers(gameState.players));
   io.emit("game-data", gameState.gameData);
   io.emit("quiz-counter", gameState.counter);
   io.emit("quiz-data", gameState.quizData);
   io.emit("quiz-result", gameState.quizResult);
-
-  const qAnswer = gameState.quizAnswers[addr] || {
-    answerIndex: -1,
-    answerTime: new Date(),
-  };
-  socket.emit(
-    "answer-data",
-    {
-      answerIndex: qAnswer.answerIndex,
-      answerTime: qAnswer.answerTime.getTime(),
-    } || {}
-  );
+  socket.emit("answer-data", {
+    answerIndex: qAnswer.answerIndex,
+    answerTime: qAnswer.answerTime.getTime(),
+  });
 };
 
 export const events: EventData = {
@@ -112,7 +108,7 @@ export const events: EventData = {
     gameState.gameData.started = false;
     gameState.gameData.quizStarted = false;
     gameState.gameData.quizNumber = -1;
-    gameState.gameData.startedTime = new Date();
+    gameState.gameData.startedTime = new Date().getTime();
     gameState.gameData.pin = "";
     Object.keys(gameState.players).forEach((pKey) => {
       const currPlayer = gameState.players[pKey];
@@ -127,13 +123,14 @@ export const events: EventData = {
       return p.isOnline;
     });
     gameState.counter = NOT_COUNTING;
+    gameState.quizAnswers = {};
     updateData(gameState);
     emitData(gameState, io, socket);
   },
   "start-game": (io, socket, gameState, msg, updateData) => {
     gameState.gameData.started = true;
     gameState.gameData.quizStarted = false;
-    gameState.gameData.startedTime = new Date();
+    gameState.gameData.startedTime = new Date().getTime();
     gameState.gameData.pin = _.range(0, 6)
       .map(() => _.random(0, 9))
       .join("");
@@ -158,7 +155,7 @@ export const events: EventData = {
         };
         io.emit("quiz-data", gameState.quizData);
         clearInterval(counterInterval);
-        gameState.gameData.startedTime = new Date();
+        gameState.gameData.startedTime = new Date().getTime();
         updateData(gameState);
       } else {
         gameState.counter--;

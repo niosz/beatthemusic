@@ -10,7 +10,7 @@ export interface GameData {
   started: boolean;
   quizStarted: boolean;
   quizNumber: number;
-  startedTime: Date;
+  startedTime: number;
   pin: string;
 }
 
