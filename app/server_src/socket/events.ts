@@ -239,7 +239,8 @@ export const events: EventData = {
   },
   "end-quiz": (io, socket, gameState, msg, updateData) => {
     gameState.counter = SHOW_RESULTS;
-    const quizQuestion = quiz.questions[gameState.gameData.quizNumber];
+    const quizNumber = gameState.gameData.quizNumber;
+    const quizQuestion = quiz.questions[quizNumber];
     const resultsByAnswer: QuizResultAnswer[] = _.range(
       0,
       quizQuestion.isTrueFalse ? 2 : 4
@@ -247,10 +248,8 @@ export const events: EventData = {
       return {
         answerCode: String.fromCharCode(65 + i),
         people: Object.keys(
-          _.pickBy(gameState.quizAnswers, (q) => {
-            return _.pickBy(q, (addr) => {
-              return addr.answerIndex === i;
-            });
+          _.pickBy(gameState.quizAnswers[quizNumber], (addr) => {
+            return addr.answerIndex === i;
           })
         ).length,
       };
