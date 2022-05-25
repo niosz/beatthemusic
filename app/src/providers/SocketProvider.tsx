@@ -117,14 +117,14 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     setQuizResult,
   ]);
 
-  const emitEvent = (event: string, ...args: any) => {
+  const emitEvent = (event: string, args?: any) => {
     if (socketConnection) {
-      socketConnection.emit(event, { ...args });
+      socketConnection.emit(event, args);
     } else {
       const emitterInterval = setInterval(() => {
         console.log("try", event);
         if (socketConnection) {
-          socketConnection.emit(event, { ...args });
+          socketConnection.emit(event, args);
           clearInterval(emitterInterval);
         }
       }, 100);
