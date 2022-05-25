@@ -51,8 +51,14 @@ const SocketContext = createContext<ISocketContext>({
   setName: () => {},
 });
 
+interface EventQueue {
+  eventName: string;
+  obj: any;
+}
+
 export const SocketProvider = ({ children }: SocketProviderProps) => {
   const { setClientId } = usePlayer();
+  const [emitQueue, setEmitQueue] = useState<EventQueue[]>([]);
   const [answerData, setAnswerData] = useState<AnswerData>({
     answerIndex: -1,
     answerTime: 0,
@@ -111,36 +117,50 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     setQuizResult,
   ]);
 
+  const emitEvent = (event: string, ...args: any) => {
+    if (socketConnection) {
+      socketConnection.emit(event, { ...args });
+    } else {
+      const emitterInterval = setInterval(() => {
+        console.log("try", event);
+        if (socketConnection) {
+          socketConnection.emit(event, { ...args });
+          clearInterval(emitterInterval);
+        }
+      }, 100);
+    }
+  };
+
   useEffect(() => {
     socketInitializer();
   }, [socketInitializer]);
 
   const joinServer = (pin: string, name: string) => {
-    socketConnection.emit("join-game", { pin, name });
+    emitEvent("join-game", { pin, name });
   };
 
   const startGame = () => {
-    socketConnection.emit("start-game");
+    emitEvent("start-game");
   };
 
   const initLive = () => {
-    socketConnection.emit("game-data");
+    emitEvent("game-data");
   };
 
   const endGame = () => {
-    socketConnection.emit("end-game");
+    emitEvent("end-game");
   };
 
   const startQuiz = () => {
-    socketConnection.emit("start-quiz");
+    emitEvent("start-quiz");
   };
 
   const answerQuestion = (i: number) => {
-    socketConnection.emit("answer-question", i);
+    emitEvent("answer-question", i);
   };
 
   const endQuiz = () => {
-    socketConnection.emit("end-quiz");
+    emitEvent("end-quiz");
   };
 
   const value: ISocketContext = {

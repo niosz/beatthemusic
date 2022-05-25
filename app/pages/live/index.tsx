@@ -30,9 +30,7 @@ const Live: NextPage = () => {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      initLive();
-    }, 500);
+    initLive();
   }, [initLive]);
 
   return (
@@ -182,7 +180,7 @@ const Live: NextPage = () => {
           </VStack>
         </>
       )}
-      {showQuestion && (
+      {showQuestion && quizData?.q && (
         <>
           <video
             onEnded={() => {
