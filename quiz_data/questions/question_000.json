@@ -1,0 +1,12 @@
+{
+    "version"  : 0,
+    "active"   : true,
+    "question" : "What is the name of the artist?",
+    "keyboard" : "ABCD",
+    "answer"   : "A",
+    "optionA"  : "Maluma",
+    "optionB"  : "Ozuna",
+    "optionC"  : "Daddy Yankee",
+    "optionD"  : "Nicky Jam",
+    "video"    : "question_000.mp4"
+}

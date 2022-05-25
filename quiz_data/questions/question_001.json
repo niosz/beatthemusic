@@ -1,0 +1,12 @@
+{
+    "version"  : 0,
+    "active"   : true,
+    "question" : "What is the missing word?",
+    "keyboard" : "ABCD",
+    "answer"   : "C",
+    "optionA"  : "quiero",
+    "optionB"  : "suave",
+    "optionC"  : "suavecito",
+    "optionD"  : "pasito",
+    "video"    : "question_001.mp4"
+}

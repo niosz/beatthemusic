@@ -187,7 +187,6 @@ const Live: NextPage = () => {
               endQuiz();
             }}
             autoPlay
-            muted
             style={{
               position: "absolute",
               objectFit: "contain",
