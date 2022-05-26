@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _, { update } from "lodash";
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import {
@@ -23,7 +23,8 @@ export type SocketEvent =
   | "live-data"
   | "start-quiz"
   | "answer-question"
-  | "end-quiz";
+  | "end-quiz"
+  | "next-resultstep";
 
 type IIO = Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
 type ISocket = Socket<
@@ -180,6 +181,7 @@ export const events: EventData = {
     emitData(gameState, io);
   },
   "start-quiz": (io, socket, gameState, msg, updateData) => {
+    gameState.gameData.resultStep = -1;
     gameState.counter = 3;
     gameState.gameData.quizNumber = gameState.gameData.quizNumber + 1;
     gameState.gameData.quizStarted = true;
@@ -246,6 +248,7 @@ export const events: EventData = {
   },
   "end-quiz": (io, socket, gameState, msg, updateData) => {
     gameState.counter = SHOW_RESULTS;
+    gameState.gameData.resultStep = 0;
     const quizNumber = gameState.gameData.quizNumber;
     const quizQuestion = quiz.questions[quizNumber];
 
@@ -279,5 +282,14 @@ export const events: EventData = {
 
     updateData(gameState);
     emitData(gameState, io);
+  },
+  "next-resultstep": (io, socket, gameState, msg, updateData) => {
+    if (gameState.gameData.resultStep < 2) {
+      gameState.gameData.resultStep = gameState.gameData.resultStep + 1;
+      updateData(gameState);
+      emitData(gameState, io);
+    } else {
+      events["start-quiz"](io, socket, gameState, msg, updateData);
+    }
   },
 };

@@ -18,6 +18,7 @@ interface ISocketContext {
   endGame: () => void;
   initLive: () => void;
   startQuiz: () => void;
+  goToNextStep: () => void;
   answerQuestion: (index: number) => void;
   endQuiz: () => void;
   answerData: AnswerData;
@@ -37,6 +38,7 @@ const SocketContext = createContext<ISocketContext>({
   endGame: () => {},
   initLive: () => {},
   startQuiz: () => {},
+  goToNextStep: () => {},
   answerQuestion: () => {},
   endQuiz: () => {},
   answerData: {
@@ -162,6 +164,10 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     emitEvent("end-quiz");
   };
 
+  const goToNextStep = () => {
+    emitEvent("next-resultstep");
+  };
+
   const value: ISocketContext = {
     joinServer,
     startGame,
@@ -175,6 +181,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     setPin,
     name,
     setName,
+    goToNextStep,
   };
 
   return (

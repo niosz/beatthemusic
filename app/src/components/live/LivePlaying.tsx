@@ -16,6 +16,7 @@ export const LivePlaying: FC = () => {
           endQuiz();
         }}
         autoPlay
+        muted
         style={{
           position: "absolute",
           objectFit: "contain",

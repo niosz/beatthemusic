@@ -15,6 +15,7 @@ export interface GameData {
   startedTime: number;
   pin: string;
   totalQuestions: number;
+  resultStep: number;
 }
 
 export interface QuizEntry {

@@ -10,8 +10,8 @@ import { useGame } from "../../src/store/GameStore";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Admin: NextPage = () => {
-  const { onlinePlayers, gameData } = useGame();
-  const { startGame, endGame, startQuiz } = useSocket();
+  const { onlinePlayers, gameData, counter } = useGame();
+  const { startGame, endGame, startQuiz, goToNextStep } = useSocket();
 
   useEffect(() => {
     socketInitializer();
@@ -21,6 +21,8 @@ const Admin: NextPage = () => {
     await fetch("/api/socket");
     socket = io();
   };
+
+  const isInResultSteps = gameData.quizStarted && gameData.resultStep > -1;
 
   return (
     <VStack>
@@ -32,6 +34,10 @@ const Admin: NextPage = () => {
         Object.keys(onlinePlayers).map((player, i) => {
           return <Text key={`player-${i}`}>{onlinePlayers[player].name}</Text>;
         })}
+
+      {isInResultSteps && (
+        <Button onClick={goToNextStep}>Step successivo</Button>
+      )}
     </VStack>
   );
 };

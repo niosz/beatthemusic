@@ -22,6 +22,7 @@ let gameData: GameData = {
   totalQuestions: -1,
   startedTime: 0,
   pin: "",
+  resultStep: -1,
 };
 let players: Players = {};
 let counter = NOT_COUNTING;
