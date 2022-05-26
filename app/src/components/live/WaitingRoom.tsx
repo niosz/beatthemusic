@@ -6,7 +6,11 @@ import { GAME_STARTING } from "../../utils/const";
 import { Counter } from "../counter";
 
 export const WaitingRoom: FC = () => {
-  const { gameData, counter, onlinePlayers } = useGame();
+  const { gameData, counter, onlinePlayers } = useGame((s) => ({
+    gameData: s.gameData,
+    counter: s.counter,
+    onlinePlayers: s.onlinePlayers,
+  }));
   const props = useSpring({
     from: { scale: 2 },
     to: { scale: 0 },

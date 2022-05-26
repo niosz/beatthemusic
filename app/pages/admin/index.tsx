@@ -10,7 +10,10 @@ import { useGame } from "../../src/store/GameStore";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Admin: NextPage = () => {
-  const { onlinePlayers, gameData, counter } = useGame();
+  const { onlinePlayers, gameData } = useGame((s) => ({
+    onlinePlayers: s.onlinePlayers,
+    gameData: s.gameData,
+  }));
   const { startGame, endGame, startQuiz, goToNextStep } = useSocket();
 
   useEffect(() => {

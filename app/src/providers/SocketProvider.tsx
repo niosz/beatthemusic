@@ -7,7 +7,7 @@ import {
 } from "react";
 import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { QuizResult } from "../../server_src/interfaces";
+import { QuizResult, RankingData } from "../../server_src/interfaces";
 import { AnswerData, QuizData, useGame } from "../store/GameStore";
 import { usePlayer } from "../store/PlayerStore";
 let socketConnection: Socket<DefaultEventsMap, DefaultEventsMap>;
@@ -53,14 +53,8 @@ const SocketContext = createContext<ISocketContext>({
   setName: () => {},
 });
 
-interface EventQueue {
-  eventName: string;
-  obj: any;
-}
-
 export const SocketProvider = ({ children }: SocketProviderProps) => {
   const { setClientId } = usePlayer();
-  const [emitQueue, setEmitQueue] = useState<EventQueue[]>([]);
   const [answerData, setAnswerData] = useState<AnswerData>({
     answerIndex: -1,
     answerTime: 0,
@@ -72,9 +66,16 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     setGameData,
     setCounter,
     setQuizData,
-    // setAnswerData,
     setQuizResult,
-  } = useGame();
+    setRankingData,
+  } = useGame((state) => ({
+    setOnlinePlayers: state.setOnlinePlayers,
+    setGameData: state.setGameData,
+    setCounter: state.setCounter,
+    setQuizData: state.setQuizData,
+    setQuizResult: state.setQuizResult,
+    setRankingData: state.setRankingData,
+  }));
   const [pin, setPin] = useState("");
   const [name, setName] = useState("");
 
@@ -109,14 +110,17 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     socketConnection.on("quiz-result", (qr: QuizResult) => {
       setQuizResult(qr);
     });
+    socketConnection.on("data-ranking", (ranking: RankingData) => {
+      setRankingData(ranking);
+    });
   }, [
-    setAnswerData,
     setClientId,
     setCounter,
     setGameData,
     setOnlinePlayers,
     setQuizData,
     setQuizResult,
+    setRankingData,
   ]);
 
   const emitEvent = (event: string, args?: any) => {
@@ -145,7 +149,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   };
 
   const initLive = () => {
-    emitEvent("game-data");
+    emitEvent("init-live");
   };
 
   const endGame = () => {

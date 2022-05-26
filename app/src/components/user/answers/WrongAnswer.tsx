@@ -7,7 +7,10 @@ import { usePlayer } from "../../../store/PlayerStore";
 
 export const WrongAnswer: FC = () => {
   const { clientId } = usePlayer();
-  const { onlinePlayers, gameData } = useGame();
+  const { onlinePlayers, gameData } = useGame((s) => ({
+    onlinePlayers: s.onlinePlayers,
+    gameData: s.gameData,
+  }));
   const { answerData } = useSocket();
   const meFiltered = _.pickBy(onlinePlayers, (item) => item.id === clientId);
   const me = meFiltered[Object.keys(meFiltered)[0]];

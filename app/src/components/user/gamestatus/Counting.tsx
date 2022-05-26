@@ -5,7 +5,7 @@ import { Text } from "@chakra-ui/react";
 import { useGame } from "../../../store/GameStore";
 
 export const Counting: FC = () => {
-  const { counter } = useGame();
+  const { counter } = useGame((s) => ({ counter: s.counter }));
   return (
     <>
       {counter === GAME_STARTING && (

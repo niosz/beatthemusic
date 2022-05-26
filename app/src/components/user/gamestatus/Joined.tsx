@@ -8,7 +8,9 @@ import { gameFilledBoxProps } from "../../../utils/theme";
 
 export const Joined: FC = () => {
   const { clientId } = usePlayer();
-  const { onlinePlayers } = useGame();
+  const { onlinePlayers } = useGame((s) => ({
+    onlinePlayers: s.onlinePlayers,
+  }));
   const { joinServer, pin, setPin, name, setName } = useSocket();
   const meFiltered = _.pickBy(onlinePlayers, (item) => item.id === clientId);
   const me = meFiltered[Object.keys(meFiltered)[0]];

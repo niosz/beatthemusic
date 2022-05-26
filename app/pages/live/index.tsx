@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import _ from "lodash";
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { BGLiveVideo } from "../../src/components/live/BGLiveVideo";
 import { LivePlaying } from "../../src/components/live/LivePlaying";
 import { QuizResultSteps } from "../../src/components/live/QuizReultSteps";
@@ -11,14 +11,22 @@ import { useGame } from "../../src/store/GameStore";
 import { SHOW_RESULTS } from "../../src/utils/const";
 
 const Live: NextPage = () => {
-  const { gameData, counter, quizData } = useGame();
+  const { gameData, counter, quizData } = useGame((s) => ({
+    gameData: s.gameData,
+    counter: s.counter,
+    quizData: s.quizData,
+  }));
   const { initLive } = useSocket();
+  const initialized = useRef(false);
 
   const showQuestion = gameData.quizStarted && counter === 0;
   const showResults = counter === SHOW_RESULTS;
 
   useEffect(() => {
-    initLive();
+    if (!initialized.current) {
+      initLive();
+      initialized.current = true;
+    }
   }, [initLive]);
 
   return (

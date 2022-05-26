@@ -13,7 +13,11 @@ type Step = "welcome" | "joined" | "counting" | "playing";
 
 const Home: NextPage = () => {
   const { clientId } = usePlayer();
-  const { onlinePlayers, gameData, counter } = useGame();
+  const { onlinePlayers, gameData, counter } = useGame((s) => ({
+    onlinePlayers: s.onlinePlayers,
+    gameData: s.gameData,
+    counter: s.counter,
+  }));
   const meFiltered = _.pickBy(onlinePlayers, (item) => item.id === clientId);
   const me = meFiltered[Object.keys(meFiltered)[0]];
 

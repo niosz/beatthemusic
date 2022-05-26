@@ -33,6 +33,17 @@ interface Question {
   video: string;
 }
 
+export interface RankingItem {
+  name: string;
+  score: number;
+  roundTime: number;
+  timeAvg: number;
+  answeredQuestions: number;
+}
+export interface RankingData {
+  [addr: string]: RankingItem;
+}
+
 // export interface QuizEntry {
 //   title: string;
 //   questions: Question[];

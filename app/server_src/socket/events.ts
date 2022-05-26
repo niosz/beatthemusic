@@ -11,16 +11,17 @@ import {
   QuizAnswer,
   QuizEntry,
   QuizResultAnswer,
+  RankingData,
   SingleAnswer,
   SocketData,
 } from "../interfaces";
 
 export type SocketEvent =
+  | "init-live"
   | "start-game"
   | "end-game"
   | "join-game"
   | "disconnect"
-  | "live-data"
   | "start-quiz"
   | "answer-question"
   | "end-quiz"
@@ -142,8 +143,42 @@ export const emitData = (
   });
 };
 
+const getCurrentRanking = (data: QuizAnswer, players: Players) => {
+  let ranking: RankingData = {};
+  Object.keys(data).forEach((quizQ) => {
+    const quizQN = parseInt(quizQ, 10);
+    Object.keys(data[quizQN]).forEach((item) => {
+      if (ranking[item]) {
+        ranking[item].score =
+          ranking[item].score + data[quizQN][item].answerScore;
+        ranking[item].roundTime = data[quizQN][item].answerElapsed;
+        ranking[item].answeredQuestions = ranking[item].answeredQuestions + 1;
+        ranking[item].timeAvg =
+          ranking[item].timeAvg + data[quizQN][item].answerElapsed;
+      } else {
+        ranking[item] = {
+          name: players[item].name,
+          score: data[quizQN][item].answerScore,
+          roundTime: data[quizQN][item].answerElapsed,
+          timeAvg: data[quizQN][item].answerElapsed,
+          answeredQuestions: 1,
+        };
+      }
+    });
+  });
+
+  const rankingArray = Object.keys(ranking).map((rankingItem) => {
+    ranking[rankingItem].timeAvg =
+      ranking[rankingItem].timeAvg / ranking[rankingItem].answeredQuestions;
+    return ranking[rankingItem];
+  });
+
+  return _.sortBy(rankingArray, (el) => el.score).reverse();
+};
+
 export const events: EventData = {
-  "live-data": (io, socket, gameState, msg) => {
+  "init-live": (io, socket, gameState, msg) => {
+    socket.data = { liveInstance: true };
     socket.emit("game-data", gameState.gameData);
   },
   "end-game": (io, socket, gameState, msg, updateData) => {
@@ -280,6 +315,20 @@ export const events: EventData = {
       answers: resultsByAnswer,
     };
 
+    const ranking = getCurrentRanking(gameState.quizAnswers, gameState.players);
+
+    io.fetchSockets().then((sockets) => {
+      const liveSockets = sockets.filter((socket) => {
+        return socket.data.liveInstance;
+      });
+
+      console.log(liveSockets.length);
+
+      liveSockets.forEach((socket) => {
+        socket.emit("data-ranking", ranking);
+        console.log("emit");
+      });
+    });
     updateData(gameState);
     emitData(gameState, io);
   },

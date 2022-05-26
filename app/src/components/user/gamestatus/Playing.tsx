@@ -15,7 +15,12 @@ import { CorrectAnswer } from "../answers/CorrectAnswer";
 import { WrongAnswer } from "../answers/WrongAnswer";
 
 export const Playing: FC = () => {
-  const { quizData, counter, quizResult, gameData } = useGame();
+  const { quizData, counter, quizResult, gameData } = useGame((s) => ({
+    quizData: s.quizData,
+    counter: s.counter,
+    quizResult: s.quizResult,
+    gameData: s.gameData,
+  }));
   const { answerData, answerQuestion } = useSocket();
   const showResults = counter === SHOW_RESULTS;
   const isCorrectAnswer = answerData?.answerIndex === quizResult?.correctAnswer;

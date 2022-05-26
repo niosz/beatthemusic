@@ -1,4 +1,15 @@
-import { VStack, HStack, Box, Text } from "@chakra-ui/react";
+import {
+  VStack,
+  HStack,
+  Box,
+  Text,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
+} from "@chakra-ui/react";
 import _ from "lodash";
 import { FC } from "react";
 import { useGame } from "../../store/GameStore";
@@ -7,7 +18,10 @@ import { textShadow } from "../../utils/theme";
 import { QuizAnswerBox } from "./QuizAnswerBox";
 
 const QuizResultStep1: FC = () => {
-  const { quizResult, quizData } = useGame();
+  const { quizResult, quizData } = useGame((s) => ({
+    quizResult: s.quizResult,
+    quizData: s.quizData,
+  }));
 
   const isTrueFalse = _.isBoolean(quizResult.correctAnswer);
   const char = isTrueFalse
@@ -32,7 +46,10 @@ const QuizResultStep1: FC = () => {
 };
 
 const QuizResultStep2: FC = () => {
-  const { quizResult, quizData } = useGame();
+  const { quizResult, quizData } = useGame((s) => ({
+    quizResult: s.quizResult,
+    quizData: s.quizData,
+  }));
   return (
     <HStack w="100%" h="100%" px={4}>
       {quizResult.answers.map((a, i) => {
@@ -75,11 +92,44 @@ const QuizResultStep2: FC = () => {
 };
 
 const QuizResultStep3: FC = () => {
-  return <VStack></VStack>;
+  const { rankingData } = useGame((s) => ({ rankingData: s.rankingData }));
+
+  return (
+    <VStack>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>#</Th>
+            <Th>Name</Th>
+            <Th>Score</Th>
+            <Th>Round Time</Th>
+            <Th>Avg Time</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {rankingData?.map((rankingItem, i) => {
+            return (
+              <Tr key={`rank-row-${i}`}>
+                <Td>{i + 1}</Td>
+                <Td>{rankingItem.name}</Td>
+                <Td>{rankingItem.score}</Td>
+                <Td>{(rankingItem.roundTime / 1000).toFixed(3)}s</Td>
+                <Td>{(rankingItem.timeAvg / 1000).toFixed(3)}s</Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
+      </Table>
+    </VStack>
+  );
 };
 
 export const QuizResultSteps: FC = () => {
-  const { quizResult, quizData, gameData } = useGame();
+  const { quizResult, quizData, gameData } = useGame((s) => ({
+    quizResult: s.quizResult,
+    quizData: s.quizData,
+    gameData: s.gameData,
+  }));
   const totalAnswers = _.sumBy(quizResult.answers, (a) => {
     return a.people;
   });

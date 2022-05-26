@@ -7,7 +7,7 @@ import { textShadow } from "../../utils/theme";
 import { QuizAnswerBox } from "./QuizAnswerBox";
 
 export const LivePlaying: FC = () => {
-  const { quizData } = useGame();
+  const { quizData } = useGame((s) => ({ quizData: s.quizData }));
   const { endQuiz } = useSocket();
   return (
     <>

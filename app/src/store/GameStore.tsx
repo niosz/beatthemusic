@@ -1,5 +1,11 @@
 import create from "zustand";
-import { GameData, Players, QuizResult } from "../../server_src/interfaces";
+import {
+  GameData,
+  Players,
+  QuizResult,
+  RankingData,
+  RankingItem,
+} from "../../server_src/interfaces";
 
 export interface QuizData {
   q: string;
@@ -27,6 +33,8 @@ interface GameState {
   setAnswerData: (a: AnswerData) => void;
   quizResult: QuizResult;
   setQuizResult: (qr: QuizResult) => void;
+  rankingData: RankingItem[];
+  setRankingData: (ranking: RankingItem[]) => void;
 }
 
 export const useGame = create<GameState>((set) => ({
@@ -39,6 +47,7 @@ export const useGame = create<GameState>((set) => ({
     startedTime: 0,
     quizStarted: false,
     totalQuestions: -1,
+    resultStep: -1,
   },
   setGameData: (gd) => set({ gameData: gd }),
   quizData: { q: "", video: "", answers: [] },
@@ -54,4 +63,6 @@ export const useGame = create<GameState>((set) => ({
   setAnswerData: (a) => ({ answer: a }),
   quizResult: { answers: [], correctAnswer: -1, title: "" },
   setQuizResult: (qr) => set({ quizResult: qr }),
+  rankingData: [],
+  setRankingData: (ranking) => set({ rankingData: ranking }),
 }));
