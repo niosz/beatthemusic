@@ -173,7 +173,9 @@ const getCurrentRanking = (data: QuizAnswer, players: Players) => {
     return ranking[rankingItem];
   });
 
-  return _.sortBy(rankingArray, (el) => el.score).reverse();
+  return _.sortBy(rankingArray, (el) => el.score)
+    .reverse()
+    .slice(0, 15);
 };
 
 export const events: EventData = {

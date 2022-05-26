@@ -7,7 +7,7 @@ import {
 } from "react";
 import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { QuizResult, RankingData } from "../../server_src/interfaces";
+import { QuizResult, RankingItem } from "../../server_src/interfaces";
 import { AnswerData, QuizData, useGame } from "../store/GameStore";
 import { usePlayer } from "../store/PlayerStore";
 let socketConnection: Socket<DefaultEventsMap, DefaultEventsMap>;
@@ -110,7 +110,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     socketConnection.on("quiz-result", (qr: QuizResult) => {
       setQuizResult(qr);
     });
-    socketConnection.on("data-ranking", (ranking: RankingData) => {
+    socketConnection.on("data-ranking", (ranking: RankingItem[]) => {
       setRankingData(ranking);
     });
   }, [

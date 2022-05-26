@@ -51,31 +51,27 @@ const components: ThemeComponents = {
   Table: {
     variants: {
       beatTheMusic: {
+        table: {
+          backdropFilter: "blur(10px)",
+          rounded: "3xl",
+          overflow: "hidden",
+        },
         tr: {
           td: {
-            bg: "whiteAlpha.300",
-            py: 3,
+            bg: "whiteAlpha.200",
+            py: 2,
           },
           th: {
-            bg: "whiteAlpha.300",
+            bg: "whiteAlpha.200",
             borderBottomWidth: 1,
             borderBottomColor: "whiteAlpha.300",
-            _first: {
-              roundedTopStart: "3xl",
-            },
-            _last: {
-              roundedTopEnd: "3xl",
-            },
+            textTransform: "inherit",
+            fontWeight: "normal",
+            fontSize: "md",
           },
           _last: {
             td: {
               pb: 6,
-              _first: {
-                roundedBottomStart: "3xl",
-              },
-              _last: {
-                roundedBottomEnd: "3xl",
-              },
             },
           },
         },

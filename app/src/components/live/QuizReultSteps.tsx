@@ -9,6 +9,7 @@ import {
   Th,
   Tbody,
   Td,
+  Heading,
 } from "@chakra-ui/react";
 import _ from "lodash";
 import { FC } from "react";
@@ -92,15 +93,21 @@ const QuizResultStep2: FC = () => {
 };
 
 const QuizResultStep3: FC = () => {
-  const { rankingData } = useGame((s) => ({ rankingData: s.rankingData }));
+  const { rankingData, gameData } = useGame((s) => ({
+    rankingData: s.rankingData,
+    gameData: s.gameData,
+  }));
 
   return (
     <VStack>
+      <Heading color="white" mb={4} fontSize="5xl">
+        Round {gameData.quizNumber + 1}
+      </Heading>
       <Table variant="beatTheMusic">
         <Thead>
           <Tr>
-            <Th>#</Th>
-            <Th>Name</Th>
+            <Th></Th>
+            <Th></Th>
             <Th>Score</Th>
             <Th>Round Time</Th>
             <Th>Avg Time</Th>
@@ -111,12 +118,12 @@ const QuizResultStep3: FC = () => {
             return (
               <Tr key={`rank-row-${i}`}>
                 <Td>{i + 1}</Td>
-                <Td>{rankingItem.name}</Td>
-                <Td textAlign="center">{rankingItem.score}</Td>
-                <Td textAlign="center">
+                <Td fontWeight="bold">{rankingItem.name}</Td>
+                <Td textAlign="right">{rankingItem.score}</Td>
+                <Td textAlign="right">
                   {(rankingItem.roundTime / 1000).toFixed(3)}s
                 </Td>
-                <Td textAlign="center">
+                <Td textAlign="right">
                   {(rankingItem.timeAvg / 1000).toFixed(3)}s
                 </Td>
               </Tr>
@@ -134,13 +141,10 @@ export const QuizResultSteps: FC = () => {
     quizData: s.quizData,
     gameData: s.gameData,
   }));
-  const totalAnswers = _.sumBy(quizResult.answers, (a) => {
-    return a.people;
-  });
 
   return (
     <VStack
-      bgImage={`/assets/bgresults.png`}
+      bgImage={gameData?.resultStep < 2 ? `/assets/bgresults.png` : undefined}
       h="100vh"
       color="white"
       position="relative"
