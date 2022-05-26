@@ -17,13 +17,14 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
     <Box
       textAlign="center"
       p={2}
-      py={"3%"}
+      py={6}
       flex={1}
       bg={color}
       rounded="3xl"
       position="relative"
       shadow="button"
       overflow="hidden"
+      width={"100%"}
     >
       <Heading
         bgGradient="linear(to-b, rgba(255,255,255,1), rgba(255,255,255,0.6), rgba(255,255,255,0.2), rgba(255,255,255,.1))"

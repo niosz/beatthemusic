@@ -1,6 +1,9 @@
 import { extendTheme, ThemeComponents } from "@chakra-ui/react";
 
-const colors = {};
+export const colors = {
+  success: "#4caf50",
+  error: "#f00",
+};
 
 const shadows = {
   inside: "inset 0px -4px 20px rgba(255,255,255,.7)",
