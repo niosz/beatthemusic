@@ -324,11 +324,8 @@ export const events: EventData = {
         return socket.data.liveInstance;
       });
 
-      console.log(liveSockets.length);
-
       liveSockets.forEach((socket) => {
         socket.emit("data-ranking", ranking);
-        console.log("emit");
       });
     });
     updateData(gameState);

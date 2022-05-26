@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Server } from "Socket.IO";
+import { Server } from "socket.io";
 import {
   GameData,
   Players,
