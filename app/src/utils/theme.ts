@@ -48,6 +48,40 @@ const components: ThemeComponents = {
       },
     },
   },
+  Table: {
+    variants: {
+      beatTheMusic: {
+        tr: {
+          td: {
+            bg: "whiteAlpha.300",
+            py: 3,
+          },
+          th: {
+            bg: "whiteAlpha.300",
+            borderBottomWidth: 1,
+            borderBottomColor: "whiteAlpha.300",
+            _first: {
+              roundedTopStart: "3xl",
+            },
+            _last: {
+              roundedTopEnd: "3xl",
+            },
+          },
+          _last: {
+            td: {
+              pb: 6,
+              _first: {
+                roundedBottomStart: "3xl",
+              },
+              _last: {
+                roundedBottomEnd: "3xl",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 const styles = {

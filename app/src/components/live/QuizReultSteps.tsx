@@ -96,7 +96,7 @@ const QuizResultStep3: FC = () => {
 
   return (
     <VStack>
-      <Table>
+      <Table variant="beatTheMusic">
         <Thead>
           <Tr>
             <Th>#</Th>
@@ -112,9 +112,13 @@ const QuizResultStep3: FC = () => {
               <Tr key={`rank-row-${i}`}>
                 <Td>{i + 1}</Td>
                 <Td>{rankingItem.name}</Td>
-                <Td>{rankingItem.score}</Td>
-                <Td>{(rankingItem.roundTime / 1000).toFixed(3)}s</Td>
-                <Td>{(rankingItem.timeAvg / 1000).toFixed(3)}s</Td>
+                <Td textAlign="center">{rankingItem.score}</Td>
+                <Td textAlign="center">
+                  {(rankingItem.roundTime / 1000).toFixed(3)}s
+                </Td>
+                <Td textAlign="center">
+                  {(rankingItem.timeAvg / 1000).toFixed(3)}s
+                </Td>
               </Tr>
             );
           })}
