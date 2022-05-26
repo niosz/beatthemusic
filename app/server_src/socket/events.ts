@@ -8,8 +8,10 @@ import {
 } from "../../src/utils/const";
 import {
   Players,
+  QuizAnswer,
   QuizEntry,
   QuizResultAnswer,
+  SingleAnswer,
   SocketData,
 } from "../interfaces";
 
@@ -96,44 +98,46 @@ export const connectPlayer = (
     gameState.players[addr].id = id;
   }
   updateData(gameState);
-  emitData(gameState, io, socket);
+  emitData(gameState, io);
 };
 
-const quiz = require("./../quiz_001.json") as QuizEntry;
+const quiz = require("./../q001.json") as QuizEntry;
 
 export const emitData = (
   gameState: SocketData,
-  io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
-  socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>
+  io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
 ) => {
-  const addr = socket.handshake.address;
-  const qNumber = gameState.gameData.quizNumber;
-  let clientQuizAnswer = {
-    answerIndex: -1,
-    answerTime: new Date(),
-    answerScore: 0,
-    answerElapsed: 0,
-  };
-
-  if (
-    qNumber > -1 &&
-    gameState.quizAnswers[gameState.gameData.quizNumber][addr]
-  ) {
-    clientQuizAnswer =
-      gameState.quizAnswers[gameState.gameData.quizNumber][addr];
-  }
-
   io.emit("online-players", getOnlinePlayers(gameState.players));
   io.emit("game-data", gameState.gameData);
   io.emit("quiz-counter", gameState.counter);
   io.emit("quiz-data", gameState.quizData);
   io.emit("quiz-result", gameState.quizResult);
 
-  socket.emit("answer-data", {
-    answerIndex: clientQuizAnswer.answerIndex,
-    answerTime: clientQuizAnswer.answerTime.getTime(),
-    answerScore: clientQuizAnswer.answerScore,
-    answerElapsed: clientQuizAnswer.answerElapsed,
+  io.fetchSockets().then((sockets) => {
+    sockets.forEach((socketItem) => {
+      const addr = socketItem.handshake.address;
+      const qNumber = gameState.gameData.quizNumber;
+      let clientQuizAnswer: SingleAnswer = {
+        answerIndex: -1,
+        answerTime: new Date(),
+        answerScore: 0,
+        answerElapsed: 0,
+      };
+
+      if (
+        qNumber > -1 &&
+        gameState.quizAnswers[gameState.gameData.quizNumber][addr]
+      ) {
+        clientQuizAnswer =
+          gameState.quizAnswers[gameState.gameData.quizNumber][addr];
+      }
+      socketItem.emit("answer-data", {
+        answerIndex: clientQuizAnswer.answerIndex,
+        answerTime: clientQuizAnswer.answerTime.getTime(),
+        answerScore: clientQuizAnswer.answerScore,
+        answerElapsed: clientQuizAnswer.answerElapsed,
+      });
+    });
   });
 };
 
@@ -162,7 +166,7 @@ export const events: EventData = {
     gameState.counter = NOT_COUNTING;
     gameState.quizAnswers = {};
     updateData(gameState);
-    emitData(gameState, io, socket);
+    emitData(gameState, io);
   },
   "start-game": (io, socket, gameState, msg, updateData) => {
     gameState.gameData.started = true;
@@ -173,22 +177,25 @@ export const events: EventData = {
       .join("");
     gameState.counter = NOT_COUNTING;
     updateData(gameState);
-    emitData(gameState, io, socket);
+    emitData(gameState, io);
   },
   "start-quiz": (io, socket, gameState, msg, updateData) => {
     gameState.counter = 3;
     gameState.gameData.quizNumber = gameState.gameData.quizNumber + 1;
     gameState.gameData.quizStarted = true;
     gameState.quizAnswers[gameState.gameData.quizNumber] = {};
-    emitData(gameState, io, socket);
+    gameState.gameData.totalQuestions = quiz.questions.length;
+    emitData(gameState, io);
     io.emit("quiz-counter", GAME_STARTING);
     const counterInterval = setInterval(() => {
       io.emit("quiz-counter", gameState.counter);
       if (gameState.counter === 0) {
         const quizItem = quiz.questions[gameState.gameData.quizNumber];
         gameState.quizData = {
-          q: quizItem.video,
-          answers: _.range(0, quizItem.isTrueFalse ? 2 : 4).map((i) => `q${i}`),
+          q: quizItem.question,
+          video: quizItem.video,
+          answers:
+            quizItem.keyboard === "TRUEFALSE" ? ["V", "F"] : quizItem.options!,
         };
         io.emit("quiz-data", gameState.quizData);
         clearInterval(counterInterval);
@@ -208,14 +215,14 @@ export const events: EventData = {
       gameState.players[addr].name = msg.name;
       gameState.players[addr].isInRoom = true;
       updateData(gameState);
-      emitData(gameState, io, socket);
+      emitData(gameState, io);
     }
   },
   disconnect: (io, socket, gameState, msg, updateData) => {
     const addr = socket.handshake.address;
     gameState.players[addr].isOnline = false;
     updateData(gameState);
-    emitData(gameState, io, socket);
+    emitData(gameState, io);
   },
   "answer-question": (io, socket, gameState, answerIndex, updateData) => {
     const addr = socket.handshake.address;
@@ -235,25 +242,35 @@ export const events: EventData = {
     gameState.quizAnswers[gameState.gameData.quizNumber][addr] = answerResult;
 
     updateData(gameState);
-    emitData(gameState, io, socket);
+    emitData(gameState, io);
   },
   "end-quiz": (io, socket, gameState, msg, updateData) => {
     gameState.counter = SHOW_RESULTS;
     const quizNumber = gameState.gameData.quizNumber;
     const quizQuestion = quiz.questions[quizNumber];
-    const resultsByAnswer: QuizResultAnswer[] = _.range(
-      0,
-      quizQuestion.isTrueFalse ? 2 : 4
-    ).map((i) => {
+
+    let options;
+    switch (quizQuestion.keyboard) {
+      case "ABCD":
+        options = quizQuestion.options?.map((q, i) => i);
+        break;
+      case "TRUEFALSE":
+        options = [true, false];
+    }
+
+    const resultsByAnswer: QuizResultAnswer[] = options!.map((q, i) => {
       return {
-        answerCode: String.fromCharCode(65 + i),
+        answerCode: _.isBoolean(q)
+          ? ["V", "F"][i]
+          : String.fromCharCode(65 + i),
         people: Object.keys(
           _.pickBy(gameState.quizAnswers[quizNumber], (addr) => {
-            return addr.answerIndex === i;
+            return addr.answerIndex === q;
           })
         ).length,
       };
     });
+
     gameState.quizResult = {
       title: quiz.title,
       correctAnswer: quizQuestion.answer,
@@ -261,6 +278,6 @@ export const events: EventData = {
     };
 
     updateData(gameState);
-    emitData(gameState, io, socket);
+    emitData(gameState, io);
   },
 };

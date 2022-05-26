@@ -4,9 +4,10 @@ import { FC, useEffect, useState } from "react";
 
 interface CounterProps {
   count: number;
+  size?: number;
 }
 
-export const Counter: FC<CounterProps> = ({ count }) => {
+export const Counter: FC<CounterProps> = ({ count, size = 48 }) => {
   const [props, api] = useSpring(() => ({
     scale: 0,
   }));
@@ -24,8 +25,8 @@ export const Counter: FC<CounterProps> = ({ count }) => {
           .to((s) => `scale(${s})`),
       }}
     >
-      <Circle size={48} bg="whiteAlpha.600">
-        <Heading color="white" fontSize="8xl">
+      <Circle size={size} bg="whiteAlpha.600">
+        <Heading color="white" fontSize={size > 50 ? "120px" : "8xl"}>
           {count}
         </Heading>
       </Circle>

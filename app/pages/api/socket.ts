@@ -4,7 +4,6 @@ import {
   GameData,
   Players,
   QuizAnswer,
-  QuizDataSend,
   QuizResult,
   SocketData,
 } from "../../server_src/interfaces";
@@ -13,18 +12,20 @@ import {
   events,
   SocketEvent,
 } from "../../server_src/socket/events";
+import { QuizData } from "../../src/store/GameStore";
 import { NOT_COUNTING } from "../../src/utils/const";
 
 let gameData: GameData = {
   started: false,
   quizStarted: false,
   quizNumber: -1,
+  totalQuestions: -1,
   startedTime: 0,
   pin: "",
 };
 let players: Players = {};
 let counter = NOT_COUNTING;
-let quizData: QuizDataSend = { q: "", answers: [] };
+let quizData: QuizData = { q: "", video: "", answers: [] };
 let quizAnswers: QuizAnswer = {};
 let quizResult: QuizResult = { answers: [], correctAnswer: -1, title: "" };
 

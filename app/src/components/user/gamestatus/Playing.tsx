@@ -1,27 +1,49 @@
-import { VStack, SimpleGrid, Button, Heading, Box } from "@chakra-ui/react";
+import {
+  VStack,
+  SimpleGrid,
+  Button,
+  Heading,
+  Box,
+  HStack,
+  Text,
+} from "@chakra-ui/react";
 import { FC } from "react";
 import { useSocket } from "../../../providers/SocketProvider";
 import { useGame } from "../../../store/GameStore";
-import { SHOW_RESULTS } from "../../../utils/const";
+import { buttonColors, SHOW_RESULTS } from "../../../utils/const";
 import { CorrectAnswer } from "../answers/CorrectAnswer";
 import { WrongAnswer } from "../answers/WrongAnswer";
 
 export const Playing: FC = () => {
-  const { quizData, counter, quizResult } = useGame();
+  const { quizData, counter, quizResult, gameData } = useGame();
   const { answerData, answerQuestion } = useSocket();
   const showResults = counter === SHOW_RESULTS;
   const isCorrectAnswer = answerData?.answerIndex === quizResult?.correctAnswer;
-  const c = ["#4caf50", "#f00", "#feaccc", "#0f0"];
 
   return (
     <>
-      <VStack w="100%" h="100vh" position="relative">
+      <VStack p={2} w="100%" h="100vh" position="relative">
+        <HStack w="100%" h={20}>
+          <Box
+            h="100%"
+            flex={1}
+            backgroundRepeat="no-repeat"
+            backgroundImage="/assets/logo.png"
+            backgroundSize="contain"
+            backgroundPosition="left"
+          />
+          <Box flex={1} />
+          <Box flex={1}>
+            <Text fontSize="xl" color="white">
+              Domanda {gameData.quizNumber + 1} di {gameData.totalQuestions}
+            </Text>
+          </Box>
+        </HStack>
         <SimpleGrid w="100%" flex={1} columns={2} spacing={2}>
           {quizData?.answers?.map((a, i) => {
             return (
               <Button
                 key={`ans-${i}`}
-                // disabled={answerData.answerIndex !== -1}
                 variant="unstyled"
                 opacity={
                   answerData.answerIndex === i || answerData.answerIndex === -1
@@ -33,19 +55,23 @@ export const Playing: FC = () => {
                     answerQuestion(i);
                   }
                 }}
-                shadow="inside"
+                shadow="button"
                 rounded="xl"
-                bgColor={c[i]}
+                bgColor={buttonColors[i]}
                 overflow="hidden"
                 h="100%"
+                position="relative"
               >
                 <Heading
+                  position="absolute"
                   userSelect="none"
                   textAlign="center"
                   color="white"
-                  fontSize="280"
+                  fontSize="500px"
                   h="100%"
-                  lineHeight={"90%"}
+                  lineHeight={"70%"}
+                  top={0}
+                  left={-7}
                 >
                   {String.fromCharCode(65 + i)}
                 </Heading>

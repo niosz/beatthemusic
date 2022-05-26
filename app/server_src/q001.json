@@ -1,0 +1,50 @@
+{
+  "active": true,
+  "title": "The first quiz",
+  "questions": [
+    {
+      "active": true,
+      "question": "What is the name of the artist?",
+      "keyboard": "ABCD",
+      "answer": 0,
+      "options": ["Maluma", "Ozuna", "Daddy Yankee", "Nicky Jam"],
+      "video": "question_000.mp4"
+    },
+    {
+      "active": true,
+      "question": "What is the missing word?",
+      "keyboard": "ABCD",
+      "answer": 2,
+      "options": ["quiero", "suave", "suavecito", "pasito"],
+      "video": "question_001.mp4"
+    },
+    {
+      "active": true,
+      "question": "What is the title of song?",
+      "keyboard": "ABCD",
+      "answer": 1,
+      "options": ["Un Beso", "Carrettera", "Corason", "Mi Culpa"],
+      "video": "question_002.mp4"
+    },
+    {
+      "active": true,
+      "question": "The author of song is Pharrell Williams?",
+      "keyboard": "TRUEFALSE",
+      "answer": false,
+      "video": "question_003.mp4"
+    },
+    {
+      "active": true,
+      "question": "Find the title of song!",
+      "keyboard": "ABCD",
+      "answer": 3,
+      "options": [
+        "Around around",
+        "Around the word",
+        "The world",
+        "Around the world"
+      ],
+      "video": "question_004.mp4"
+    }
+  ]
+}

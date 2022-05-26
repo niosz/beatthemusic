@@ -1,3 +1,5 @@
+import { QuizData } from "../src/store/GameStore";
+
 export interface PlayerData {
   id: string;
   name: string;
@@ -12,43 +14,56 @@ export interface GameData {
   quizNumber: number;
   startedTime: number;
   pin: string;
+  totalQuestions: number;
 }
 
 export interface QuizEntry {
+  active: boolean;
   title: string;
   questions: Question[];
 }
 
 interface Question {
-  isTrueFalse: boolean;
-  answer: number;
+  active: boolean;
+  question: string;
+  keyboard: "ABCD" | "TRUEFALSE";
+  answer: boolean | number;
+  options?: string[];
   video: string;
 }
 
-export interface QuizDataSend {
-  q: string;
-  answers: string[];
-}
+// export interface QuizEntry {
+//   title: string;
+//   questions: Question[];
+// }
+
+// interface Question {
+//   isTrueFalse: boolean;
+//   answer: number;
+//   video: string;
+// }
 
 export interface Players {
   [id: string]: PlayerData;
 }
 
+export interface SingleAnswer {
+  answerTime: Date;
+  answerIndex: number | boolean;
+  answerScore: number;
+  answerElapsed: number;
+}
+
 export interface QuizAnswer {
   [q: number]: {
-    [addr: string]: {
-      answerTime: Date;
-      answerIndex: number;
-      answerScore: number;
-      answerElapsed: number;
-    };
+    [addr: string]: SingleAnswer;
   };
 }
 
 export interface SocketData {
   gameData: GameData;
   players: Players;
-  quizData: QuizDataSend;
+  quizData: QuizData;
   counter: number;
   quizAnswers: QuizAnswer;
   quizResult: QuizResult;
@@ -56,7 +71,7 @@ export interface SocketData {
 
 export interface QuizResult {
   title: string;
-  correctAnswer: number;
+  correctAnswer: number | boolean;
   answers: QuizResultAnswer[];
 }
 

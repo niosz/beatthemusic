@@ -3,6 +3,7 @@ import { GameData, Players, QuizResult } from "../../server_src/interfaces";
 
 export interface QuizData {
   q: string;
+  video: string;
   answers: string[];
 }
 
@@ -37,9 +38,10 @@ export const useGame = create<GameState>((set) => ({
     started: false,
     startedTime: 0,
     quizStarted: false,
+    totalQuestions: -1,
   },
   setGameData: (gd) => set({ gameData: gd }),
-  quizData: { q: "", answers: [] },
+  quizData: { q: "", video: "", answers: [] },
   setQuizData: (q) => set({ quizData: q }),
   counter: -1,
   setCounter: (c) => set({ counter: c }),

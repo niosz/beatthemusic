@@ -1,12 +1,25 @@
-import { VStack, Text, Box, Heading, HStack } from "@chakra-ui/react";
+import {
+  VStack,
+  Text,
+  Box,
+  Heading,
+  HStack,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import _ from "lodash";
 import type { NextPage } from "next";
 import { useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import { Counter } from "../../src/components/counter";
+import { QuizAnswerBox } from "../../src/components/live/QuizAnswerBox";
 import { useSocket } from "../../src/providers/SocketProvider";
 import { useGame } from "../../src/store/GameStore";
-import { GAME_STARTING, SHOW_RESULTS } from "../../src/utils/const";
+import {
+  buttonColors,
+  GAME_STARTING,
+  SHOW_RESULTS,
+} from "../../src/utils/const";
+import { textShadow } from "../../src/utils/theme";
 
 const Live: NextPage = () => {
   const { onlinePlayers, gameData, counter, quizData, quizResult } = useGame();
@@ -125,7 +138,7 @@ const Live: NextPage = () => {
                   <Heading color="white">Preparati!</Heading>
                 )}
                 {gameData?.quizStarted && counter !== GAME_STARTING && (
-                  <Counter count={counter} />
+                  <Counter count={counter} size={80} />
                 )}
 
                 {connectedPlayers === 0 && (
@@ -180,7 +193,7 @@ const Live: NextPage = () => {
           </VStack>
         </>
       )}
-      {showQuestion && quizData?.q && (
+      {showQuestion && quizData?.video && (
         <>
           <video
             onEnded={() => {
@@ -194,8 +207,44 @@ const Live: NextPage = () => {
               height: "100vh",
             }}
           >
-            <source src={`/assets/${quizData.q}`} />
+            <source src={`/assets/video/${quizData.video}`} />
           </video>
+          <Box
+            display="flex"
+            alignItems="center"
+            position="absolute"
+            w="100vw"
+            h="100vh"
+          >
+            <Heading
+              w="100%"
+              textAlign="center"
+              color="white"
+              fontSize="6xl"
+              textShadow={textShadow}
+            >
+              {quizData?.q}
+            </Heading>
+          </Box>
+          <HStack
+            spacing={6}
+            p={4}
+            w="100%"
+            color="white"
+            position="absolute"
+            bottom={0}
+          >
+            {quizData?.answers?.map((answer, i) => {
+              return (
+                <QuizAnswerBox
+                  key={`quizanswer-${i}`}
+                  color={buttonColors[i]}
+                  answer={answer}
+                  char={String.fromCharCode(65 + i)}
+                />
+              );
+            })}
+          </HStack>
         </>
       )}
       {showResults && (

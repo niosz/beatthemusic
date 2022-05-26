@@ -4,6 +4,7 @@ const colors = {};
 
 const shadows = {
   inside: "inset 0px -4px 20px rgba(255,255,255,.7)",
+  button: "inset 0px 0px 50px rgba(255,255,255,0.5)",
 };
 
 const fonts = {
@@ -20,6 +21,8 @@ export const gameFilledBoxProps = {
   fontSize: "4xl",
   fontWeight: "bold",
 };
+
+export const textShadow = "0px 0px 8px #000";
 
 const components: ThemeComponents = {
   Input: {

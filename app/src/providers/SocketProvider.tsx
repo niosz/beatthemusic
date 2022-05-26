@@ -122,7 +122,6 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
       socketConnection.emit(event, args);
     } else {
       const emitterInterval = setInterval(() => {
-        console.log("try", event);
         if (socketConnection) {
           socketConnection.emit(event, args);
           clearInterval(emitterInterval);
