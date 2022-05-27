@@ -39,6 +39,7 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
         {char}
       </Heading>
       <Text
+        as={"div"}
         textShadow={textShadow}
         fontSize="2xl"
         fontWeight="bold"

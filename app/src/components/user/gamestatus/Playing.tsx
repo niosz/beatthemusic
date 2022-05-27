@@ -37,7 +37,6 @@ export const Playing: FC = () => {
             backgroundSize="contain"
             backgroundPosition="left"
           />
-          <Box flex={1} />
           <Box flex={1}>
             <Text fontSize="xl" color="white">
               Domanda {gameData.quizNumber + 1} di {gameData.totalQuestions}

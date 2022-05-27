@@ -1,5 +1,5 @@
 import { Box, Heading, HStack } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useSocket } from "../../providers/SocketProvider";
 import { useGame } from "../../store/GameStore";
 import { buttonColors } from "../../utils/const";
@@ -9,23 +9,35 @@ import { QuizAnswerBox } from "./QuizAnswerBox";
 export const LivePlaying: FC = () => {
   const { quizData } = useGame((s) => ({ quizData: s.quizData }));
   const { endQuiz } = useSocket();
+  const [mountedVideo, setMountedVideo] = useState(false);
+
+  /* Force video remount */
+  useEffect(() => {
+    setMountedVideo(false);
+    setTimeout(() => {
+      setMountedVideo(true);
+    }, 100);
+  }, [quizData.video]);
+
   return (
     <>
-      <video
-        onEnded={() => {
-          endQuiz();
-        }}
-        autoPlay
-        muted
-        style={{
-          position: "absolute",
-          objectFit: "contain",
-          width: "100vw",
-          height: "100vh",
-        }}
-      >
-        <source src={`/assets/video/${quizData.video}`} />
-      </video>
+      {mountedVideo && (
+        <video
+          onEnded={() => {
+            endQuiz();
+          }}
+          autoPlay
+          // muted
+          style={{
+            position: "absolute",
+            objectFit: "contain",
+            width: "100vw",
+            height: "100vh",
+          }}
+        >
+          <source src={`/assets/video/${quizData.video}`} />
+        </video>
+      )}
       <Box
         display="flex"
         alignItems="center"
@@ -50,6 +62,7 @@ export const LivePlaying: FC = () => {
         color="white"
         position="absolute"
         bottom={0}
+        alignItems="stretch"
       >
         {quizData?.answers?.map((answer, i) => {
           return (
