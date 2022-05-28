@@ -13,7 +13,7 @@ import { usePlayer } from "../store/PlayerStore";
 let socketConnection: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 interface ISocketContext {
-  joinServer: (pin: string, name: string) => void;
+  joinServer: (pin: string, name: string) => Promise<boolean>;
   startGame: () => void;
   endGame: () => void;
   initLive: () => void;
@@ -33,7 +33,9 @@ interface SocketProviderProps {
 }
 
 const SocketContext = createContext<ISocketContext>({
-  joinServer: () => {},
+  joinServer: () => {
+    return Promise.resolve(true);
+  },
   startGame: () => {},
   endGame: () => {},
   initLive: () => {},
@@ -123,9 +125,13 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     setRankingData,
   ]);
 
-  const emitEvent = (event: string, args?: any) => {
+  const emitEvent = (
+    event: string,
+    args?: any,
+    callback?: (response: any) => void
+  ) => {
     if (socketConnection) {
-      socketConnection.emit(event, args);
+      socketConnection.emit(event, args, callback);
     } else {
       const emitterInterval = setInterval(() => {
         if (socketConnection) {
@@ -141,7 +147,15 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   }, [socketInitializer]);
 
   const joinServer = (pin: string, name: string) => {
-    emitEvent("join-game", { pin, name });
+    return new Promise((resolve, reject) => {
+      emitEvent("join-game", { pin, name }, (response) => {
+        if (response.error) {
+          reject(response.error);
+        } else {
+          resolve(true);
+        }
+      });
+    });
   };
 
   const startGame = () => {

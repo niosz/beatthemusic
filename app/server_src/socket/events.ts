@@ -50,7 +50,8 @@ type EventData = {
     socket: ISocket,
     gameState: SocketData,
     msg: any,
-    updateData: (gameState: SocketData) => void
+    updateData: (gameState: SocketData) => void,
+    cbFn?: (response: any) => void
   ) => void;
 };
 
@@ -259,7 +260,7 @@ export const events: EventData = {
       }
     }, 1000);
   },
-  "join-game": (io, socket, gameState, msg, updateData) => {
+  "join-game": (io, socket, gameState, msg, updateData, cbFn) => {
     const addr = socket.handshake.address;
     if (msg.pin === gameState.gameData.pin && gameState.gameData.started) {
       gameState.players[addr].id = socket.id;
@@ -268,6 +269,8 @@ export const events: EventData = {
       gameState.players[addr].isInRoom = true;
       updateData(gameState);
       emitData(gameState, io);
+    } else {
+      cbFn({ error: "WRONG_PIN" });
     }
   },
   disconnect: (io, socket, gameState, msg, updateData) => {

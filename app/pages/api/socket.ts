@@ -57,14 +57,15 @@ const SocketHandler = (req: any, res: any) => {
 
       Object.keys(events).forEach((event) => {
         const eventType = event as SocketEvent;
-        socket.on(event, (msg) => {
+        socket.on(event, (msg, cbFn) => {
           const eventFn = events[eventType];
           eventFn(
             io,
             socket,
             { gameData, counter, players, quizData, quizAnswers, quizResult },
             msg,
-            dataUpdater
+            dataUpdater,
+            cbFn
           );
         });
       });
