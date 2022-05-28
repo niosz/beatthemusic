@@ -146,7 +146,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     socketInitializer();
   }, [socketInitializer]);
 
-  const joinServer = (pin: string, name: string) => {
+  const joinServer = (pin: string, name: string): Promise<boolean> => {
     return new Promise((resolve, reject) => {
       emitEvent("join-game", { pin, name }, (response) => {
         if (response.error) {
