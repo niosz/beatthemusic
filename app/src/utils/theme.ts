@@ -78,6 +78,7 @@ const components: ThemeComponents = {
       },
     },
   },
+  FormErrorMessage: {},
 };
 
 const styles = {
