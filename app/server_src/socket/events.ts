@@ -16,6 +16,7 @@ import {
   SingleAnswer,
   SocketData,
 } from "../interfaces";
+import BadWords from "bad-words";
 
 export type SocketEvent =
   | "init-live"
@@ -58,6 +59,8 @@ type EventData = {
 export const getOnlinePlayers = (players: Players) => {
   return _.pickBy(players, (user) => user.isOnline && user.isInRoom);
 };
+
+const BWFilter = new BadWords();
 
 const getAnswerScore = (gameState: SocketData, answerIndex: number) => {
   const qNumber = gameState.gameData.quizNumber;
@@ -265,14 +268,16 @@ export const events: EventData = {
     if (msg.pin === gameState.gameData.pin && gameState.gameData.started) {
       gameState.players[addr].id = socket.id;
       gameState.players[addr].isOnline = true;
-      gameState.players[addr].name = msg.name;
-      gameState.players[addr].isInRoom = true;
+      if (BWFilter.isProfane(msg.name)) {
+        cbFn!({ error: "IS_PROFANE" });
+      } else {
+        gameState.players[addr].name = msg.name;
+        gameState.players[addr].isInRoom = true;
+      }
       updateData(gameState);
       emitData(gameState, io);
     } else {
-      if (cbFn) {
-        cbFn({ error: "WRONG_PIN" });
-      }
+      cbFn!({ error: "WRONG_PIN" });
     }
   },
   disconnect: (io, socket, gameState, msg, updateData) => {

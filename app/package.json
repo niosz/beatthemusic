@@ -13,6 +13,8 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/exo-2": "^4.5.8",
+    "@types/bad-words": "^3.0.1",
+    "bad-words": "^3.0.4",
     "framer-motion": "^6",
     "lodash": "^4.17.21",
     "next": "12.1.6",
