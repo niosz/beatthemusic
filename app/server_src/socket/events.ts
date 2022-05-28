@@ -1,4 +1,4 @@
-import _, { update } from "lodash";
+import _ from "lodash";
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { initialGameData } from "../../pages/api/socket";
@@ -270,7 +270,9 @@ export const events: EventData = {
       updateData(gameState);
       emitData(gameState, io);
     } else {
-      cbFn({ error: "WRONG_PIN" });
+      if (cbFn) {
+        cbFn({ error: "WRONG_PIN" });
+      }
     }
   },
   disconnect: (io, socket, gameState, msg, updateData) => {
