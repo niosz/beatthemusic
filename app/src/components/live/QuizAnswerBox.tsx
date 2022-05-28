@@ -40,17 +40,17 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
       >
         {char}
       </Heading>
-      {!hideAnswer && (
-        <Text
-          as={"div"}
-          textShadow={textShadow}
-          fontSize="2xl"
-          fontWeight="bold"
-          lineHeight="8"
-        >
-          {answer}
-        </Text>
-      )}
+
+      <Text
+        as={"div"}
+        textShadow={textShadow}
+        fontSize="2xl"
+        fontWeight="bold"
+        lineHeight="8"
+        opacity={hideAnswer ? 0 : 1}
+      >
+        {answer}
+      </Text>
     </Box>
   );
 };
