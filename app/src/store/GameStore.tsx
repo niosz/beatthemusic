@@ -1,15 +1,16 @@
 import create from "zustand";
 import {
   GameData,
+  KeyboardMode,
   Players,
   QuizResult,
-  RankingData,
   RankingItem,
 } from "../../server_src/interfaces";
 
 export interface QuizData {
   q: string;
   video: string;
+  keyboard: KeyboardMode;
   answers: string[];
 }
 
@@ -48,9 +49,10 @@ export const useGame = create<GameState>((set) => ({
     quizStarted: false,
     totalQuestions: -1,
     resultStep: -1,
+    quizEnded: false,
   },
   setGameData: (gd) => set({ gameData: gd }),
-  quizData: { q: "", video: "", answers: [] },
+  quizData: { q: "", video: "", answers: [], keyboard: "ABCD" },
   setQuizData: (q) => set({ quizData: q }),
   counter: -1,
   setCounter: (c) => set({ counter: c }),

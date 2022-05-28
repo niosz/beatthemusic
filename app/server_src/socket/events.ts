@@ -1,6 +1,7 @@
 import _, { update } from "lodash";
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { initialGameData } from "../../pages/api/socket";
 import {
   GAME_STARTING,
   NOT_COUNTING,
@@ -115,6 +116,7 @@ export const emitData = (
   io.emit("quiz-data", gameState.quizData);
   io.emit("quiz-result", gameState.quizResult);
 
+  emitRanking(gameState, io);
   io.fetchSockets().then((sockets) => {
     sockets.forEach((socketItem) => {
       const addr = socketItem.handshake.address;
@@ -178,17 +180,27 @@ const getCurrentRanking = (data: QuizAnswer, players: Players) => {
     .slice(0, 15);
 };
 
+const emitRanking = (gameState: SocketData, io: IIO) => {
+  const ranking = getCurrentRanking(gameState.quizAnswers, gameState.players);
+
+  io.fetchSockets().then((sockets) => {
+    const liveSockets = sockets.filter((socket) => {
+      return socket.data.liveInstance;
+    });
+
+    liveSockets.forEach((socket) => {
+      socket.emit("data-ranking", ranking);
+    });
+  });
+};
+
 export const events: EventData = {
   "init-live": (io, socket, gameState, msg) => {
     socket.data = { liveInstance: true };
     socket.emit("game-data", gameState.gameData);
   },
   "end-game": (io, socket, gameState, msg, updateData) => {
-    gameState.gameData.started = false;
-    gameState.gameData.quizStarted = false;
-    gameState.gameData.quizNumber = -1;
-    gameState.gameData.startedTime = new Date().getTime();
-    gameState.gameData.pin = "";
+    gameState.gameData = { ...initialGameData };
     Object.keys(gameState.players).forEach((pKey) => {
       const currPlayer = gameState.players[pKey];
       gameState.players[pKey] = {
@@ -233,6 +245,7 @@ export const events: EventData = {
         gameState.quizData = {
           q: quizItem.question,
           video: quizItem.video,
+          keyboard: quizItem.keyboard,
           answers:
             quizItem.keyboard === "TRUEFALSE" ? ["V", "F"] : quizItem.options!,
         };
@@ -288,6 +301,7 @@ export const events: EventData = {
     gameState.gameData.resultStep = 0;
     const quizNumber = gameState.gameData.quizNumber;
     const quizQuestion = quiz.questions[quizNumber];
+    gameState.gameData.quizEnded = quizNumber + 1 === quiz.questions.length;
 
     let options;
     switch (quizQuestion.keyboard) {
@@ -317,23 +331,17 @@ export const events: EventData = {
       answers: resultsByAnswer,
     };
 
-    const ranking = getCurrentRanking(gameState.quizAnswers, gameState.players);
-
-    io.fetchSockets().then((sockets) => {
-      const liveSockets = sockets.filter((socket) => {
-        return socket.data.liveInstance;
-      });
-
-      liveSockets.forEach((socket) => {
-        socket.emit("data-ranking", ranking);
-      });
-    });
     updateData(gameState);
     emitData(gameState, io);
   },
   "next-resultstep": (io, socket, gameState, msg, updateData) => {
-    if (gameState.gameData.resultStep < 2) {
-      gameState.gameData.resultStep = gameState.gameData.resultStep + 1;
+    const resStep = gameState.gameData.resultStep;
+    if (resStep === 3) {
+      events["end-game"](io, socket, gameState, msg, updateData);
+      return;
+    }
+    if (resStep < 2 || (resStep === 2 && gameState.gameData.quizEnded)) {
+      gameState.gameData.resultStep = resStep + 1;
       updateData(gameState);
       emitData(gameState, io);
     } else {

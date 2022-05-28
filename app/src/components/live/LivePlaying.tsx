@@ -65,12 +65,17 @@ export const LivePlaying: FC = () => {
         alignItems="stretch"
       >
         {quizData?.answers?.map((answer, i) => {
+          const char =
+            quizData.keyboard === "TRUEFALSE"
+              ? ["V", "F"][i]
+              : String.fromCharCode(65 + i);
           return (
             <QuizAnswerBox
               key={`quizanswer-${i}`}
               color={buttonColors[i]}
+              hideAnswer={quizData?.keyboard === "TRUEFALSE"}
               answer={answer}
-              char={String.fromCharCode(65 + i)}
+              char={char}
             />
           );
         })}

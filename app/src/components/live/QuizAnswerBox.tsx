@@ -6,12 +6,14 @@ interface QuizAnswerBoxProps {
   color: string;
   char: string;
   answer: string;
+  hideAnswer?: boolean;
 }
 
 export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
   color,
   answer,
   char,
+  hideAnswer = false,
 }) => {
   return (
     <Box
@@ -38,15 +40,17 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
       >
         {char}
       </Heading>
-      <Text
-        as={"div"}
-        textShadow={textShadow}
-        fontSize="2xl"
-        fontWeight="bold"
-        lineHeight="8"
-      >
-        {answer}
-      </Text>
+      {!hideAnswer && (
+        <Text
+          as={"div"}
+          textShadow={textShadow}
+          fontSize="2xl"
+          fontWeight="bold"
+          lineHeight="8"
+        >
+          {answer}
+        </Text>
+      )}
     </Box>
   );
 };

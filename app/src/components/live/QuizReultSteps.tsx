@@ -12,7 +12,8 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import _ from "lodash";
-import { FC } from "react";
+import { FC, useEffect } from "react";
+import { useSprings, animated, useTrail } from "react-spring";
 import { useGame } from "../../store/GameStore";
 import { buttonColors } from "../../utils/const";
 import { textShadow } from "../../utils/theme";
@@ -41,6 +42,7 @@ const QuizResultStep1: FC = () => {
         answer={correctAnswerData}
         color={buttonColors[quizResult.correctAnswer as number]}
         char={char}
+        hideAnswer={quizData?.keyboard === "TRUEFALSE"}
       />
     </VStack>
   );
@@ -51,10 +53,15 @@ const QuizResultStep2: FC = () => {
     quizResult: s.quizResult,
     quizData: s.quizData,
   }));
+
   return (
     <HStack w="100%" h="100%" px={4}>
       {quizResult.answers.map((a, i) => {
         const isCorrect = quizResult?.correctAnswer === i;
+        const char =
+          quizData.keyboard === "TRUEFALSE"
+            ? ["V", "F"][i]
+            : String.fromCharCode(65 + i);
         return (
           <VStack
             justifyContent="center"
@@ -72,7 +79,8 @@ const QuizResultStep2: FC = () => {
               <QuizAnswerBox
                 color={buttonColors[i]}
                 answer={quizData.answers[i]}
-                char={String.fromCharCode(65 + i)}
+                hideAnswer={quizData?.keyboard === "TRUEFALSE"}
+                char={char}
               />
               <Text
                 position="absolute"
@@ -92,16 +100,93 @@ const QuizResultStep2: FC = () => {
   );
 };
 
-const QuizResultStep3: FC = () => {
+const QuizResultStep3: FC<{ forceRanking?: boolean }> = ({
+  forceRanking = false,
+}) => {
   const { rankingData, gameData } = useGame((s) => ({
     rankingData: s.rankingData,
     gameData: s.gameData,
   }));
 
+  const [springs, api] = useTrail(3, () => ({ height: "0%" }));
+
+  useEffect(() => {
+    api.start(() => ({ height: "100%" }));
+  }, [api]);
+  const gameEnded = gameData.quizEnded;
+
+  if (gameEnded && !forceRanking) {
+    return (
+      <HStack spacing={8} px={8} w="100%" h="100%" alignItems="flex-end">
+        {[2, 1, 3].map((pos) => {
+          const h = `${100 - 20 * pos}%`;
+          const rankedPlayer = rankingData[pos - 1];
+          let color;
+          switch (pos) {
+            case 1:
+              color = "#FFC40088";
+              break;
+            case 2:
+              color = "#BEBEBE77";
+              break;
+            case 3:
+              color = "#611B0077";
+              break;
+          }
+          return (
+            <animated.div
+              key={`pos-${pos}`}
+              style={{
+                ...springs[pos - 1],
+
+                flex: 1,
+                display: "flex",
+                alignItems: "flex-end",
+              }}
+            >
+              <VStack flex={1} h={h}>
+                <Text>{pos}° classificato</Text>
+                <VStack
+                  py={4}
+                  flex={1}
+                  w="100%"
+                  backdropFilter="blur(10px)"
+                  shadow="inside"
+                  bgColor={color}
+                  roundedTop="3xl"
+                >
+                  {!_.isUndefined(rankedPlayer) && (
+                    <>
+                      <Heading fontSize={"5xl"} textShadow={textShadow}>
+                        {rankedPlayer.name}
+                      </Heading>
+                      <Text fontWeight="bold" textShadow={textShadow} flex={1}>
+                        {rankedPlayer.score} Punti
+                      </Text>
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        textShadow={textShadow}
+                      >
+                        Avg time: {(rankedPlayer.timeAvg / 1000).toFixed(3)}s
+                      </Text>
+                    </>
+                  )}
+                </VStack>
+              </VStack>
+            </animated.div>
+          );
+        })}
+      </HStack>
+    );
+  }
+
   return (
     <VStack>
-      <Heading color="white" mb={4} fontSize="5xl">
-        Round {gameData.quizNumber + 1}
+      <Heading color="white" mb={4} fontSize="5xl" textShadow={textShadow}>
+        {forceRanking
+          ? "Classifica finale"
+          : `Round ${gameData.quizNumber + 1}`}
       </Heading>
       <Table variant="beatTheMusic">
         <Thead>
@@ -178,6 +263,7 @@ export const QuizResultSteps: FC = () => {
       {gameData?.resultStep === 0 && <QuizResultStep1 />}
       {gameData?.resultStep === 1 && <QuizResultStep2 />}
       {gameData?.resultStep === 2 && <QuizResultStep3 />}
+      {gameData?.resultStep === 3 && <QuizResultStep3 forceRanking />}
     </VStack>
   );
 };

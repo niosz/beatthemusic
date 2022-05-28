@@ -15,18 +15,21 @@ import {
 import { QuizData } from "../../src/store/GameStore";
 import { NOT_COUNTING } from "../../src/utils/const";
 
-let gameData: GameData = {
+export const initialGameData: GameData = {
   started: false,
   quizStarted: false,
+  quizEnded: false,
   quizNumber: -1,
   totalQuestions: -1,
   startedTime: 0,
   pin: "",
   resultStep: -1,
 };
+
+let gameData: GameData = { ...initialGameData };
 let players: Players = {};
 let counter = NOT_COUNTING;
-let quizData: QuizData = { q: "", video: "", answers: [] };
+let quizData: QuizData = { q: "", video: "", answers: [], keyboard: "ABCD" };
 let quizAnswers: QuizAnswer = {};
 let quizResult: QuizResult = { answers: [], correctAnswer: -1, title: "" };
 

@@ -45,6 +45,10 @@ export const Playing: FC = () => {
         </HStack>
         <SimpleGrid w="100%" flex={1} columns={2} spacing={2}>
           {quizData?.answers?.map((a, i) => {
+            const char =
+              quizData.keyboard === "TRUEFALSE"
+                ? ["V", "F"][i]
+                : String.fromCharCode(65 + i);
             return (
               <Button
                 key={`ans-${i}`}
@@ -77,7 +81,7 @@ export const Playing: FC = () => {
                   top={0}
                   left={-7}
                 >
-                  {String.fromCharCode(65 + i)}
+                  {char}
                 </Heading>
               </Button>
             );

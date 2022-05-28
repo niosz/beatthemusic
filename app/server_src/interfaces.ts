@@ -11,6 +11,7 @@ export interface PlayerData {
 export interface GameData {
   started: boolean;
   quizStarted: boolean;
+  quizEnded: boolean;
   quizNumber: number;
   startedTime: number;
   pin: string;
@@ -24,10 +25,12 @@ export interface QuizEntry {
   questions: Question[];
 }
 
+export type KeyboardMode = "ABCD" | "TRUEFALSE";
+
 interface Question {
   active: boolean;
   question: string;
-  keyboard: "ABCD" | "TRUEFALSE";
+  keyboard: KeyboardMode;
   answer: boolean | number;
   options?: string[];
   video: string;
@@ -90,4 +93,10 @@ export interface QuizResult {
 export interface QuizResultAnswer {
   answerCode: string;
   people: number;
+}
+
+export enum RESULT_STEP {
+  CORRECT_ANSWER = 1,
+  ANSWERS_SUMMARY = 2,
+  RANKING = 3,
 }
