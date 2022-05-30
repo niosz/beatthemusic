@@ -19,7 +19,8 @@ export const CorrectAnswer: FC = () => {
       <Heading fontSize={"7xl"}>BRAVO!</Heading>
       <Heading fontSize={"5xl"}>{me?.name}</Heading>
       <Heading fontWeight="normal" fontSize={"3xl"}>
-        Hai guadagnato {answerData.answerScore} punti
+        Hai guadagnato {answerData.answerScore}{" "}
+        {answerData.answerScore === 1 ? "punto" : "punti"}
       </Heading>
       <Heading fontWeight="normal" fontSize={"3xl"}>
         Il tuo tempo di risposta è {answerData.answerElapsed / 1000}s

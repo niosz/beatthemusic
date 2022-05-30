@@ -73,13 +73,16 @@ const getAnswerScore = (gameState: SocketData, answerIndex: number) => {
     score = 1;
     const addrKeys = Object.keys(gameState.quizAnswers[qNumber]);
     if (addrKeys && addrKeys.length > 0) {
-      addrKeys.forEach((addr) => {
+      // There are answers, but wrong
+      const noCorrectAnswers = addrKeys.every((addr) => {
         const answerItem = gameState.quizAnswers[qNumber][addr];
-        if (answerItem.answerIndex !== correctAnswer) {
-          score = 2;
-        }
+        return answerItem.answerIndex !== correctAnswer;
       });
+      if (noCorrectAnswers) {
+        score = 2;
+      }
     } else {
+      // There are no answers yet, 2 points
       score = 2;
     }
   }

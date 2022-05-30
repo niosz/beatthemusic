@@ -34,7 +34,7 @@ const Home: NextPage = () => {
   return (
     <VStack bgImage={`/assets/bgblur.jpg`} w="100vw" h="100vh">
       {gameStatus !== "playing" && <BeatingLogo playerLayout />}
-      <Box flex={1}>
+      <Box flex={1} w="100%">
         {gameStatus === "welcome" && gameData?.started && <Welcome />}
         {gameStatus === "joined" && <Joined />}
         {gameStatus === "counting" && <Counting />}
