@@ -50,7 +50,7 @@ export const LivePlaying: FC = () => {
           // muted
           style={{
             position: "absolute",
-            objectFit: "contain",
+            objectFit: "cover",
             width: "100vw",
             height: "100vh",
           }}
