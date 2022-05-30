@@ -16,7 +16,7 @@ interface ISocketContext {
   joinServer: (pin: string, name: string) => Promise<boolean>;
   startGame: () => void;
   endGame: () => void;
-  initLive: () => void;
+  initLive: () => Promise<string>;
   startQuiz: () => void;
   goToNextStep: () => void;
   answerQuestion: (index: number) => void;
@@ -38,7 +38,9 @@ const SocketContext = createContext<ISocketContext>({
   },
   startGame: () => {},
   endGame: () => {},
-  initLive: () => {},
+  initLive: () => {
+    return Promise.resolve("");
+  },
   startQuiz: () => {},
   goToNextStep: () => {},
   answerQuestion: () => {},
@@ -135,7 +137,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     } else {
       const emitterInterval = setInterval(() => {
         if (socketConnection) {
-          socketConnection.emit(event, args);
+          socketConnection.emit(event, args, callback);
           clearInterval(emitterInterval);
         }
       }, 100);
@@ -162,8 +164,12 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     emitEvent("start-game");
   };
 
-  const initLive = () => {
-    emitEvent("init-live");
+  const initLive = (): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      emitEvent("init-live", undefined, (ip) => {
+        resolve(ip);
+      });
+    });
   };
 
   const endGame = () => {

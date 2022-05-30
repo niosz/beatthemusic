@@ -2,6 +2,8 @@ import _ from "lodash";
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { initialGameData } from "../../pages/api/socket";
+import { networkInterfaces } from "os";
+
 import {
   GAME_STARTING,
   NOT_COUNTING,
@@ -198,10 +200,23 @@ const emitRanking = (gameState: SocketData, io: IIO) => {
   });
 };
 
+const getInternalIP = () => {
+  const address = _(networkInterfaces())
+    .values()
+    .map((a) => _.find(a, { family: "IPv4" }))
+    .compact()
+    .map("address")
+    .value()
+    .find((ip) => ip !== "127.0.0.1");
+  return address || "";
+};
+
 export const events: EventData = {
-  "init-live": (io, socket, gameState, msg) => {
+  "init-live": (io, socket, gameState, msg, updateData, cbFn) => {
     socket.data = { liveInstance: true };
     socket.emit("game-data", gameState.gameData);
+    const ip = getInternalIP();
+    cbFn!(ip);
   },
   "end-game": (io, socket, gameState, msg, updateData) => {
     gameState.gameData = { ...initialGameData };

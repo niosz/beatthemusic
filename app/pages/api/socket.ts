@@ -58,6 +58,7 @@ const SocketHandler = (req: any, res: any) => {
       Object.keys(events).forEach((event) => {
         const eventType = event as SocketEvent;
         socket.on(event, (msg, cbFn) => {
+          console.log(cbFn);
           const eventFn = events[eventType];
           eventFn(
             io,

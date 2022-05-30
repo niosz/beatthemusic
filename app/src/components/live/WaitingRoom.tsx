@@ -1,22 +1,22 @@
-import { Box, Heading, VStack, Text } from "@chakra-ui/react";
+import { Box, Heading, VStack, Text, AspectRatio } from "@chakra-ui/react";
 import { useGame } from "../../store/GameStore";
-import { useSpring, animated } from "react-spring";
 import { FC } from "react";
 import { GAME_STARTING } from "../../utils/const";
 import { Counter } from "../counter";
+import { BeatingLogo } from "../common/BeatingLogo";
+import { useQRCode } from "next-qrcode";
 
-export const WaitingRoom: FC = () => {
+interface WaitingRoomProps {
+  ip: string;
+}
+
+export const WaitingRoom: FC<WaitingRoomProps> = ({ ip }) => {
   const { gameData, counter, onlinePlayers } = useGame((s) => ({
     gameData: s.gameData,
     counter: s.counter,
     onlinePlayers: s.onlinePlayers,
   }));
-  const props = useSpring({
-    from: { scale: 2 },
-    to: { scale: 0 },
-    loop: true,
-    config: { friction: 40, bounce: 100, damping: 0.8 },
-  });
+  const { Canvas } = useQRCode();
 
   const connectedPlayers = Object.keys(onlinePlayers).length;
   const connectedPlayersWithName = Object.keys(onlinePlayers).filter((k) => {
@@ -25,36 +25,29 @@ export const WaitingRoom: FC = () => {
   return (
     <>
       {!gameData?.started && (
-        <Box
-          display="flex"
-          w="100%"
-          h="100%"
-          py={16}
-          alignItems="center"
-          justifyContent="center"
-          position="relative"
-          zIndex={2}
-        >
-          <animated.div
-            style={{
-              width: "100%",
-              height: "100%",
-              transformOrigin: "center",
-              transform: props.scale
-                .to([0, 1, 2], [0.75, 1, 0.75])
-                .to((s) => `scale(${s})`),
-            }}
-          >
-            <Box
-              w="100%"
-              h="100%"
-              backgroundRepeat="no-repeat"
-              backgroundImage="/assets/logo.png"
-              backgroundSize="contain"
-              backgroundPosition="center"
-            />
-          </animated.div>
-        </Box>
+        <VStack h="100%">
+          <Box h={28} w="100%" />
+          <VStack w="100%" position="relative">
+            <Box w={200} h={200} rounded="md" overflow={"hidden"}>
+              <Canvas
+                text={`http://${ip}:3000/`}
+                options={{
+                  type: "image/jpeg",
+                  quality: 0.3,
+                  level: "M",
+                  margin: 3,
+                  scale: 4,
+                  width: 200,
+                  color: {
+                    dark: "#000",
+                    light: "#FFF",
+                  },
+                }}
+              />
+            </Box>
+          </VStack>
+          <BeatingLogo />
+        </VStack>
       )}
       <VStack spacing={0}>
         <Box
@@ -77,7 +70,26 @@ export const WaitingRoom: FC = () => {
               color="white"
               shadow="inside"
             >
-              <Heading size="lg">Gioca su beathemusic.play</Heading>
+              <VStack w="100%" position="relative">
+                <Box w={140} h={140} rounded="md" overflow={"hidden"}>
+                  <Canvas
+                    text={`http://${ip}:3000/`}
+                    options={{
+                      type: "image/jpeg",
+                      quality: 0.3,
+                      level: "M",
+                      margin: 3,
+                      scale: 4,
+                      width: 140,
+                      color: {
+                        dark: "#000",
+                        light: "#FFF",
+                      },
+                    }}
+                  />
+                </Box>
+              </VStack>
+              {/* <Heading size="lg">Gioca su beathemusic.play</Heading> */}
             </Box>
 
             {!gameData?.quizStarted && (

@@ -1,6 +1,7 @@
 import { VStack, Box } from "@chakra-ui/react";
 import _ from "lodash";
 import type { NextPage } from "next";
+import { BeatingLogo } from "../src/components/common/BeatingLogo";
 import { Counting } from "../src/components/user/gamestatus/Counting";
 import { Joined } from "../src/components/user/gamestatus/Joined";
 import { Playing } from "../src/components/user/gamestatus/Playing";
@@ -32,20 +33,13 @@ const Home: NextPage = () => {
 
   return (
     <VStack bgImage={`/assets/bgblur.jpg`} w="100vw" h="100vh">
-      {gameStatus !== "playing" && (
-        <Box
-          w="100%"
-          h={gameData?.started ? "40%" : "100%"}
-          backgroundRepeat="no-repeat"
-          backgroundImage="/assets/logo.png"
-          backgroundSize="contain"
-          backgroundPosition="center"
-        />
-      )}
-      {gameStatus === "welcome" && gameData?.started && <Welcome />}
-      {gameStatus === "joined" && <Joined />}
-      {gameStatus === "counting" && <Counting />}
-      {gameStatus === "playing" && <Playing />}
+      {gameStatus !== "playing" && <BeatingLogo playerLayout />}
+      <Box flex={1}>
+        {gameStatus === "welcome" && gameData?.started && <Welcome />}
+        {gameStatus === "joined" && <Joined />}
+        {gameStatus === "counting" && <Counting />}
+        {gameStatus === "playing" && <Playing />}
+      </Box>
     </VStack>
   );
 };

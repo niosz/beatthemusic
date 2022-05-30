@@ -1,7 +1,8 @@
-import { Box } from "@chakra-ui/react";
+import { AspectRatio, Box, Text, VStack } from "@chakra-ui/react";
 import _ from "lodash";
 import type { NextPage } from "next";
-import { useCallback, useEffect, useRef } from "react";
+import { useQRCode } from "next-qrcode";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BGLiveVideo } from "../../src/components/live/BGLiveVideo";
 import { LivePlaying } from "../../src/components/live/LivePlaying";
 import { QuizResultSteps } from "../../src/components/live/QuizReultSteps";
@@ -21,10 +22,13 @@ const Live: NextPage = () => {
 
   const showQuestion = gameData.quizStarted && counter === 0;
   const showResults = counter === SHOW_RESULTS;
+  const [ip, setIP] = useState("");
 
   useEffect(() => {
     if (!initialized.current) {
-      initLive();
+      initLive().then((ip) => {
+        setIP(ip);
+      });
       initialized.current = true;
     }
   }, [initLive]);
@@ -32,7 +36,7 @@ const Live: NextPage = () => {
   return (
     <Box w="100vw" h="100vh">
       <BGLiveVideo />
-      {!showQuestion && !showResults && <WaitingRoom />}
+      {!showQuestion && !showResults && <WaitingRoom ip={ip} />}
       {showQuestion && quizData?.video && <LivePlaying />}
       {showResults && <QuizResultSteps />}
     </Box>
