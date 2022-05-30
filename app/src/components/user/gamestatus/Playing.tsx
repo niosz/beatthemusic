@@ -49,15 +49,16 @@ export const Playing: FC = () => {
               quizData.keyboard === "TRUEFALSE"
                 ? ["V", "F"][i]
                 : String.fromCharCode(65 + i);
+            const isAnswerCorrect =
+              (quizData.keyboard === "TRUEFALSE"
+                ? answerData.answerIndex === (i === 0 ? true : false)
+                : answerData.answerIndex === i) ||
+              answerData.answerIndex === -1;
             return (
               <Button
                 key={`ans-${i}`}
                 variant="unstyled"
-                opacity={
-                  answerData.answerIndex === i || answerData.answerIndex === -1
-                    ? 1
-                    : 0.5
-                }
+                opacity={isAnswerCorrect ? 1 : 0.5}
                 onClick={() => {
                   if (answerData.answerIndex !== 1) {
                     answerQuestion(i);

@@ -16,7 +16,7 @@ export interface QuizData {
 
 export interface AnswerData {
   answerTime: number;
-  answerIndex: number;
+  answerIndex: number | boolean;
   answerScore: number;
   answerElapsed: number;
 }

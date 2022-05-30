@@ -67,7 +67,13 @@ const BWFilter = new BadWords();
 const getAnswerScore = (gameState: SocketData, answerIndex: number) => {
   const qNumber = gameState.gameData.quizNumber;
   const correctAnswer = quiz.questions[qNumber].answer;
-  const isCorrect = answerIndex === correctAnswer;
+
+  const isTrueFalse = gameState.quizData.keyboard === "TRUEFALSE";
+
+  const isCorrect =
+    (isTrueFalse ? (answerIndex === 0 ? true : false) : answerIndex) ===
+    correctAnswer;
+
   let score = 0;
   if (isCorrect) {
     score = 1;
@@ -307,9 +313,13 @@ export const events: EventData = {
   "answer-question": (io, socket, gameState, answerIndex, updateData) => {
     const addr = socket.handshake.address;
     const answerScore = getAnswerScore(gameState, answerIndex);
-
+    const isTrueFalse = gameState.quizData.keyboard === "TRUEFALSE";
     const answerResult = {
-      answerIndex,
+      answerIndex: isTrueFalse
+        ? answerIndex === 0
+          ? true
+          : false
+        : answerIndex,
       answerTime: new Date(),
       answerScore,
       answerElapsed: new Date().getTime() - gameState.gameData.startedTime,
