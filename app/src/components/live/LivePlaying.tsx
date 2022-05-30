@@ -1,4 +1,10 @@
-import { Box, Heading, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  CircularProgress,
+  CircularProgressLabel,
+  Heading,
+  HStack,
+} from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import { useSocket } from "../../providers/SocketProvider";
 import { useGame } from "../../store/GameStore";
@@ -10,6 +16,8 @@ export const LivePlaying: FC = () => {
   const { quizData } = useGame((s) => ({ quizData: s.quizData }));
   const { endQuiz } = useSocket();
   const [mountedVideo, setMountedVideo] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(-1);
+  const [duration, setDuration] = useState(-1);
 
   /* Force video remount */
   useEffect(() => {
@@ -18,11 +26,23 @@ export const LivePlaying: FC = () => {
       setMountedVideo(true);
     }, 100);
   }, [quizData.video]);
+  let progressColor = "yellow.400";
+  if (remainingTime < 10) {
+    progressColor = "red.600";
+  }
 
   return (
     <>
       {mountedVideo && (
         <video
+          onPlay={(e) => {
+            setDuration(e.currentTarget.duration);
+          }}
+          onTimeUpdate={(e) => {
+            const currRemainingTime =
+              e.currentTarget.duration - e.currentTarget.currentTime;
+            setRemainingTime(currRemainingTime);
+          }}
           onEnded={() => {
             endQuiz();
           }}
@@ -37,6 +57,23 @@ export const LivePlaying: FC = () => {
         >
           <source src={`/assets/video/${quizData.video}`} />
         </video>
+      )}
+      {duration > -1 && (
+        <Box position="absolute" top={0} right={0} m={6}>
+          <CircularProgress
+            size="3xs"
+            min={duration}
+            max={0}
+            value={remainingTime}
+            color={progressColor}
+          >
+            <CircularProgressLabel>
+              <Heading textShadow={textShadow} fontSize={"7xl"} color="white">
+                {Math.round(remainingTime)}
+              </Heading>
+            </CircularProgressLabel>
+          </CircularProgress>
+        </Box>
       )}
       <Box
         display="flex"
