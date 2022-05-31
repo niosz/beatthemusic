@@ -5,6 +5,8 @@ import { GAME_STARTING } from "../../utils/const";
 import { Counter } from "../counter";
 import { BeatingLogo } from "../common/BeatingLogo";
 import { useQRCode } from "next-qrcode";
+import { textShadow } from "../../utils/theme";
+import { useTranslation } from "next-i18next";
 
 interface WaitingRoomProps {
   ip: string;
@@ -17,14 +19,16 @@ export const WaitingRoom: FC<WaitingRoomProps> = ({ ip }) => {
     onlinePlayers: s.onlinePlayers,
   }));
   const { Canvas } = useQRCode();
+  const { t } = useTranslation();
 
   const connectedPlayers = Object.keys(onlinePlayers).length;
   const connectedPlayersWithName = Object.keys(onlinePlayers).filter((k) => {
     return onlinePlayers[k].name !== "";
   }).length;
+
   return (
     <>
-      {!gameData?.started && (
+      {!gameData?.started && !gameData?.quizStarted && (
         <VStack h="100%">
           <Box h={28} w="100%" />
           <VStack w="100%" position="relative">
@@ -89,7 +93,6 @@ export const WaitingRoom: FC<WaitingRoomProps> = ({ ip }) => {
                   />
                 </Box>
               </VStack>
-              {/* <Heading size="lg">Gioca su beathemusic.play</Heading> */}
             </Box>
 
             {!gameData?.quizStarted && (
@@ -108,15 +111,15 @@ export const WaitingRoom: FC<WaitingRoomProps> = ({ ip }) => {
               </Box>
             )}
             {gameData?.quizStarted && counter === GAME_STARTING && (
-              <Heading color="white">Preparati!</Heading>
+              <Heading color="white">{t("common:live:getready")}</Heading>
             )}
             {gameData?.quizStarted && counter !== GAME_STARTING && (
               <Counter count={counter} size={80} />
             )}
 
             {connectedPlayers === 0 && (
-              <Heading pb={32} color="white">
-                IN ATTESA DI PARTECIPANTI...
+              <Heading pb={32} color="white" textShadow={textShadow}>
+                {t("common:live:waiting")}
               </Heading>
             )}
 
@@ -140,7 +143,7 @@ export const WaitingRoom: FC<WaitingRoomProps> = ({ ip }) => {
             <VStack wrap="wrap" pb={16}>
               {connectedPlayersWithName > 0 && (
                 <>
-                  <Text color="white">Giocatori a bordo</Text>
+                  <Text color="white">{t("common:live:onlineplayers")}</Text>
 
                   {Object.keys(onlinePlayers).map((player, i) => {
                     const onlinePlayer = onlinePlayers[player];

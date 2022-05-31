@@ -1,8 +1,8 @@
-import { AspectRatio, Box, Text, VStack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import _ from "lodash";
 import type { NextPage } from "next";
-import { useQRCode } from "next-qrcode";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useEffect, useRef, useState } from "react";
 import { BGLiveVideo } from "../../src/components/live/BGLiveVideo";
 import { LivePlaying } from "../../src/components/live/LivePlaying";
 import { QuizResultSteps } from "../../src/components/live/QuizReultSteps";
@@ -10,6 +10,7 @@ import { WaitingRoom } from "../../src/components/live/WaitingRoom";
 import { useSocket } from "../../src/providers/SocketProvider";
 import { useGame } from "../../src/store/GameStore";
 import { SHOW_RESULTS } from "../../src/utils/const";
+import { CustomGetServerSideProps } from "../../src/utils/i18";
 
 const Live: NextPage = () => {
   const { gameData, counter, quizData } = useGame((s) => ({
@@ -41,6 +42,18 @@ const Live: NextPage = () => {
       {showResults && <QuizResultSteps />}
     </Box>
   );
+};
+
+export const getServerSideProps: CustomGetServerSideProps = async ({
+  locale,
+  req,
+  res,
+}) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 };
 
 export default Live;

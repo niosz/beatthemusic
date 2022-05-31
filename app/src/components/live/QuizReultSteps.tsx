@@ -12,8 +12,9 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import _ from "lodash";
+import { useTranslation } from "next-i18next";
 import { FC, useEffect } from "react";
-import { useSprings, animated, useTrail } from "react-spring";
+import { animated, useTrail } from "react-spring";
 import { useGame } from "../../store/GameStore";
 import { buttonColors } from "../../utils/const";
 import { textShadow } from "../../utils/theme";
@@ -24,6 +25,7 @@ const QuizResultStep1: FC = () => {
     quizResult: s.quizResult,
     quizData: s.quizData,
   }));
+  const { t } = useTranslation();
 
   const isTrueFalse = _.isBoolean(quizResult.correctAnswer);
   const char = isTrueFalse
@@ -37,7 +39,7 @@ const QuizResultStep1: FC = () => {
 
   return (
     <VStack>
-      <Text>La risposta esatta è</Text>
+      <Text>{t("common:ranking:correctanswer")}</Text>
       <QuizAnswerBox
         answer={correctAnswerData}
         color={buttonColors[quizResult.correctAnswer as number]}
@@ -109,6 +111,7 @@ const QuizResultStep3: FC<{ forceRanking?: boolean }> = ({
   }));
 
   const [springs, api] = useTrail(3, () => ({ height: "0%" }));
+  const { t } = useTranslation();
 
   useEffect(() => {
     api.start(() => ({ height: "100%" }));
@@ -145,7 +148,7 @@ const QuizResultStep3: FC<{ forceRanking?: boolean }> = ({
               }}
             >
               <VStack flex={1} h={h}>
-                <Text>{pos}° classificato</Text>
+                <Text>{t("common:ranking:position", { pos })}</Text>
                 <VStack
                   py={4}
                   flex={1}
@@ -161,14 +164,17 @@ const QuizResultStep3: FC<{ forceRanking?: boolean }> = ({
                         {rankedPlayer.name}
                       </Heading>
                       <Text fontWeight="bold" textShadow={textShadow} flex={1}>
-                        {rankedPlayer.score} Punti
+                        {t("common:ranking:userscore", {
+                          score: rankedPlayer.score,
+                        })}
                       </Text>
                       <Text
                         fontSize="lg"
                         fontWeight="bold"
                         textShadow={textShadow}
                       >
-                        Avg time: {(rankedPlayer.timeAvg / 1000).toFixed(3)}s
+                        {t("common:ranking:avgtime")}:{" "}
+                        {(rankedPlayer.timeAvg / 1000).toFixed(3)}s
                       </Text>
                     </>
                   )}
@@ -193,9 +199,9 @@ const QuizResultStep3: FC<{ forceRanking?: boolean }> = ({
           <Tr>
             <Th></Th>
             <Th></Th>
-            <Th>Score</Th>
-            <Th>Round Time</Th>
-            <Th>Avg Time</Th>
+            <Th>{t("common:ranking:score")}</Th>
+            <Th>{t("common:ranking:roundtime")}</Th>
+            <Th>{t("common:ranking:avgtime")}</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -221,11 +227,12 @@ const QuizResultStep3: FC<{ forceRanking?: boolean }> = ({
 };
 
 export const QuizResultSteps: FC = () => {
-  const { quizResult, quizData, gameData } = useGame((s) => ({
-    quizResult: s.quizResult,
+  const { quizData, gameData } = useGame((s) => ({
     quizData: s.quizData,
     gameData: s.gameData,
   }));
+
+  const { t } = useTranslation();
 
   return (
     <VStack
@@ -255,7 +262,10 @@ export const QuizResultSteps: FC = () => {
         </Box>
         <Box textAlign="right" flex={1}>
           <Text fontSize="xl" color="white">
-            Domanda {gameData.quizNumber + 1} di {gameData.totalQuestions}
+            {t("common:user:question", {
+              current: gameData.quizNumber + 1,
+              total: gameData.totalQuestions,
+            })}
           </Text>
         </Box>
       </HStack>

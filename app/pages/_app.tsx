@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import { SocketProvider } from "../src/providers/SocketProvider";
 import { theme } from "../src/utils/theme";
+import { appWithTranslation } from "next-i18next";
 import "@fontsource/exo-2";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -15,4 +16,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

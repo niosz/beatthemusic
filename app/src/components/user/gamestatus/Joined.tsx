@@ -9,6 +9,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import _ from "lodash";
+import { useTranslation } from "next-i18next";
 import { FC, useState } from "react";
 import { useSocket } from "../../../providers/SocketProvider";
 import { useGame } from "../../../store/GameStore";
@@ -24,6 +25,8 @@ export const Joined: FC = () => {
   const [badName, setBadName] = useState(false);
   const meFiltered = _.pickBy(onlinePlayers, (item) => item.id === clientId);
   const me = meFiltered[Object.keys(meFiltered)[0]];
+  const { t } = useTranslation();
+
   if (me.name === "") {
     return (
       <VStack spacing={8} w="100%" px={16}>
@@ -38,7 +41,7 @@ export const Joined: FC = () => {
           />
 
           <FormErrorMessage fontSize="xl" textShadow={textShadow}>
-            Your name contains bad words.
+            {t("common:user:invalidname")}
           </FormErrorMessage>
         </FormControl>
 
@@ -53,7 +56,7 @@ export const Joined: FC = () => {
               });
           }}
         >
-          Enter
+          {t("common:user:enter")}
         </Button>
       </VStack>
     );
@@ -61,10 +64,10 @@ export const Joined: FC = () => {
   return (
     <VStack spacing={12}>
       <VStack spacing={0}>
-        <Text color="white">Resta in attesa, </Text>
+        <Text color="white">{t("common:user:pleasewait")}, </Text>
         <Heading color="white">{me.name}</Heading>
       </VStack>
-      <Box {...gameFilledBoxProps}>Iniziamo a breve!</Box>
+      <Box {...gameFilledBoxProps}>{t("common:user:abouttoplay")}</Box>
     </VStack>
   );
 };

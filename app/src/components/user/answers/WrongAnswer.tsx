@@ -1,5 +1,6 @@
 import { VStack, Heading } from "@chakra-ui/react";
 import _ from "lodash";
+import { useTranslation } from "next-i18next";
 import { FC } from "react";
 import { useSocket } from "../../../providers/SocketProvider";
 import { useGame } from "../../../store/GameStore";
@@ -14,17 +15,17 @@ export const WrongAnswer: FC = () => {
   const { answerData } = useSocket();
   const meFiltered = _.pickBy(onlinePlayers, (item) => item.id === clientId);
   const me = meFiltered[Object.keys(meFiltered)[0]];
+  const { t } = useTranslation();
 
   return (
     <VStack textAlign="center" color="white" justifyContent="center" h="100%">
-      <Heading fontSize={"7xl"}>OPS</Heading>
+      <Heading fontSize={"7xl"}>{t("common:user:wronganswer:title")}</Heading>
       <Heading fontSize={"5xl"}>{me?.name}</Heading>
       <Heading fontWeight="normal" fontSize={"3xl"}>
-        Non hai guadagnato alcun punto!
+        {t("common:user:wronganswer:noearnedscore")}
       </Heading>
       <Heading fontWeight="normal" fontSize={"3xl"}>
-        Il tuo tempo di risposta è{" "}
-        {(answerData.answerTime - gameData.startedTime) / 1000}s
+        {t("common:user:avgtime", { time: answerData.answerElapsed / 1000 })}
       </Heading>
     </VStack>
   );

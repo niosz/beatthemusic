@@ -7,6 +7,7 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
+import { useTranslation } from "next-i18next";
 import { FC } from "react";
 import { useSocket } from "../../../providers/SocketProvider";
 import { useGame } from "../../../store/GameStore";
@@ -24,6 +25,7 @@ export const Playing: FC = () => {
   const { answerData, answerQuestion } = useSocket();
   const showResults = counter === SHOW_RESULTS;
   const isCorrectAnswer = answerData?.answerIndex === quizResult?.correctAnswer;
+  const { t } = useTranslation();
 
   return (
     <>
@@ -38,8 +40,11 @@ export const Playing: FC = () => {
             backgroundPosition="left"
           />
           <Box flex={1}>
-            <Text fontSize="xl" color="white">
-              Domanda {gameData.quizNumber + 1} di {gameData.totalQuestions}
+            <Text fontSize="xl" color="white" textAlign="right">
+              {t("common:user:question", {
+                current: gameData.quizNumber + 1,
+                total: gameData.totalQuestions,
+              })}
             </Text>
           </Box>
         </HStack>

@@ -1,0 +1,34 @@
+{
+  "ranking": {
+    "score": "Score",
+    "roundtime": "Round time",
+    "avgtime": "Avg Time",
+    "correctanswer": "The correct answer is",
+    "position": "{{pos}}° position",
+    "userscore": "{{score}} points"
+  },
+  "live": {
+    "waiting": "WAITING FOR PLAYERS...",
+    "getready": "Get ready!",
+    "onlineplayers": "Connected players"
+  },
+  "user": {
+    "invalidpin": "Invalid PIN, please try again.",
+    "invalidname": "Your name contains bad words.",
+    "enter": "Enter",
+    "pleasewait": "Please wait",
+    "abouttoplay": "We're about to play!",
+    "abouttobegin": "The game is about to begin...",
+    "correctanswer": {
+      "title": "BRAVO!",
+      "earnedscore1": "You earned 1 point",
+      "earnedscoremore": "You earned {{score}} points"
+    },
+    "wronganswer": {
+      "title": "OPS",
+      "noearnedscore": "You haven't earned any point"
+    },
+    "avgtime": "Your answer time is {{time}}s",
+    "question": "Question {{current}} of {{total}}"
+  }
+}

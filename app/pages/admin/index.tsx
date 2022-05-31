@@ -1,10 +1,12 @@
 import { Button, VStack, Text } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useEffect } from "react";
 import io, { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { useSocket } from "../../src/providers/SocketProvider";
 import { useGame } from "../../src/store/GameStore";
+import { CustomGetServerSideProps } from "../../src/utils/i18";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Admin: NextPage = () => {
@@ -41,6 +43,18 @@ const Admin: NextPage = () => {
       )}
     </VStack>
   );
+};
+
+export const getServerSideProps: CustomGetServerSideProps = async ({
+  locale,
+  req,
+  res,
+}) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 };
 
 export default Admin;

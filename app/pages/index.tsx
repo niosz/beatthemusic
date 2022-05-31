@@ -1,6 +1,7 @@
 import { VStack, Box } from "@chakra-ui/react";
 import _ from "lodash";
 import type { NextPage } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BeatingLogo } from "../src/components/common/BeatingLogo";
 import { Counting } from "../src/components/user/gamestatus/Counting";
 import { Joined } from "../src/components/user/gamestatus/Joined";
@@ -9,6 +10,7 @@ import { Welcome } from "../src/components/user/gamestatus/Welcome";
 import { useGame } from "../src/store/GameStore";
 import { usePlayer } from "../src/store/PlayerStore";
 import { SHOW_RESULTS } from "../src/utils/const";
+import { CustomGetServerSideProps } from "../src/utils/i18";
 
 type Step = "welcome" | "joined" | "counting" | "playing";
 
@@ -42,6 +44,18 @@ const Home: NextPage = () => {
       </VStack>
     </VStack>
   );
+};
+
+export const getServerSideProps: CustomGetServerSideProps = async ({
+  locale,
+  req,
+  res,
+}) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 };
 
 export default Home;

@@ -5,6 +5,7 @@ import {
   FormControl,
   FormErrorMessage,
 } from "@chakra-ui/react";
+import { useTranslation } from "next-i18next";
 import { FC, useState } from "react";
 import { useSocket } from "../../../providers/SocketProvider";
 import { textShadow } from "../../../utils/theme";
@@ -12,6 +13,7 @@ import { textShadow } from "../../../utils/theme";
 export const Welcome: FC = () => {
   const { joinServer, pin, setPin, name, setName } = useSocket();
   const [pinError, setPinError] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <VStack spacing={8} w="100%" px={16}>
@@ -27,7 +29,7 @@ export const Welcome: FC = () => {
         />
 
         <FormErrorMessage fontSize="xl" textShadow={textShadow}>
-          Invalid PIN, please try again.
+          {t("common:user:invalidpin")}
         </FormErrorMessage>
       </FormControl>
 
@@ -38,7 +40,7 @@ export const Welcome: FC = () => {
           });
         }}
       >
-        Enter
+        {t("common:user:enter")}
       </Button>
     </VStack>
   );
