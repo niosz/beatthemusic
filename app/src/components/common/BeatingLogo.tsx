@@ -6,7 +6,7 @@ interface BeatingLogoProps {
   playerLayout?: boolean;
 }
 
-const RawBeatingLogo: FC<BeatingLogoProps> = ({ playerLayout = false }) => {
+export const AnimLogo = () => {
   const [props, api] = useSpring(() => ({
     from: { scale: 2 },
     to: { scale: 0 },
@@ -18,7 +18,30 @@ const RawBeatingLogo: FC<BeatingLogoProps> = ({ playerLayout = false }) => {
       api.start({ scale: 0 });
     },
   }));
+  return (
+    <animated.div
+      style={{
+        width: "100%",
+        height: "100%",
+        transformOrigin: "center",
+        transform: props.scale
+          .to([0, 1, 2], [0.75, 1, 0.75])
+          .to((s) => `scale(${s})`),
+      }}
+    >
+      <Box
+        w="100%"
+        h="100%"
+        backgroundRepeat="no-repeat"
+        backgroundImage="/assets/logo.png"
+        backgroundSize="contain"
+        backgroundPosition="center"
+      />
+    </animated.div>
+  );
+};
 
+const RawBeatingLogo: FC<BeatingLogoProps> = ({ playerLayout = false }) => {
   return (
     <Box
       display="flex"
@@ -31,25 +54,7 @@ const RawBeatingLogo: FC<BeatingLogoProps> = ({ playerLayout = false }) => {
       zIndex={2}
       bottom={playerLayout ? 0 : 24}
     >
-      <animated.div
-        style={{
-          width: "100%",
-          height: "100%",
-          transformOrigin: "center",
-          transform: props.scale
-            .to([0, 1, 2], [0.75, 1, 0.75])
-            .to((s) => `scale(${s})`),
-        }}
-      >
-        <Box
-          w="100%"
-          h="100%"
-          backgroundRepeat="no-repeat"
-          backgroundImage="/assets/logo.png"
-          backgroundSize="contain"
-          backgroundPosition="center"
-        />
-      </animated.div>
+      <AnimLogo />
     </Box>
   );
 };

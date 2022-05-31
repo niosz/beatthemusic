@@ -27,7 +27,7 @@ export const Joined: FC = () => {
   const me = meFiltered[Object.keys(meFiltered)[0]];
   const { t } = useTranslation();
 
-  if (me.name === "") {
+  if (me?.name === "") {
     return (
       <VStack spacing={8} w="100%" px={16}>
         <FormControl isInvalid={badName}>
@@ -50,6 +50,7 @@ export const Joined: FC = () => {
             joinServer(pin, name)
               .then(() => {
                 setPin("");
+                setName("");
               })
               .catch((e) => {
                 setBadName(true);

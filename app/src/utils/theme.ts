@@ -21,8 +21,9 @@ export const gameFilledBoxProps = {
   p: 4,
   color: "white",
   rounded: "2xl",
-  fontSize: "4xl",
+  fontSize: "3xl",
   fontWeight: "bold",
+  textAlign: "center",
 };
 
 export const textShadow = "0px 0px 8px #000";

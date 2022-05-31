@@ -306,9 +306,11 @@ export const events: EventData = {
   },
   disconnect: (io, socket, gameState, msg, updateData) => {
     const addr = socket.handshake.address;
-    gameState.players[addr].isOnline = false;
-    updateData(gameState);
-    emitData(gameState, io);
+    if (!socket.data.liveInstance) {
+      gameState.players[addr].isOnline = false;
+      updateData(gameState);
+      emitData(gameState, io);
+    }
   },
   "answer-question": (io, socket, gameState, answerIndex, updateData) => {
     const addr = socket.handshake.address;

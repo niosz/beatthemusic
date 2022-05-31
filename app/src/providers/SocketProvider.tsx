@@ -91,6 +91,10 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
       setClientId(socketConnection.id);
     });
 
+    socketConnection.on("reconnect", () => {
+      setClientId(socketConnection.id);
+    });
+
     socketConnection.on("online-players", (msg) => {
       setOnlinePlayers(msg);
     });

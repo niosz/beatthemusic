@@ -1,4 +1,11 @@
-import { Box, Heading, VStack, Text, AspectRatio } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  VStack,
+  Text,
+  AspectRatio,
+  HStack,
+} from "@chakra-ui/react";
 import { useGame } from "../../store/GameStore";
 import { FC } from "react";
 import { GAME_STARTING } from "../../utils/const";
@@ -67,33 +74,37 @@ export const WaitingRoom: FC<WaitingRoomProps> = ({ ip }) => {
         />
         {gameData?.started && (
           <VStack zIndex={2} h="100vh" justifyContent="space-between">
-            <Box
-              p={8}
-              roundedBottom={"3xl"}
-              bgGradient="linear(blackAlpha.300 0%, blackAlpha.700 100%)"
-              color="white"
-              shadow="inside"
-            >
-              <VStack w="100%" position="relative">
-                <Box w={140} h={140} rounded="md" overflow={"hidden"}>
-                  <Canvas
-                    text={`http://${ip}:3000/`}
-                    options={{
-                      type: "image/jpeg",
-                      quality: 0.3,
-                      level: "M",
-                      margin: 3,
-                      scale: 4,
-                      width: 140,
-                      color: {
-                        dark: "#000",
-                        light: "#FFF",
-                      },
-                    }}
-                  />
-                </Box>
-              </VStack>
-            </Box>
+            {gameData?.quizNumber < 0 ? (
+              <Box
+                p={8}
+                roundedBottom={"3xl"}
+                bgGradient="linear(blackAlpha.300 0%, blackAlpha.700 100%)"
+                color="white"
+                shadow="inside"
+              >
+                <VStack w="100%" position="relative">
+                  <Box w={140} h={140} rounded="md" overflow={"hidden"}>
+                    <Canvas
+                      text={`http://${ip}:3000/`}
+                      options={{
+                        type: "image/jpeg",
+                        quality: 0.3,
+                        level: "M",
+                        margin: 3,
+                        scale: 4,
+                        width: 140,
+                        color: {
+                          dark: "#000",
+                          light: "#FFF",
+                        },
+                      }}
+                    />
+                  </Box>
+                </VStack>
+              </Box>
+            ) : (
+              <Box />
+            )}
 
             {!gameData?.quizStarted && (
               <Box
@@ -144,23 +155,24 @@ export const WaitingRoom: FC<WaitingRoomProps> = ({ ip }) => {
               {connectedPlayersWithName > 0 && (
                 <>
                   <Text color="white">{t("common:live:onlineplayers")}</Text>
-
-                  {Object.keys(onlinePlayers).map((player, i) => {
-                    const onlinePlayer = onlinePlayers[player];
-                    if (onlinePlayer.name === "") return null;
-                    return (
-                      <Box
-                        bgGradient="linear(blackAlpha.300 0%, blackAlpha.700 100%)"
-                        rounded="xl"
-                        p={2}
-                        m={1}
-                        shadow="inside"
-                        key={`player-${i}`}
-                      >
-                        <Text color="white">{onlinePlayer.name}</Text>
-                      </Box>
-                    );
-                  })}
+                  <HStack wrap="wrap">
+                    {Object.keys(onlinePlayers).map((player, i) => {
+                      const onlinePlayer = onlinePlayers[player];
+                      if (onlinePlayer.name === "") return null;
+                      return (
+                        <Box
+                          bgGradient="linear(blackAlpha.300 0%, blackAlpha.700 100%)"
+                          rounded="xl"
+                          p={2}
+                          m={1}
+                          shadow="inside"
+                          key={`player-${i}`}
+                        >
+                          <Text color="white">{onlinePlayer.name}</Text>
+                        </Box>
+                      );
+                    })}
+                  </HStack>
                 </>
               )}
             </VStack>

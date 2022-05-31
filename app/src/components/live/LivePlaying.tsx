@@ -10,6 +10,7 @@ import { useSocket } from "../../providers/SocketProvider";
 import { useGame } from "../../store/GameStore";
 import { buttonColors } from "../../utils/const";
 import { textShadow } from "../../utils/theme";
+import { AnimLogo, BeatingLogo } from "../common/BeatingLogo";
 import { QuizAnswerBox } from "./QuizAnswerBox";
 
 export const LivePlaying: FC = () => {
@@ -58,6 +59,11 @@ export const LivePlaying: FC = () => {
           <source src={`/assets/video/${quizData.video}`} />
         </video>
       )}
+
+      <Box w={400} h={300} position="absolute" top={-12} left={-6}>
+        <AnimLogo />
+      </Box>
+
       {duration > -1 && (
         <Box position="absolute" top={0} right={0} m={6}>
           <CircularProgress
