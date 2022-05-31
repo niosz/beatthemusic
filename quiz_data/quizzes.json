@@ -1,7 +1,0 @@
-{
-    "version"   : 0,
-    "quizzes" : [ 
-        "quizzes/quiz_000.json",
-        "quizzes/quiz_001.json"
-    ]
-}

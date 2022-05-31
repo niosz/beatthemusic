@@ -1,8 +1,0 @@
-{
-    "version"  : 0,
-    "active"   : true,
-    "question" : "The author of song is Pharrell Williams?",
-    "keyboard" : "TRUEFALSE",
-    "answer"   : "FALSE",
-    "video"    : "question_003.mp4"
-}
