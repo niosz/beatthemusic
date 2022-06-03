@@ -19,6 +19,10 @@
     "pleasewait": "Please wait",
     "abouttoplay": "We're about to play!",
     "abouttobegin": "The game is about to begin...",
+    "onstageanswer": {
+      "title": "GREAT!",
+      "onstage": "You have been chosen to join the stage!"
+    },
     "correctanswer": {
       "title": "BRAVO!",
       "earnedscore1": "You earned 1 point",
@@ -30,5 +34,11 @@
     },
     "avgtime": "Your answer time is {{time}}s",
     "question": "Question {{current}} of {{total}}"
+  },
+  "bonus": {
+    "title": "BONUS ROUND",
+    "joinus": "Will join us on stage:",
+    "random": "Random draw",
+    "description": "Answer Yes or No on your smartphone to join us on stage!"
   }
 }

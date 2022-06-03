@@ -8,6 +8,8 @@ export interface PlayerData {
   isInRoom: boolean;
 }
 
+export type ExtraEvent = "ON_STAGE" | "VIDEO_PLAY";
+
 export interface GameData {
   started: boolean;
   quizStarted: boolean;
@@ -17,6 +19,10 @@ export interface GameData {
   pin: string;
   totalQuestions: number;
   resultStep: number;
+  extraEventStarted: boolean;
+  extraEventType: ExtraEvent;
+  onStageName: string | null;
+  extraEventAnswered: boolean | null;
 }
 
 export interface QuizEntry {

@@ -7,7 +7,11 @@ import {
 } from "react";
 import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { QuizResult, RankingItem } from "../../server_src/interfaces";
+import {
+  ExtraEvent,
+  QuizResult,
+  RankingItem,
+} from "../../server_src/interfaces";
 import { AnswerData, QuizData, useGame } from "../store/GameStore";
 import { usePlayer } from "../store/PlayerStore";
 let socketConnection: Socket<DefaultEventsMap, DefaultEventsMap>;
@@ -26,6 +30,8 @@ interface ISocketContext {
   setPin: (pin: string) => void;
   name: string;
   setName: (name: string) => void;
+  startExtraEvent: (type: ExtraEvent, value?: any) => void;
+  answerExtraEvent: (answer: boolean) => void;
 }
 
 interface SocketProviderProps {
@@ -55,6 +61,8 @@ const SocketContext = createContext<ISocketContext>({
   setPin: () => {},
   name: "",
   setName: () => {},
+  startExtraEvent: () => {},
+  answerExtraEvent: () => {},
 });
 
 export const SocketProvider = ({ children }: SocketProviderProps) => {
@@ -196,6 +204,14 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     emitEvent("next-resultstep");
   };
 
+  const startExtraEvent = (type: ExtraEvent, value?: any) => {
+    emitEvent("start-extraevent", { type, value });
+  };
+
+  const answerExtraEvent = (answer: boolean) => {
+    emitEvent("answer-extraevent", answer);
+  };
+
   const value: ISocketContext = {
     joinServer,
     startGame,
@@ -210,6 +226,8 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     name,
     setName,
     goToNextStep,
+    startExtraEvent,
+    answerExtraEvent,
   };
 
   return (

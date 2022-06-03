@@ -29,7 +29,9 @@ export type SocketEvent =
   | "start-quiz"
   | "answer-question"
   | "end-quiz"
-  | "next-resultstep";
+  | "next-resultstep"
+  | "start-extraevent"
+  | "answer-extraevent";
 
 type IIO = Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
 type ISocket = Socket<
@@ -264,6 +266,10 @@ export const events: EventData = {
     gameState.gameData.quizStarted = true;
     gameState.quizAnswers[gameState.gameData.quizNumber] = {};
     gameState.gameData.totalQuestions = quiz.questions.length;
+    gameState.gameData.extraEventAnswered = null;
+    gameState.gameData.extraEventStarted = false;
+    gameState.gameData.onStageName = null;
+
     emitData(gameState, io);
     io.emit("quiz-counter", GAME_STARTING);
     const counterInterval = setInterval(() => {
@@ -376,6 +382,9 @@ export const events: EventData = {
   },
   "next-resultstep": (io, socket, gameState, msg, updateData) => {
     const resStep = gameState.gameData.resultStep;
+    gameState.gameData.extraEventStarted = false;
+    gameState.gameData.extraEventAnswered = null;
+    gameState.gameData.onStageName = null;
     if (resStep === 3) {
       events["end-game"](io, socket, gameState, msg, updateData);
       return;
@@ -386,6 +395,39 @@ export const events: EventData = {
       emitData(gameState, io);
     } else {
       events["start-quiz"](io, socket, gameState, msg, updateData);
+    }
+  },
+  "start-extraevent": (io, socket, gameState, msg, updateData) => {
+    gameState.gameData.extraEventStarted = true;
+    gameState.gameData.started = true;
+    gameState.gameData.extraEventType = msg.type;
+    gameState.gameData.onStageName = null;
+    gameState.gameData.extraEventAnswered = null;
+    if (gameState.gameData.extraEventType === "ON_STAGE") {
+      setTimeout(() => {
+        // get random player from gameState.players
+        const randomPlayer = _.sample(Object.values(gameState.players));
+        if (randomPlayer) {
+          gameState.gameData.onStageName = randomPlayer.name;
+        }
+        updateData(gameState);
+        emitData(gameState, io);
+      }, 5000);
+    }
+    updateData(gameState);
+    emitData(gameState, io);
+  },
+  "answer-extraevent": (io, socket, gameState, msg, updateData) => {
+    const addr = socket.handshake.address;
+    const player = gameState.players[addr];
+
+    if (
+      gameState.gameData.extraEventStarted &&
+      player.name === gameState.gameData.onStageName
+    ) {
+      gameState.gameData.extraEventAnswered = msg;
+      updateData(gameState);
+      emitData(gameState, io);
     }
   },
 };

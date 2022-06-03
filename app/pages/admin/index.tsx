@@ -14,7 +14,8 @@ const Admin: NextPage = () => {
     onlinePlayers: s.onlinePlayers,
     gameData: s.gameData,
   }));
-  const { startGame, endGame, startQuiz, goToNextStep } = useSocket();
+  const { startGame, endGame, startQuiz, goToNextStep, startExtraEvent } =
+    useSocket();
 
   useEffect(() => {
     socketInitializer();
@@ -41,6 +42,17 @@ const Admin: NextPage = () => {
       {isInResultSteps && (
         <Button onClick={goToNextStep}>Step successivo</Button>
       )}
+
+      {gameData?.started &&
+        (!gameData?.quizStarted || gameData?.resultStep === 2) && (
+          <Button
+            onClick={() => {
+              startExtraEvent("ON_STAGE");
+            }}
+          >
+            On Stage
+          </Button>
+        )}
     </VStack>
   );
 };

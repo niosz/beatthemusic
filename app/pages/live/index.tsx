@@ -1,9 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import _ from "lodash";
 import type { NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useEffect, useRef, useState } from "react";
 import { BGLiveVideo } from "../../src/components/live/BGLiveVideo";
+import { ExtraStage } from "../../src/components/live/ExtraStage";
 import { LivePlaying } from "../../src/components/live/LivePlaying";
 import { QuizResultSteps } from "../../src/components/live/QuizReultSteps";
 import { WaitingRoom } from "../../src/components/live/WaitingRoom";
@@ -37,9 +38,12 @@ const Live: NextPage = () => {
   return (
     <Box w="100vw" h="100vh">
       <BGLiveVideo />
-      {!showQuestion && !showResults && <WaitingRoom ip={ip} />}
+      {!gameData.extraEventStarted && !showQuestion && !showResults && (
+        <WaitingRoom ip={ip} />
+      )}
       {showQuestion && quizData?.video && <LivePlaying />}
-      {showResults && <QuizResultSteps />}
+      {gameData.extraEventStarted && <ExtraStage />}
+      {showResults && !gameData.extraEventStarted && <QuizResultSteps />}
     </Box>
   );
 };

@@ -7,6 +7,7 @@ interface QuizAnswerBoxProps {
   char: string;
   answer: string;
   hideAnswer?: boolean;
+  onClick?: () => void;
 }
 
 export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
@@ -14,6 +15,7 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
   answer,
   char,
   hideAnswer = false,
+  onClick,
 }) => {
   return (
     <Box
@@ -27,6 +29,7 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
       shadow="button"
       overflow="hidden"
       width={"100%"}
+      onClick={onClick}
     >
       <Heading
         bgGradient="linear(to-b, rgba(255,255,255,1), rgba(255,255,255,0.6), rgba(255,255,255,0.2), rgba(255,255,255,.1))"
@@ -41,16 +44,18 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
         {char}
       </Heading>
 
-      <Text
-        as={"div"}
-        textShadow={textShadow}
-        fontSize="2xl"
-        fontWeight="bold"
-        lineHeight="8"
-        opacity={hideAnswer ? 0 : 1}
-      >
-        {answer}
-      </Text>
+      <Box display="flex" h="100%" alignItems="center" justifyContent="center">
+        <Text
+          as={"div"}
+          textShadow={textShadow}
+          fontSize="2xl"
+          fontWeight="bold"
+          lineHeight="8"
+          opacity={hideAnswer ? 0 : 1}
+        >
+          {answer}
+        </Text>
+      </Box>
     </Box>
   );
 };

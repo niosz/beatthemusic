@@ -24,6 +24,10 @@ export const initialGameData: GameData = {
   startedTime: 0,
   pin: "",
   resultStep: -1,
+  extraEventStarted: false,
+  extraEventType: "ON_STAGE",
+  onStageName: null,
+  extraEventAnswered: null,
 };
 
 let gameData: GameData = { ...initialGameData };
