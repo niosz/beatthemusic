@@ -20,18 +20,23 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useEffect, useRef } from "react";
 import io, { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { Counter } from "../../src/components/counter";
 import { useSocket } from "../../src/providers/SocketProvider";
 import { useGame } from "../../src/store/GameStore";
+import { GAME_STARTING, NOT_COUNTING } from "../../src/utils/const";
 import { CustomGetServerSideProps } from "../../src/utils/i18";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Admin: NextPage = () => {
-  const { onlinePlayers, gameData, quizData, quizResult } = useGame((s) => ({
-    onlinePlayers: s.onlinePlayers,
-    gameData: s.gameData,
-    quizData: s.quizData,
-    quizResult: s.quizResult,
-  }));
+  const { onlinePlayers, gameData, quizData, quizResult, counter } = useGame(
+    (s) => ({
+      onlinePlayers: s.onlinePlayers,
+      gameData: s.gameData,
+      quizData: s.quizData,
+      quizResult: s.quizResult,
+      counter: s.counter,
+    })
+  );
   const {
     startGame,
     endGame,
@@ -157,6 +162,9 @@ const Admin: NextPage = () => {
           )}
         </VStack>
       </HStack>
+      <Box>
+        {gameData?.quizStarted && counter > 0 && <Counter count={counter} />}
+      </Box>
       <VStack>
         {gameData?.started && (
           <Box
