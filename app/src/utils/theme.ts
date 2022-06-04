@@ -48,6 +48,15 @@ const components: ThemeComponents = {
       },
     },
   },
+  Button: {
+    variants: {
+      solidAdmin: {
+        bg: "blue.500",
+        color: "white",
+        rounded: "full",
+      },
+    },
+  },
   Table: {
     variants: {
       beatTheMusic: {

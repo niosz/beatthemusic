@@ -1,4 +1,5 @@
 const { i18n } = require("./next-i18next.config");
+// const withPWA = require("next-pwa");
 
 module.exports = async (phase, { defaultConfig }) => {
   /**
@@ -16,4 +17,10 @@ module.exports = async (phase, { defaultConfig }) => {
     },
   };
   return nextConfig;
+  // return withPWA({
+  //   ...nextConfig,
+  //   pwa: {
+  //     dest: "public",
+  //   },
+  // });
 };

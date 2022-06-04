@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.0.0",
-    "@emotion/react": "^11",
+    "@chakra-ui/react": "^2.1.2",
+    "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11",
     "@fontsource/exo-2": "^4.5.8",
     "@types/bad-words": "^3.0.1",
     "bad-words": "^3.0.4",
+    "chakra-react-select": "^4.0.0",
     "framer-motion": "^6",
     "lodash": "^4.17.21",
     "next": "12.1.6",

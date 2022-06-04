@@ -13,6 +13,8 @@ import { useGame } from "../src/store/GameStore";
 import { usePlayer } from "../src/store/PlayerStore";
 import { SHOW_RESULTS } from "../src/utils/const";
 import { CustomGetServerSideProps } from "../src/utils/i18";
+import Head from "next/head";
+import { BTMHead } from "../src/components/common/BTMHead";
 
 type Step = "welcome" | "joined" | "counting" | "playing" | "extra-round";
 
@@ -41,22 +43,27 @@ const Home: NextPage = () => {
     }
   }
 
-  // showBeatingLogo is true when the game status is not playing or is not "extra-round"
-  const showBeatingLogo = !isPlaying && gameStatus !== "extra-round";
+  const showBeatingLogo =
+    gameStatus !== "playing" && gameStatus !== "extra-round";
 
   return (
-    <VStack bgImage={`/assets/bgblur.jpg`} w="100vw" h="100vh">
-      {showBeatingLogo && <BeatingLogo playerLayout />}
-      <VStack flex={1} w="100%">
-        {gameStatus === "welcome" && gameData?.started && <Welcome />}
-        {gameStatus === "joined" && <Joined />}
-        {gameStatus === "counting" && <Counting />}
-        {gameStatus === "playing" && <Playing />}
-        {gameStatus === "extra-round" && (
-          <>{gameData.onStageName === me.name ? <OnStage /> : <ExtraStage />}</>
-        )}
+    <>
+      <BTMHead />
+      <VStack bgImage={`/assets/bgblur.jpg`} w="100vw" h="100vh">
+        {showBeatingLogo && <BeatingLogo playerLayout />}
+        <VStack flex={1} w="100%">
+          {gameStatus === "welcome" && gameData?.started && <Welcome />}
+          {gameStatus === "joined" && <Joined />}
+          {gameStatus === "counting" && <Counting />}
+          {gameStatus === "playing" && <Playing />}
+          {gameStatus === "extra-round" && (
+            <>
+              {gameData.onStageName === me.name ? <OnStage /> : <ExtraStage />}
+            </>
+          )}
+        </VStack>
       </VStack>
-    </VStack>
+    </>
   );
 };
 
