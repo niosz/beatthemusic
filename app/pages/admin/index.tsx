@@ -74,6 +74,9 @@ const Admin: NextPage = () => {
       case 2:
         return "Ranking";
       case 3:
+        if (gameData.quizNumber + 1 < gameData.totalQuestions) {
+          return "New quiz";
+        }
         return "Final Summary";
     }
   };
