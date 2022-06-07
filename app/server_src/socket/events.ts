@@ -40,6 +40,10 @@ type ISocket = Socket<
   DefaultEventsMap,
   any
 >;
+const quizFiles = require("fs")
+  .readdirSync("./server_src/quiz/")
+  .filter((file: string) => file.endsWith(".json"))
+  .map((file: string) => require(`../quiz/${file}`)) as QuizEntry[];
 
 export interface EventDataFn {
   io: IIO;
@@ -68,7 +72,8 @@ const BWFilter = new BadWords();
 
 const getAnswerScore = (gameState: SocketData, answerIndex: number) => {
   const qNumber = gameState.gameData.quizNumber;
-  const correctAnswer = quiz.questions[qNumber].answer;
+  const correctAnswer =
+    quizFiles[gameState.gameData.quizFileIndex].questions[qNumber].answer;
 
   const isTrueFalse = gameState.quizData.keyboard === "TRUEFALSE";
 
@@ -121,12 +126,16 @@ export const connectPlayer = (
   emitData(gameState, io);
 };
 
-const quiz = require("./../q001.json") as QuizEntry;
-
 export const emitData = (
   gameState: SocketData,
   io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
 ) => {
+  gameState.gameData.quizList = quizFiles.map((quiz) => {
+    return {
+      name: quiz.title,
+    };
+  });
+
   io.emit("online-players", getOnlinePlayers(gameState.players));
   io.emit("game-data", gameState.gameData);
   io.emit("quiz-counter", gameState.counter);
@@ -249,6 +258,7 @@ export const events: EventData = {
     emitData(gameState, io);
   },
   "start-game": (io, socket, gameState, msg, updateData) => {
+    gameState.gameData.quizFileIndex = msg as number;
     gameState.gameData.started = true;
     gameState.gameData.quizStarted = false;
     gameState.gameData.startedTime = new Date().getTime();
@@ -265,7 +275,8 @@ export const events: EventData = {
     gameState.gameData.quizNumber = gameState.gameData.quizNumber + 1;
     gameState.gameData.quizStarted = true;
     gameState.quizAnswers[gameState.gameData.quizNumber] = {};
-    gameState.gameData.totalQuestions = quiz.questions.length;
+    gameState.gameData.totalQuestions =
+      quizFiles[gameState.gameData.quizFileIndex].questions.length;
     gameState.gameData.extraEventAnswered = null;
     gameState.gameData.extraEventStarted = false;
     gameState.gameData.onStageName = null;
@@ -275,7 +286,10 @@ export const events: EventData = {
     const counterInterval = setInterval(() => {
       io.emit("quiz-counter", gameState.counter);
       if (gameState.counter === 0) {
-        const quizItem = quiz.questions[gameState.gameData.quizNumber];
+        const quizItem =
+          quizFiles[gameState.gameData.quizFileIndex].questions[
+            gameState.gameData.quizNumber
+          ];
         gameState.quizData = {
           q: quizItem.question,
           video: quizItem.video,
@@ -298,11 +312,18 @@ export const events: EventData = {
     if (msg.pin === gameState.gameData.pin && gameState.gameData.started) {
       gameState.players[addr].id = socket.id;
       gameState.players[addr].isOnline = true;
-      if (BWFilter.isProfane(msg.name)) {
-        cbFn!({ error: "IS_PROFANE" });
+      const takenNames = Object.keys(gameState.players).map((pKey) => {
+        return gameState.players[pKey].name;
+      });
+      if (takenNames.includes(msg.name)) {
+        if (BWFilter.isProfane(msg.name)) {
+          cbFn!({ error: "IS_PROFANE" });
+        } else {
+          gameState.players[addr].name = msg.name;
+          gameState.players[addr].isInRoom = true;
+        }
       } else {
-        gameState.players[addr].name = msg.name;
-        gameState.players[addr].isInRoom = true;
+        cbFn!({ error: "ALREADY_TAKEN" });
       }
       updateData(gameState);
       emitData(gameState, io);
@@ -346,8 +367,11 @@ export const events: EventData = {
     gameState.counter = SHOW_RESULTS;
     gameState.gameData.resultStep = 0;
     const quizNumber = gameState.gameData.quizNumber;
-    const quizQuestion = quiz.questions[quizNumber];
-    gameState.gameData.quizEnded = quizNumber + 1 === quiz.questions.length;
+    const quizQuestion =
+      quizFiles[gameState.gameData.quizFileIndex].questions[quizNumber];
+    gameState.gameData.quizEnded =
+      quizNumber + 1 ===
+      quizFiles[gameState.gameData.quizFileIndex].questions.length;
 
     let options;
     switch (quizQuestion.keyboard) {
@@ -372,7 +396,7 @@ export const events: EventData = {
     });
 
     gameState.quizResult = {
-      title: quiz.title,
+      title: quizFiles[gameState.gameData.quizFileIndex].title,
       correctAnswer: quizQuestion.answer,
       answers: resultsByAnswer,
     };

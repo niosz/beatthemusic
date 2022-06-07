@@ -15,6 +15,7 @@
   "user": {
     "invalidpin": "Invalid PIN, please try again.",
     "invalidname": "Your name contains bad words.",
+    "alreadytaken": "The name has already been taken",
     "enter": "Enter",
     "pleasewait": "Please wait",
     "abouttoplay": "We're about to play!",

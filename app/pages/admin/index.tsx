@@ -7,8 +7,6 @@ import {
   Box,
   Divider,
   Table,
-  Thead,
-  Th,
   Tr,
   Tbody,
   Td,
@@ -17,7 +15,7 @@ import {
 import _ from "lodash";
 import type { NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { Counter } from "../../src/components/counter";
@@ -37,6 +35,7 @@ const Admin: NextPage = () => {
       counter: s.counter,
     })
   );
+  const [quizIndex, setQuizIndex] = useState(0);
   const {
     startGame,
     endGame,
@@ -81,6 +80,8 @@ const Admin: NextPage = () => {
     }
   };
 
+  console.log(gameData);
+
   return (
     <VStack
       bgImage={`/assets/bgblur.jpg`}
@@ -98,16 +99,29 @@ const Admin: NextPage = () => {
         rounded="md"
         p={4}
         bg="whiteAlpha.300"
-        backdropFilter={`blur(10px)`}
+        backdropFilter="blur(10px)"
       >
         <VStack alignItems="stretch">
-          <Select value={1}>
-            <option value={1}>Quiz Pack 1</option>
+          <Select
+            placeholder="Select quiz"
+            value={quizIndex}
+            onChange={(e) => {
+              setQuizIndex(Number(e.target.value));
+            }}
+          >
+            {gameData?.quizList?.map((quiz, index) => (
+              <option key={index} value={index}>
+                {quiz.name}
+              </option>
+            ))}
           </Select>
           <Button
             size="sm"
             variant="solidAdmin"
-            onClick={gameData?.started ? endGame : startGame}
+            disabled={!gameData?.started && quizIndex === 0}
+            onClick={() => {
+              gameData?.started ? endGame() : startGame(quizIndex);
+            }}
           >
             {gameData?.started ? "Close" : "Open"} room
           </Button>
@@ -116,7 +130,8 @@ const Admin: NextPage = () => {
               Start quiz
             </Button>
           )}
-          {gameData?.started &&
+          {gameData?.quizNumber > 0 &&
+            gameData?.started &&
             (!gameData?.quizStarted || gameData?.resultStep === 2) && (
               <Button
                 size="sm"

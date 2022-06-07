@@ -18,7 +18,7 @@ let socketConnection: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 interface ISocketContext {
   joinServer: (pin: string, name: string) => Promise<boolean>;
-  startGame: () => void;
+  startGame: (quizIndex: number) => void;
   endGame: () => void;
   initLive: () => Promise<string>;
   startQuiz: () => void;
@@ -172,8 +172,8 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     });
   };
 
-  const startGame = () => {
-    emitEvent("start-game");
+  const startGame = (quizIndex: number) => {
+    emitEvent("start-game", quizIndex);
   };
 
   const initLive = (): Promise<string> => {

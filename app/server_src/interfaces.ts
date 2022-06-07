@@ -10,7 +10,12 @@ export interface PlayerData {
 
 export type ExtraEvent = "ON_STAGE" | "VIDEO_PLAY";
 
+interface QuizListItem {
+  name: string;
+}
 export interface GameData {
+  quizList: QuizListItem[];
+  quizFileIndex: number;
   started: boolean;
   quizStarted: boolean;
   quizEnded: boolean;
@@ -86,6 +91,7 @@ export interface SocketData {
   players: Players;
   quizData: QuizData;
   counter: number;
+  quizFileIndex: number;
   quizAnswers: QuizAnswer;
   quizResult: QuizResult;
 }

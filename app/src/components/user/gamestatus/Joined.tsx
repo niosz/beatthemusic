@@ -24,6 +24,7 @@ export const Joined: FC = () => {
   const { joinServer, pin, setPin, name, setName } = useSocket();
   const [badName, setBadName] = useState(false);
   const meFiltered = _.pickBy(onlinePlayers, (item) => item.id === clientId);
+  const [errorType, setErrorType] = useState<string>("IS_PROFANE");
   const me = meFiltered[Object.keys(meFiltered)[0]];
   const { t } = useTranslation();
 
@@ -41,7 +42,9 @@ export const Joined: FC = () => {
           />
 
           <FormErrorMessage fontSize="xl" textShadow={textShadow}>
-            {t("common:user:invalidname")}
+            {errorType === "IS_PROFANE"
+              ? t("common:user:invalidname")
+              : t("common:user:alreadytaken")}
           </FormErrorMessage>
         </FormControl>
 
@@ -53,6 +56,7 @@ export const Joined: FC = () => {
                 setName("");
               })
               .catch((e) => {
+                setErrorType(e);
                 setBadName(true);
               });
           }}

@@ -16,6 +16,8 @@ import { QuizData } from "../../src/store/GameStore";
 import { NOT_COUNTING } from "../../src/utils/const";
 
 export const initialGameData: GameData = {
+  quizFileIndex: 0,
+  quizList: [],
   started: false,
   quizStarted: false,
   quizEnded: false,
@@ -53,7 +55,15 @@ const SocketHandler = (req: any, res: any) => {
 
     io.on("connection", (socket) => {
       connectPlayer(
-        { gameData, counter, players, quizData, quizAnswers, quizResult },
+        {
+          gameData,
+          counter,
+          players,
+          quizData,
+          quizAnswers,
+          quizResult,
+          quizFileIndex: 0,
+        },
         io,
         socket,
         dataUpdater
@@ -66,7 +76,15 @@ const SocketHandler = (req: any, res: any) => {
           eventFn(
             io,
             socket,
-            { gameData, counter, players, quizData, quizAnswers, quizResult },
+            {
+              gameData,
+              counter,
+              players,
+              quizData,
+              quizAnswers,
+              quizResult,
+              quizFileIndex: 0,
+            },
             msg,
             dataUpdater,
             cbFn

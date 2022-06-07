@@ -54,6 +54,8 @@ export const useGame = create<GameState>((set) => ({
     extraEventStarted: false,
     onStageName: null,
     extraEventType: "ON_STAGE",
+    quizFileIndex: 0,
+    quizList: [],
   },
   setGameData: (gd) => set({ gameData: gd }),
   quizData: { q: "", video: "", answers: [], keyboard: "ABCD" },
