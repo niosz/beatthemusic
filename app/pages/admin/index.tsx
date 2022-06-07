@@ -80,8 +80,6 @@ const Admin: NextPage = () => {
     }
   };
 
-  console.log(gameData);
-
   return (
     <VStack
       bgImage={`/assets/bgblur.jpg`}
