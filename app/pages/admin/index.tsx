@@ -35,7 +35,7 @@ const Admin: NextPage = () => {
       counter: s.counter,
     })
   );
-  const [quizIndex, setQuizIndex] = useState(0);
+  const [quizIndex, setQuizIndex] = useState(-1);
   const {
     startGame,
     endGame,
@@ -118,7 +118,7 @@ const Admin: NextPage = () => {
           <Button
             size="sm"
             variant="solidAdmin"
-            disabled={!gameData?.started && quizIndex === 0}
+            disabled={!gameData?.started && quizIndex === -1}
             onClick={() => {
               gameData?.started ? endGame() : startGame(quizIndex);
             }}

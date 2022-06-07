@@ -312,10 +312,15 @@ export const events: EventData = {
     if (msg.pin === gameState.gameData.pin && gameState.gameData.started) {
       gameState.players[addr].id = socket.id;
       gameState.players[addr].isOnline = true;
-      const takenNames = Object.keys(gameState.players).map((pKey) => {
-        return gameState.players[pKey].name;
-      });
-      if (takenNames.includes(msg.name)) {
+      const takenNames = Object.keys(gameState.players)
+        .map((pKey) => {
+          return gameState.players[pKey].name;
+        })
+        .filter((name) => {
+          return name !== "";
+        });
+
+      if (!takenNames.includes(msg.name)) {
         if (BWFilter.isProfane(msg.name)) {
           cbFn!({ error: "IS_PROFANE" });
         } else {
