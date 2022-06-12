@@ -34,6 +34,7 @@ export const Welcome: FC = () => {
       </FormControl>
 
       <Button
+        variant="btm"
         onClick={() => {
           joinServer(pin, name).catch((e) => {
             setPinError(true);

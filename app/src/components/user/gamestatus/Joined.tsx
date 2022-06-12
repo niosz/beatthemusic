@@ -35,9 +35,14 @@ export const Joined: FC = () => {
           <Input
             variant="player"
             placeholder="Name"
+            pattern="[a-zA-Z0-9]"
             value={name}
             onChange={(e) => {
-              setName(e.target.value);
+              const val = e.target.value;
+              // check if val is alphanumeric
+              if (/^[a-zA-Z0-9]+$/.test(val) || val === "") {
+                setName(e.target.value);
+              }
             }}
           />
 
@@ -49,6 +54,7 @@ export const Joined: FC = () => {
         </FormControl>
 
         <Button
+          variant="btm"
           onClick={() => {
             joinServer(pin, name)
               .then(() => {

@@ -55,6 +55,16 @@ const components: ThemeComponents = {
         color: "white",
         rounded: "full",
       },
+      btm: {
+        rounded: "2xl",
+        color: "white",
+        shadow: "button",
+        bg: "#255A4D",
+        fontSize: "2xl",
+        px: 8,
+        py: 7,
+        textShadow,
+      },
     },
   },
   Table: {
