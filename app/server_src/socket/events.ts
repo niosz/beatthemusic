@@ -293,6 +293,7 @@ export const events: EventData = {
         gameState.quizData = {
           q: quizItem.question,
           video: quizItem.video,
+          blurImg: quizItem.blurImg,
           keyboard: quizItem.keyboard,
           answers:
             quizItem.keyboard === "TRUEFALSE" ? ["V", "F"] : quizItem.options!,

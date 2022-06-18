@@ -10,6 +10,7 @@ import {
 export interface QuizData {
   q: string;
   video: string;
+  blurImg: string;
   keyboard: KeyboardMode;
   answers: string[];
 }
@@ -58,7 +59,7 @@ export const useGame = create<GameState>((set) => ({
     quizList: [],
   },
   setGameData: (gd) => set({ gameData: gd }),
-  quizData: { q: "", video: "", answers: [], keyboard: "ABCD" },
+  quizData: { q: "", video: "", answers: [], keyboard: "ABCD", blurImg: "" },
   setQuizData: (q) => set({ quizData: q }),
   counter: -1,
   setCounter: (c) => set({ counter: c }),

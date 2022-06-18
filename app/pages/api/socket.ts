@@ -35,7 +35,13 @@ export const initialGameData: GameData = {
 let gameData: GameData = { ...initialGameData };
 let players: Players = {};
 let counter = NOT_COUNTING;
-let quizData: QuizData = { q: "", video: "", answers: [], keyboard: "ABCD" };
+let quizData: QuizData = {
+  q: "",
+  video: "",
+  answers: [],
+  keyboard: "ABCD",
+  blurImg: "",
+};
 let quizAnswers: QuizAnswer = {};
 let quizResult: QuizResult = { answers: [], correctAnswer: -1, title: "" };
 

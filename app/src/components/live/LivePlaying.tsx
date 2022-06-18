@@ -11,6 +11,7 @@ import { useGame } from "../../store/GameStore";
 import { buttonColors } from "../../utils/const";
 import { textShadow } from "../../utils/theme";
 import { AnimLogo, BeatingLogo } from "../common/BeatingLogo";
+import { BlurredImage } from "../common/BlurredImage";
 import { QuizAnswerBox } from "./QuizAnswerBox";
 
 export const LivePlaying: FC = () => {
@@ -32,8 +33,16 @@ export const LivePlaying: FC = () => {
     progressColor = "red.600";
   }
 
+  const progress = (remainingTime / duration) * 100;
+
   return (
     <>
+      {duration > 0 && (
+        <BlurredImage
+          percentage={progress}
+          src={`/assets/video/${quizData.blurImg}`}
+        />
+      )}
       {mountedVideo && (
         <video
           onPlay={(e) => {

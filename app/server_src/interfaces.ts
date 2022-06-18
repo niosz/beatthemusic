@@ -45,6 +45,7 @@ interface Question {
   answer: boolean | number;
   options?: string[];
   video: string;
+  blurImg: string;
 }
 
 export interface RankingItem {
