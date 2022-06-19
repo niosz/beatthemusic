@@ -49,7 +49,13 @@ const Home: NextPage = () => {
   return (
     <>
       <BTMHead />
-      <VStack bgImage={`/assets/bgblur.jpg`} w="100vw" h="100vh">
+      <VStack
+        bgImage={`/assets/bgblur.jpg`}
+        bgRepeat="no-repeat"
+        bgSize="cover"
+        w="100vw"
+        h="100vh"
+      >
         {showBeatingLogo && <BeatingLogo playerLayout />}
         <VStack flex={1} w="100%">
           {gameStatus === "welcome" && gameData?.started && <Welcome />}

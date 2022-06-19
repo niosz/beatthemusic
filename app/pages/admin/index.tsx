@@ -87,6 +87,8 @@ const Admin: NextPage = () => {
   return (
     <VStack
       bgImage={`/assets/bgblur.jpg`}
+      bgRepeat="no-repeat"
+      bgSize="cover"
       borderWidth={1}
       borderColor="black"
       spacing={4}
