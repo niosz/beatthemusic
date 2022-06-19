@@ -73,7 +73,7 @@ export const LivePlaying: FC = () => {
                 objectFit: "cover",
                 width: "100vw",
                 height: "100vh",
-                filter: quizData?.blurImg ? "blur(20px)" : undefined,
+                filter: quizData?.qblur ? "blur(20px)" : undefined,
                 opacity: 0.5,
               }}
             >
