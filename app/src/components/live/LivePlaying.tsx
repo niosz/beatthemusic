@@ -34,15 +34,10 @@ export const LivePlaying: FC = () => {
   }
 
   const progress = (remainingTime / duration) * 100;
+  console.log(quizData);
 
   return (
     <>
-      {duration > 0 && (
-        <BlurredImage
-          percentage={progress}
-          src={`/assets/video/${quizData.blurImg}`}
-        />
-      )}
       {mountedVideo && (
         <video
           onPlay={(e) => {
@@ -68,7 +63,12 @@ export const LivePlaying: FC = () => {
           <source src={`/assets/video/${quizData.video}`} />
         </video>
       )}
-
+      {duration > 0 && (
+        <BlurredImage
+          percentage={progress}
+          src={`/assets/video/${quizData.blurImg}`}
+        />
+      )}
       <Box w={400} h={300} position="absolute" top={-12} left={-6}>
         <AnimLogo />
       </Box>

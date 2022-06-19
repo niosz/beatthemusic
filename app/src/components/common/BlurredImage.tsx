@@ -33,6 +33,8 @@ export const BlurredImage: FC<BlurredImageProps> = ({ percentage, src }) => {
       opacity={show ? 1 : 0}
       position="absolute"
       bgImage={`url(${src})`}
+      bgSize="cover"
+      bgRepeat="no-repeat"
       w="100%"
       h="100%"
       style={{
