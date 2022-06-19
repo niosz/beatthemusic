@@ -45,7 +45,10 @@ interface Question {
   answer: boolean | number;
   options?: string[];
   video: string;
+  qvideo: string;
+  qblur: boolean;
   blurImg: string;
+  lyrics: string;
 }
 
 export interface RankingItem {

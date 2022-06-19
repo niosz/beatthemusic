@@ -40,10 +40,27 @@ type ISocket = Socket<
   DefaultEventsMap,
   any
 >;
-const quizFiles = require("fs")
-  .readdirSync("./server_src/quiz/")
-  .filter((file: string) => file.endsWith(".json"))
-  .map((file: string) => require(`../quiz/${file}`)) as QuizEntry[];
+
+const fs = require("fs");
+const quizFiles = (
+  fs
+    .readdirSync("./server_src/quiz/")
+    .filter((file: string) => file.endsWith(".json"))
+    .map((file: string) => require(`../quiz/${file}`)) as QuizEntry[]
+).map((qItem) => {
+  const questions = qItem.questions.map((question) => {
+    question.lyrics = question.lyrics
+      ? fs.readFileSync(`./public/assets/text/${question.lyrics}`).toString()
+      : "";
+    return question;
+  });
+  return {
+    ...qItem,
+    questions,
+  };
+});
+
+console.log(JSON.stringify(quizFiles));
 
 export interface EventDataFn {
   io: IIO;
@@ -293,6 +310,9 @@ export const events: EventData = {
         gameState.quizData = {
           q: quizItem.question,
           video: quizItem.video,
+          qvideo: quizItem.qvideo,
+          lyrics: quizItem.lyrics,
+          qblur: quizItem.qblur,
           blurImg: quizItem.blurImg,
           keyboard: quizItem.keyboard,
           answers:

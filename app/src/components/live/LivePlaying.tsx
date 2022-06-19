@@ -4,6 +4,7 @@ import {
   CircularProgressLabel,
   Heading,
   HStack,
+  Text,
 } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import { useSocket } from "../../providers/SocketProvider";
@@ -12,6 +13,7 @@ import { buttonColors } from "../../utils/const";
 import { textShadow } from "../../utils/theme";
 import { AnimLogo, BeatingLogo } from "../common/BeatingLogo";
 import { BlurredImage } from "../common/BlurredImage";
+import { Lyrics } from "../common/Lyrics";
 import { QuizAnswerBox } from "./QuizAnswerBox";
 
 export const LivePlaying: FC = () => {
@@ -34,46 +36,66 @@ export const LivePlaying: FC = () => {
   }
 
   const progress = (remainingTime / duration) * 100;
-  console.log(quizData);
 
   return (
     <>
       {mountedVideo && (
-        <video
-          onPlay={(e) => {
-            setDuration(e.currentTarget.duration);
-          }}
-          onTimeUpdate={(e) => {
-            const currRemainingTime =
-              e.currentTarget.duration - e.currentTarget.currentTime;
-            setRemainingTime(currRemainingTime);
-          }}
-          onEnded={() => {
-            endQuiz();
-          }}
-          autoPlay
-          // muted
-          style={{
-            position: "absolute",
-            objectFit: "cover",
-            width: "100vw",
-            height: "100vh",
-          }}
-        >
-          <source src={`/assets/video/${quizData.video}`} />
-        </video>
+        <>
+          <video
+            onPlay={(e) => {
+              setDuration(e.currentTarget.duration);
+            }}
+            onTimeUpdate={(e) => {
+              const currRemainingTime =
+                e.currentTarget.duration - e.currentTarget.currentTime;
+              setRemainingTime(currRemainingTime);
+            }}
+            onEnded={() => {
+              // endQuiz();
+            }}
+            autoPlay
+            // muted
+            style={{
+              position: "absolute",
+              objectFit: "cover",
+              width: "100vw",
+              height: "100vh",
+            }}
+          >
+            <source src={`/assets/video/${quizData.video}`} />
+          </video>
+          {quizData?.qvideo && (
+            <video
+              autoPlay
+              // muted
+              style={{
+                position: "absolute",
+                objectFit: "cover",
+                width: "100vw",
+                height: "100vh",
+                filter: quizData?.blurImg ? "blur(20px)" : undefined,
+                opacity: 0.5,
+              }}
+            >
+              <source src={`/assets/video/${quizData.qvideo}`} />
+            </video>
+          )}
+        </>
       )}
-      {duration > 0 && (
+      {remainingTime > 0 && (
         <BlurredImage
           percentage={progress}
           src={`/assets/video/${quizData.blurImg}`}
         />
       )}
+      {remainingTime > 0 && quizData?.lyrics && (
+        <Lyrics text={quizData?.lyrics} progressPercentage={progress} />
+      )}
       <Box w={400} h={300} position="absolute" top={-12} left={-6}>
         <AnimLogo />
       </Box>
 
-      {duration > -1 && (
+      {remainingTime > -1 && (
         <Box position="absolute" top={0} right={0} m={6}>
           <CircularProgress
             size="3xs"

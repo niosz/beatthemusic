@@ -38,6 +38,9 @@ let counter = NOT_COUNTING;
 let quizData: QuizData = {
   q: "",
   video: "",
+  qvideo: "",
+  qblur: false,
+  lyrics: "",
   answers: [],
   keyboard: "ABCD",
   blurImg: "",
