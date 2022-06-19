@@ -26,7 +26,6 @@
     "react-spring": "^9.4.5",
     "socket.io": "^4.5.0",
     "socket.io-client": "^4.5.0",
-    "use-fit-text": "^2.4.0",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
