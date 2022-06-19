@@ -103,6 +103,7 @@ const Admin: NextPage = () => {
         p={4}
         bg="whiteAlpha.300"
         backdropFilter="blur(10px)"
+        w={isLargerThan720 ? "auto" : "100%"}
       >
         <VStack alignItems="stretch">
           <Select

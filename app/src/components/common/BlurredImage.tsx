@@ -11,7 +11,7 @@ const AnimatedBox = animated(Box);
 
 export const BlurredImage: FC<BlurredImageProps> = ({ percentage, src }) => {
   const [show, setShow] = useState(false);
-  const mountAfter = 1500;
+  const mountAfter = 500;
   const maxBlur = 20;
   const [props, api] = useSpring(() => ({
     blur: maxBlur,
