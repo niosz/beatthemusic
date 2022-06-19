@@ -9,7 +9,7 @@ export default function handler(
 ) {
   if (req.method === "POST") {
     const { body } = req;
-    const { logo } = body;
+    const { logo, secId } = body;
 
     if (logo) {
       const currentAssets = fs.readFileSync(
