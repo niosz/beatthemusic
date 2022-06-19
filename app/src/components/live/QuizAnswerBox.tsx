@@ -6,6 +6,7 @@ interface QuizAnswerBoxProps {
   color: string;
   char: string;
   answer: string;
+  bigText?: boolean;
   hideAnswer?: boolean;
   onClick?: () => void;
 }
@@ -16,6 +17,7 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
   char,
   hideAnswer = false,
   onClick,
+  bigText,
 }) => {
   return (
     <Box
@@ -35,11 +37,11 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
         bgGradient="linear(to-b, rgba(255,255,255,1), rgba(255,255,255,0.6), rgba(255,255,255,0.2), rgba(255,255,255,.1))"
         fontWeight="black"
         bgClip="text"
-        fontSize="12vw"
+        fontSize={bigText ? "30vw" : "12vw"}
         position="absolute"
         top={0}
         height={"100%"}
-        lineHeight="6.7vw"
+        lineHeight={bigText ? "28vw" : "6.7vw"}
       >
         {char}
       </Heading>

@@ -1,10 +1,9 @@
 import { VStack, Text, HStack } from "@chakra-ui/react";
 import _ from "lodash";
-import { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
 import { useSocket } from "../../../providers/SocketProvider";
 import { useGame } from "../../../store/GameStore";
 import { QuizAnswerBox } from "../../live/QuizAnswerBox";
-import { CorrectAnswer } from "../answers/CorrectAnswer";
 import { OnStageAnswer } from "../answers/OnStageAnswer";
 
 export const OnStage = () => {
@@ -13,6 +12,7 @@ export const OnStage = () => {
   }));
   const { answerExtraEvent } = useSocket();
   const { extraEventAnswered } = gameData;
+  const { t } = useTranslation();
   return (
     <VStack w="100%" h="100%" borderWidth={1}>
       {!_.isNull(extraEventAnswered) && extraEventAnswered && <OnStageAnswer />}
@@ -22,17 +22,21 @@ export const OnStage = () => {
             onClick={() => {
               answerExtraEvent(true);
             }}
-            answer="Yes"
-            char="Yes"
+            answer={t("common:user:yes").toUpperCase()}
+            char={t("common:user:yes").toUpperCase()}
             color="#4caf50"
+            hideAnswer
+            bigText
           />
           <QuizAnswerBox
             onClick={() => {
               answerExtraEvent(false);
             }}
-            answer="No"
-            char="No"
+            answer={t("common:user:no").toUpperCase()}
+            char={t("common:user:no").toUpperCase()}
             color="#f00"
+            hideAnswer
+            bigText
           />
         </>
       )}

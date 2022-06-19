@@ -26,7 +26,7 @@ export const OnStageAnswer: FC = () => {
       <Heading fontSize={"7xl"}>{t("common:user:onstageanswer:title")}</Heading>
       <Heading fontSize={"5xl"}>{me?.name}</Heading>
       <Heading fontWeight="normal" fontSize={"3xl"}>
-        {t("common:onstageanswer:onstage")}
+        {t("common:user:onstageanswer:onstage")}
       </Heading>
     </VStack>
   );
