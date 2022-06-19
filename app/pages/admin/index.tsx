@@ -11,6 +11,8 @@ import {
   Tbody,
   Td,
   Select,
+  useMediaQuery,
+  Stack,
 } from "@chakra-ui/react";
 import _ from "lodash";
 import type { NextPage } from "next";
@@ -26,6 +28,8 @@ import { CustomGetServerSideProps } from "../../src/utils/i18";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Admin: NextPage = () => {
+  const [isLargerThan720] = useMediaQuery("(min-width: 720px)");
+
   const { onlinePlayers, gameData, quizData, quizResult, counter } = useGame(
     (s) => ({
       onlinePlayers: s.onlinePlayers,
@@ -89,7 +93,8 @@ const Admin: NextPage = () => {
       p={8}
       h="100vh"
     >
-      <HStack
+      <Stack
+        direction={isLargerThan720 ? "row" : "column"}
         color="white"
         spacing={6}
         borderWidth={1}
@@ -128,7 +133,7 @@ const Admin: NextPage = () => {
               Start quiz
             </Button>
           )}
-          {gameData?.quizNumber > 0 &&
+          {gameData?.quizNumber > -1 &&
             gameData?.started &&
             (!gameData?.quizStarted || gameData?.resultStep === 2) && (
               <Button
@@ -145,14 +150,14 @@ const Admin: NextPage = () => {
         <Divider orientation="vertical" />
         <VStack h="100%" alignItems="flex-start" spacing={0}>
           {gameData?.quizStarted && (
-            <HStack>
+            <Stack direction={isLargerThan720 ? "row" : "column"}>
               <Text>
                 Question {gameData.quizNumber + 1}/{gameData.totalQuestions}:
               </Text>
               <Text fontWeight="bold">
                 {gameData?.quizStarted && quizData?.q}
               </Text>
-            </HStack>
+            </Stack>
           )}
           <HStack>
             <Text>Online players:</Text>
@@ -177,7 +182,7 @@ const Admin: NextPage = () => {
             </>
           )}
         </VStack>
-      </HStack>
+      </Stack>
       <Box>
         {gameData?.quizStarted && counter > 0 && <Counter count={counter} />}
       </Box>
