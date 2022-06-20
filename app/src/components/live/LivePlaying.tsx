@@ -140,7 +140,7 @@ export const LivePlaying: FC = () => {
               setRemainingTime(currRemainingTime);
             }}
             onEnded={() => {
-              // endQuiz();
+              endQuiz();
             }}
             autoPlay
             // muted
