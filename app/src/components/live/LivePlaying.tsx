@@ -108,7 +108,7 @@ export const LivePlaying: FC = () => {
             id="quizvideo"
             onPlay={(e) => {
               setDuration(e.currentTarget.duration);
-              if (quizData?.startPitch > 0) {
+              if (quizData?.startPitch !== 0) {
                 const audioCtx = new window.AudioContext();
                 const mediaElem = document.querySelector(
                   "#quizvideo"
