@@ -1,12 +1,18 @@
 import {
   Box,
+  Button,
   CircularProgress,
   CircularProgressLabel,
   Heading,
   HStack,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
   Text,
+  VStack,
 } from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useSocket } from "../../providers/SocketProvider";
 import { useGame } from "../../store/GameStore";
 import { buttonColors } from "../../utils/const";
@@ -15,6 +21,8 @@ import { AnimLogo, BeatingLogo } from "../common/BeatingLogo";
 import { BlurredImage } from "../common/BlurredImage";
 import { Lyrics } from "../common/Lyrics";
 import { QuizAnswerBox } from "./QuizAnswerBox";
+import * as Tone from "tone";
+import { useSpring } from "react-spring";
 
 export const LivePlaying: FC = () => {
   const { quizData } = useGame((s) => ({ quizData: s.quizData }));
@@ -22,6 +30,28 @@ export const LivePlaying: FC = () => {
   const [mountedVideo, setMountedVideo] = useState(false);
   const [remainingTime, setRemainingTime] = useState(-1);
   const [duration, setDuration] = useState(-1);
+  const pitch = 0;
+  const pitchData = useRef<Tone.PitchShift>();
+  const wahData = useRef<Tone.AutoWah>();
+  const [pitchSpring, pitchApi] = useSpring(() => ({
+    pitch: 0,
+    // wah: 0,
+    onChange: (p) => {
+      setPitch(pitchSpring.pitch.get());
+      // setWah(pitchSpring.wah.get());
+    },
+  }));
+
+  const setPitch = (pitch: number) => {
+    if (pitchData.current) {
+      pitchData.current.pitch = pitch;
+    }
+  };
+  // const setWah = (wah: number) => {
+  //   if (wahData.current) {
+  //     wahData.current.baseFrequency = wah;
+  //   }
+  // };
 
   /* Force video remount */
   useEffect(() => {
@@ -39,11 +69,70 @@ export const LivePlaying: FC = () => {
 
   return (
     <>
+      {/* <VStack spacing={2} position="absolute" zIndex={100}>
+        <Slider
+          m={8}
+          w={80}
+          min={-10}
+          max={10}
+          onChange={(value) => {
+            pitchApi.start({ pitch: value });
+          }}
+          defaultValue={0}
+        >
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb />
+        </Slider>
+        <Slider
+          step={1}
+          m={8}
+          w={80}
+          min={20}
+          max={200}
+          onChange={(value) => {
+            pitchApi.start({ wah: value });
+          }}
+          defaultValue={100}
+        >
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb />
+        </Slider>
+      </VStack> */}
       {mountedVideo && (
         <>
           <video
+            id="quizvideo"
             onPlay={(e) => {
               setDuration(e.currentTarget.duration);
+              if (quizData?.startPitch > 0) {
+                const audioCtx = new window.AudioContext();
+                const mediaElem = document.querySelector(
+                  "#quizvideo"
+                ) as HTMLVideoElement;
+                const stream = audioCtx.createMediaElementSource(mediaElem);
+                const gainNode = audioCtx.createGain();
+                stream.connect(gainNode);
+                Tone.setContext(audioCtx);
+                pitchData.current = new Tone.PitchShift(pitch);
+                Tone.connect(gainNode, pitchData.current);
+                Tone.connect(pitchData.current, audioCtx.destination);
+
+                pitchApi.set({ pitch: quizData.startPitch });
+                const releasePercent =
+                  e.currentTarget.duration *
+                  ((quizData?.pitchPercentRelease || 10) / 100) *
+                  1000;
+                pitchApi.start({
+                  pitch: 0,
+                  config: {
+                    duration: e.currentTarget.duration * 1000 - releasePercent,
+                  },
+                });
+              }
             }}
             onTimeUpdate={(e) => {
               const currRemainingTime =
@@ -51,7 +140,7 @@ export const LivePlaying: FC = () => {
               setRemainingTime(currRemainingTime);
             }}
             onEnded={() => {
-              endQuiz();
+              // endQuiz();
             }}
             autoPlay
             // muted

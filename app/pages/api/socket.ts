@@ -39,6 +39,8 @@ let quizData: QuizData = {
   q: "",
   video: "",
   qvideo: "",
+  startPitch: 0,
+  pitchPercentRelease: 10,
   qblur: false,
   lyrics: "",
   answers: [],

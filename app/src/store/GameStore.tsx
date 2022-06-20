@@ -11,6 +11,8 @@ export interface QuizData {
   q: string;
   video: string;
   qvideo: string;
+  startPitch: number;
+  pitchPercentRelease: number;
   qblur: boolean;
   lyrics: string;
   blurImg: string;
@@ -66,10 +68,12 @@ export const useGame = create<GameState>((set) => ({
     q: "",
     video: "",
     qvideo: "",
+    startPitch: 0,
     qblur: false,
     answers: [],
     keyboard: "ABCD",
     blurImg: "",
+    lyrics: "",
   },
   setQuizData: (q) => set({ quizData: q }),
   counter: -1,

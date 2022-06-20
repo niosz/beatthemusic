@@ -60,8 +60,6 @@ const quizFiles = (
   };
 });
 
-console.log(JSON.stringify(quizFiles));
-
 export interface EventDataFn {
   io: IIO;
   socket: ISocket;
@@ -311,6 +309,8 @@ export const events: EventData = {
           q: quizItem.question,
           video: quizItem.video,
           qvideo: quizItem.qvideo,
+          startPitch: quizItem.startPitch,
+          pitchPercentRelease: quizItem.pitchPercentRelease,
           lyrics: quizItem.lyrics,
           qblur: quizItem.qblur,
           blurImg: quizItem.blurImg,

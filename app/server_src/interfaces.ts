@@ -46,6 +46,8 @@ interface Question {
   options?: string[];
   video: string;
   qvideo: string;
+  startPitch: number;
+  pitchPercentRelease: number;
   qblur: boolean;
   blurImg: string;
   lyrics: string;
