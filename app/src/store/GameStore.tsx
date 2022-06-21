@@ -74,6 +74,7 @@ export const useGame = create<GameState>((set) => ({
     keyboard: "ABCD",
     blurImg: "",
     lyrics: "",
+    pitchPercentRelease: 0,
   },
   setQuizData: (q) => set({ quizData: q }),
   counter: -1,
