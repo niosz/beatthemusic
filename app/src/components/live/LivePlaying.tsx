@@ -67,6 +67,30 @@ export const LivePlaying: FC = () => {
 
   const progress = (remainingTime / duration) * 100;
 
+  const pitchVideo = (id: string, duration: number) => {
+    if (quizData?.startPitch !== 0) {
+      const audioCtx = new window.AudioContext();
+      const mediaElem = document.querySelector(`#${id}`) as HTMLVideoElement;
+      const stream = audioCtx.createMediaElementSource(mediaElem);
+      const gainNode = audioCtx.createGain();
+      stream.connect(gainNode);
+      Tone.setContext(audioCtx);
+      pitchData.current = new Tone.PitchShift(pitch);
+      Tone.connect(gainNode, pitchData.current);
+      Tone.connect(pitchData.current, audioCtx.destination);
+
+      pitchApi.set({ pitch: quizData.startPitch });
+      const releasePercent =
+        duration * ((quizData?.pitchPercentRelease || 10) / 100) * 1000;
+      pitchApi.start({
+        pitch: 0,
+        config: {
+          duration: duration * 1000 - releasePercent,
+        },
+      });
+    }
+  };
+
   return (
     <>
       {/* <VStack spacing={2} position="absolute" zIndex={100}>
@@ -105,39 +129,19 @@ export const LivePlaying: FC = () => {
       {mountedVideo && (
         <>
           <video
-            id="quizvideo"
+            id="video"
             onPlay={(e) => {
-              setDuration(e.currentTarget.duration);
-              if (quizData?.startPitch !== 0) {
-                const audioCtx = new window.AudioContext();
-                const mediaElem = document.querySelector(
-                  "#quizvideo"
-                ) as HTMLVideoElement;
-                const stream = audioCtx.createMediaElementSource(mediaElem);
-                const gainNode = audioCtx.createGain();
-                stream.connect(gainNode);
-                Tone.setContext(audioCtx);
-                pitchData.current = new Tone.PitchShift(pitch);
-                Tone.connect(gainNode, pitchData.current);
-                Tone.connect(pitchData.current, audioCtx.destination);
-
-                pitchApi.set({ pitch: quizData.startPitch });
-                const releasePercent =
-                  e.currentTarget.duration *
-                  ((quizData?.pitchPercentRelease || 10) / 100) *
-                  1000;
-                pitchApi.start({
-                  pitch: 0,
-                  config: {
-                    duration: e.currentTarget.duration * 1000 - releasePercent,
-                  },
-                });
+              if (!quizData.qvideo) {
+                setDuration(e.currentTarget.duration);
+                pitchVideo("video", e.currentTarget.duration);
               }
             }}
             onTimeUpdate={(e) => {
-              const currRemainingTime =
-                e.currentTarget.duration - e.currentTarget.currentTime;
-              setRemainingTime(currRemainingTime);
+              if (!quizData.qvideo) {
+                const currRemainingTime =
+                  e.currentTarget.duration - e.currentTarget.currentTime;
+                setRemainingTime(currRemainingTime);
+              }
             }}
             onEnded={() => {
               endQuiz();
@@ -155,6 +159,16 @@ export const LivePlaying: FC = () => {
           </video>
           {quizData?.qvideo && (
             <video
+              id="qvideo"
+              onPlay={(e) => {
+                setDuration(e.currentTarget.duration);
+                pitchVideo("qvideo", e.currentTarget.duration);
+              }}
+              onTimeUpdate={(e) => {
+                const currRemainingTime =
+                  e.currentTarget.duration - e.currentTarget.currentTime;
+                setRemainingTime(currRemainingTime);
+              }}
               autoPlay
               // muted
               style={{
