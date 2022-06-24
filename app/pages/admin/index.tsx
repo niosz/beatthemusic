@@ -23,7 +23,6 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { Counter } from "../../src/components/counter";
 import { useSocket } from "../../src/providers/SocketProvider";
 import { useGame } from "../../src/store/GameStore";
-import { GAME_STARTING, NOT_COUNTING } from "../../src/utils/const";
 import { CustomGetServerSideProps } from "../../src/utils/i18";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
@@ -84,6 +83,9 @@ const Admin: NextPage = () => {
     }
   };
 
+  const isBetweenQuiz =
+    gameData?.started && (!gameData?.quizStarted || gameData?.resultStep === 2);
+
   return (
     <VStack
       bgImage={`/assets/bgblur.jpg`}
@@ -131,24 +133,22 @@ const Admin: NextPage = () => {
           >
             {gameData?.started ? "Close" : "Open"} room
           </Button>
-          {gameData?.started && (
+          {isBetweenQuiz && (
             <Button size="sm" variant="solidAdmin" onClick={startQuiz}>
               Start quiz
             </Button>
           )}
-          {gameData?.quizNumber > -1 &&
-            gameData?.started &&
-            (!gameData?.quizStarted || gameData?.resultStep === 2) && (
-              <Button
-                size="sm"
-                variant="solidAdmin"
-                onClick={() => {
-                  startExtraEvent("ON_STAGE");
-                }}
-              >
-                On Stage
-              </Button>
-            )}
+          {gameData?.quizNumber > -1 && isBetweenQuiz && (
+            <Button
+              size="sm"
+              variant="solidAdmin"
+              onClick={() => {
+                startExtraEvent("ON_STAGE");
+              }}
+            >
+              On Stage
+            </Button>
+          )}
         </VStack>
         <Divider orientation="vertical" />
         <VStack h="100%" alignItems="flex-start" spacing={0}>
@@ -213,10 +213,8 @@ const Admin: NextPage = () => {
         Object.keys(onlinePlayers).filter((p) => onlinePlayers[p].name !== "")
           .length > 0 && (
           <HStack color="white" spacing={6} rounded="md" p={4}>
-            {/* online players list */}
             <VStack spacing={2}>
               <Heading fontSize="2xl">Players</Heading>
-              {/* table of online players list with score */}
               <Table variant="beatTheMusic">
                 <Tbody>
                   {Object.keys(onlinePlayers)
@@ -226,7 +224,6 @@ const Admin: NextPage = () => {
                     .map((p) => (
                       <Tr key={p}>
                         <Td>{onlinePlayers[p].name}</Td>
-                        {/* <Td>{onlinePlayers[p].score}</Td> */}
                       </Tr>
                     ))}
                 </Tbody>

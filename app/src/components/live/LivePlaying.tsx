@@ -185,7 +185,7 @@ export const LivePlaying: FC = () => {
           )}
         </>
       )}
-      {remainingTime > 0 && (
+      {remainingTime > 0 && quizData.blurImg && (
         <BlurredImage
           percentage={progress}
           src={`/assets/video/${quizData.blurImg}`}
