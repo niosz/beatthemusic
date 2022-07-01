@@ -9,6 +9,7 @@ interface QuizAnswerBoxProps {
   bigText?: boolean;
   hideAnswer?: boolean;
   onClick?: () => void;
+  opacity?: number;
 }
 
 export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
@@ -18,6 +19,7 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
   hideAnswer = false,
   onClick,
   bigText,
+  opacity = 1,
 }) => {
   return (
     <Box
@@ -32,6 +34,7 @@ export const QuizAnswerBox: FC<QuizAnswerBoxProps> = ({
       overflow="hidden"
       width={"100%"}
       onClick={onClick}
+      opacity={opacity}
     >
       <Heading
         bgGradient="linear(to-b, rgba(255,255,255,1), rgba(255,255,255,0.6), rgba(255,255,255,0.2), rgba(255,255,255,.1))"

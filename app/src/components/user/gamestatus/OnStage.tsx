@@ -13,10 +13,11 @@ export const OnStage = () => {
   const { answerExtraEvent } = useSocket();
   const { extraEventAnswered } = gameData;
   const { t } = useTranslation();
+
   return (
-    <VStack w="100%" h="100%" borderWidth={1}>
+    <VStack w="100%" h="100%">
       {!_.isNull(extraEventAnswered) && extraEventAnswered && <OnStageAnswer />}
-      {_.isNull(extraEventAnswered) && (
+      {(_.isNull(extraEventAnswered) || extraEventAnswered === false) && (
         <>
           <QuizAnswerBox
             onClick={() => {
@@ -27,6 +28,9 @@ export const OnStage = () => {
             color="#4caf50"
             hideAnswer
             bigText
+            opacity={
+              !_.isNull(extraEventAnswered) && !extraEventAnswered ? 0.2 : 1
+            }
           />
           <QuizAnswerBox
             onClick={() => {

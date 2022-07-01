@@ -63,7 +63,7 @@ export const Playing: FC = () => {
               <Button
                 key={`ans-${i}`}
                 variant="unstyled"
-                opacity={isAnswerCorrect ? 1 : 0.5}
+                opacity={isAnswerCorrect ? 1 : 0.2}
                 onClick={() => {
                   if (answerData.answerIndex !== 1) {
                     answerQuestion(i);

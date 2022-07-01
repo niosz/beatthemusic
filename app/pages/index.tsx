@@ -1,4 +1,4 @@
-import { VStack, Box } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import _ from "lodash";
 import type { NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -13,7 +13,6 @@ import { useGame } from "../src/store/GameStore";
 import { usePlayer } from "../src/store/PlayerStore";
 import { SHOW_RESULTS } from "../src/utils/const";
 import { CustomGetServerSideProps } from "../src/utils/i18";
-import Head from "next/head";
 import { BTMHead } from "../src/components/common/BTMHead";
 
 type Step = "welcome" | "joined" | "counting" | "playing" | "extra-round";
@@ -35,10 +34,7 @@ const Home: NextPage = () => {
     if (gameData?.quizStarted) {
       gameStatus = isPlaying ? "playing" : "counting";
     }
-    if (
-      gameData.extraEventStarted &&
-      (gameData.extraEventAnswered || gameData.extraEventAnswered === null)
-    ) {
+    if (gameData.extraEventStarted) {
       gameStatus = "extra-round";
     }
   }

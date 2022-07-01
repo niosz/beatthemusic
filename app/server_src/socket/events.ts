@@ -455,8 +455,14 @@ export const events: EventData = {
     gameState.gameData.extraEventAnswered = null;
     if (gameState.gameData.extraEventType === "ON_STAGE") {
       setTimeout(() => {
-        // get random player from gameState.players
-        const randomPlayer = _.sample(Object.values(gameState.players));
+        // get random player from gameState.players who isInRoom
+        const randomPlayer = _.sample(
+          _.pickBy(gameState.players, (p) => {
+            return p.isInRoom;
+          })
+        );
+
+        // const randomPlayer = _.sample(Object.values(gameState.players));
         if (randomPlayer) {
           gameState.gameData.onStageName = randomPlayer.name;
         }
