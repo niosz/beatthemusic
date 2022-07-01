@@ -21,6 +21,7 @@ export const OnStage = () => {
         <>
           <QuizAnswerBox
             onClick={() => {
+              if (!_.isNull(extraEventAnswered)) return;
               answerExtraEvent(true);
             }}
             answer={t("common:user:yes").toUpperCase()}
@@ -34,6 +35,7 @@ export const OnStage = () => {
           />
           <QuizAnswerBox
             onClick={() => {
+              if (!_.isNull(extraEventAnswered)) return;
               answerExtraEvent(false);
             }}
             answer={t("common:user:no").toUpperCase()}
