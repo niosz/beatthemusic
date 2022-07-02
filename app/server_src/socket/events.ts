@@ -40,7 +40,7 @@ type ISocket = Socket<
   DefaultEventsMap,
   any
 >;
-
+let counterInterval: NodeJS.Timeout;
 const fs = require("fs");
 const quizFiles = (
   fs
@@ -300,7 +300,11 @@ export const events: EventData = {
 
     emitData(gameState, io);
     io.emit("quiz-counter", GAME_STARTING);
-    const counterInterval = setInterval(() => {
+
+    if (counterInterval) {
+      clearInterval(counterInterval);
+    }
+    counterInterval = setInterval(() => {
       io.emit("quiz-counter", gameState.counter);
       if (gameState.counter === 0) {
         const quizItem =
