@@ -497,6 +497,14 @@ export const events: EventData = {
           ...gameState.gameData.onStageRefusedList,
           player.id,
         ];
+
+        // reset list if all players refused
+        if (
+          gameState.gameData.onStageRefusedList.length ===
+          Object.keys(gameState.players).length
+        ) {
+          gameState.gameData.onStageRefusedList = [];
+        }
       }
       updateData(gameState);
       emitData(gameState, io);
