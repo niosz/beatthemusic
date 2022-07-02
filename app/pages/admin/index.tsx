@@ -139,9 +139,8 @@ const Admin: NextPage = () => {
               Start quiz
             </Button>
           )}
-          {gameData.allAnswered && !isInResultSteps && (
+          {!isInResultSteps && (
             <VStack>
-              <Text>All players have answered.</Text>
               <Button size="sm" variant="solidAdmin" onClick={endQuiz}>
                 End quiz now
               </Button>
