@@ -190,9 +190,7 @@ const QuizResultStep3: FC<{ forceRanking?: boolean }> = ({
   return (
     <VStack>
       <Heading color="white" mb={4} fontSize="5xl" textShadow={textShadow}>
-        {forceRanking
-          ? "Classifica finale"
-          : `Round ${gameData.quizNumber + 1}`}
+        {forceRanking ? "Final Ranking" : `Round ${gameData.quizNumber + 1}`}
       </Heading>
       <Table variant="beatTheMusic">
         <Thead>
@@ -252,10 +250,11 @@ export const QuizResultSteps: FC = () => {
         />
         <Box flex={1}>
           <Text
-            fontSize="xl"
+            fontSize="3xl"
             textAlign="center"
             color="white"
             fontWeight="bold"
+            textShadow={textShadow}
           >
             {quizData?.q}
           </Text>

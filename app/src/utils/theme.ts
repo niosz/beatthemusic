@@ -80,6 +80,7 @@ const components: ThemeComponents = {
           td: {
             bg: "whiteAlpha.200",
             py: 2,
+            fontSize: "3xl",
           },
           th: {
             bg: "whiteAlpha.200",
@@ -87,7 +88,7 @@ const components: ThemeComponents = {
             borderBottomColor: "whiteAlpha.300",
             textTransform: "inherit",
             fontWeight: "normal",
-            fontSize: "lg",
+            fontSize: "3xl",
           },
           _last: {
             td: {

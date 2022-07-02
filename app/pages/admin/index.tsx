@@ -115,7 +115,7 @@ const Admin: NextPage = () => {
           minW={!gameData?.quizStarted ? "300px" : undefined}
           alignItems="stretch"
         >
-          {!gameData?.started || !gameData?.quizList[quizIndex] ? (
+          {!gameData?.started ? (
             <>
               {gameData?.quizStarted && (
                 <HStack>
@@ -142,7 +142,7 @@ const Admin: NextPage = () => {
           ) : (
             <VStack alignItems="flex-start" spacing={0}>
               <Text>Selected quiz: </Text>
-              <Text>{gameData?.quizList[quizIndex].name}</Text>
+              <Text>{gameData?.quizList[gameData.quizNumber].name}</Text>
             </VStack>
           )}
           <Box h={2} />
