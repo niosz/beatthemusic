@@ -28,6 +28,8 @@ export interface GameData {
   extraEventType: ExtraEvent;
   onStageName: string | null;
   extraEventAnswered: boolean | null;
+  onStageRefusedList: string[];
+  allAnswered: boolean;
 }
 
 export interface QuizEntry {

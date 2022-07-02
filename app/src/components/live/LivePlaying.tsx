@@ -177,7 +177,7 @@ export const LivePlaying: FC = () => {
                 width: "100vw",
                 height: "100vh",
                 filter: quizData?.qblur ? "blur(20px)" : undefined,
-                opacity: 0.5,
+                opacity: 0.8,
               }}
             >
               <source src={`/assets/video/${quizData.qvideo}`} />

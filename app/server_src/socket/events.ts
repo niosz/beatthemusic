@@ -281,6 +281,7 @@ export const events: EventData = {
       .map(() => _.random(0, 9))
       .join("");
     gameState.counter = NOT_COUNTING;
+    gameState.gameData.onStageRefusedList = [];
     updateData(gameState);
     emitData(gameState, io);
   },
@@ -386,6 +387,14 @@ export const events: EventData = {
 
     gameState.quizAnswers[gameState.gameData.quizNumber][addr] = answerResult;
 
+    // check if quizAnswers[quizNumber] length is the same as total isOnline players
+    gameState.gameData.allAnswered =
+      Object.keys(gameState.quizAnswers[gameState.gameData.quizNumber])
+        .length ===
+      Object.keys(gameState.players).filter((pKey) => {
+        return gameState.players[pKey].isOnline;
+      }).length;
+
     updateData(gameState);
     emitData(gameState, io);
   },
@@ -455,10 +464,11 @@ export const events: EventData = {
     gameState.gameData.extraEventAnswered = null;
     if (gameState.gameData.extraEventType === "ON_STAGE") {
       setTimeout(() => {
-        // get random player from gameState.players who isInRoom
+        // get random player from gameState.players who isInRoom and is not in onStageRefusedList
+        const onStageRefusedList = gameState.gameData.onStageRefusedList;
         const randomPlayer = _.sample(
           _.pickBy(gameState.players, (p) => {
-            return p.isInRoom;
+            return p.isInRoom && !onStageRefusedList.includes(p.id);
           })
         );
 
@@ -482,6 +492,12 @@ export const events: EventData = {
       player.name === gameState.gameData.onStageName
     ) {
       gameState.gameData.extraEventAnswered = msg;
+      if (!msg) {
+        gameState.gameData.onStageRefusedList = [
+          ...gameState.gameData.onStageRefusedList,
+          player.id,
+        ];
+      }
       updateData(gameState);
       emitData(gameState, io);
     }

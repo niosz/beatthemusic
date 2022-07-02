@@ -43,6 +43,7 @@ const Admin: NextPage = () => {
     startGame,
     endGame,
     startQuiz,
+    endQuiz,
     goToNextStep,
     startExtraEvent,
     initLive,
@@ -138,6 +139,14 @@ const Admin: NextPage = () => {
               Start quiz
             </Button>
           )}
+          {gameData.allAnswered && !isInResultSteps && (
+            <VStack>
+              <Text>All players have answered.</Text>
+              <Button size="sm" variant="solidAdmin" onClick={endQuiz}>
+                End quiz now
+              </Button>
+            </VStack>
+          )}
           {gameData?.quizNumber > -1 && isBetweenQuiz && (
             <Button
               size="sm"
@@ -173,6 +182,7 @@ const Admin: NextPage = () => {
             </Text>
           </HStack>
         </VStack>
+        <Text>{}</Text>
         <VStack h="100%" justifyContent="flex-end">
           {isInResultSteps && (
             <>

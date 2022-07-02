@@ -9,7 +9,8 @@ export const ExtraStage = () => {
   const [scramble, setScramble] = useState("");
   const scrambleIndex = useRef(0);
 
-  const { extraEventStarted, extraEventType, onStageName } = gameData;
+  const { extraEventStarted, extraEventType, onStageName, extraEventAnswered } =
+    gameData;
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -52,26 +53,60 @@ export const ExtraStage = () => {
           <Heading textShadow={textShadow} fontSize="6xl">
             BONUS ROUND
           </Heading>
-          <Heading textShadow={textShadow}>Salirà sul palco con noi:</Heading>
-
-          <Heading fontSize="xl" textShadow={textShadow}>
-            Estrazione casuale
-          </Heading>
-          <Heading
-            backdropFilter={`blur(10px)`}
-            py={4}
-            px={16}
-            rounded="full"
-            shadow="inside"
-            textShadow={textShadow}
-          >
-            {scramble}
-          </Heading>
-          <Heading fontSize="xl" textShadow={textShadow}>
-            {
-              'Rispondi "Sì" o "No" sul tuo smartphone per partecipare all\'estrazione casuale!'
-            }
-          </Heading>
+          {_.isNull(extraEventAnswered) && (
+            <>
+              <Heading textShadow={textShadow}>
+                Salirà sul palco con noi:
+              </Heading>
+              <Heading fontSize="xl" textShadow={textShadow}>
+                Estrazione casuale
+              </Heading>
+              <Heading
+                backdropFilter={`blur(10px)`}
+                py={4}
+                px={16}
+                rounded="full"
+                shadow="inside"
+                textShadow={textShadow}
+              >
+                {scramble}
+              </Heading>
+              <Heading fontSize="xl" textShadow={textShadow}>
+                {
+                  'Rispondi "Sì" o "No" sul tuo smartphone per partecipare all\'estrazione casuale!'
+                }
+              </Heading>
+            </>
+          )}
+          {!_.isNull(extraEventAnswered) && (
+            <>
+              {extraEventAnswered && (
+                <Heading textShadow={textShadow}>
+                  Salirà sul palco con noi:
+                </Heading>
+              )}
+              <Heading
+                backdropFilter={`blur(10px)`}
+                py={4}
+                px={16}
+                rounded="full"
+                shadow="inside"
+                textShadow={textShadow}
+                color={extraEventAnswered ? "success" : "error"}
+              >
+                {scramble}
+              </Heading>
+              {extraEventAnswered ? (
+                <Heading size="2xl" textShadow={textShadow} color="success">
+                  HA ACCETTATO
+                </Heading>
+              ) : (
+                <Heading size="2xl" textShadow={textShadow} color="error">
+                  HA RIFIUTATO
+                </Heading>
+              )}
+            </>
+          )}
         </VStack>
       )}
     </>

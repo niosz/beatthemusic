@@ -30,6 +30,8 @@ export const initialGameData: GameData = {
   extraEventType: "ON_STAGE",
   onStageName: null,
   extraEventAnswered: null,
+  onStageRefusedList: [],
+  allAnswered: false,
 };
 
 let gameData: GameData = { ...initialGameData };
