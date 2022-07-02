@@ -142,7 +142,10 @@ const Admin: NextPage = () => {
           ) : (
             <VStack alignItems="flex-start" spacing={0}>
               <Text>Selected quiz: </Text>
-              <Text>{gameData?.quizList[gameData.quizNumber].name}</Text>
+              <Text>
+                {gameData?.quizList[gameData.quizNumber]?.name ||
+                  gameData?.quizList[quizIndex]?.name}
+              </Text>
             </VStack>
           )}
           <Box h={2} />
