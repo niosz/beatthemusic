@@ -53,7 +53,8 @@ const components: ThemeComponents = {
       solidAdmin: {
         bg: "blue.500",
         color: "white",
-        rounded: "full",
+        rounded: "2xl",
+        lineHeight: "0.75",
       },
       btm: {
         rounded: "2xl",
@@ -86,7 +87,7 @@ const components: ThemeComponents = {
             borderBottomColor: "whiteAlpha.300",
             textTransform: "inherit",
             fontWeight: "normal",
-            fontSize: "md",
+            fontSize: "lg",
           },
           _last: {
             td: {

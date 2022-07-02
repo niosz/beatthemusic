@@ -265,7 +265,7 @@ export const events: EventData = {
       };
     });
     gameState.players = _.pickBy(gameState.players, (p) => {
-      return p.isOnline;
+      return p.isOnline && p.isInRoom;
     });
     gameState.counter = NOT_COUNTING;
     gameState.quizAnswers = {};
@@ -296,6 +296,7 @@ export const events: EventData = {
     gameState.gameData.extraEventAnswered = null;
     gameState.gameData.extraEventStarted = false;
     gameState.gameData.onStageName = null;
+    gameState.gameData.allAnswered = false;
 
     emitData(gameState, io);
     io.emit("quiz-counter", GAME_STARTING);
@@ -392,7 +393,9 @@ export const events: EventData = {
       Object.keys(gameState.quizAnswers[gameState.gameData.quizNumber])
         .length ===
       Object.keys(gameState.players).filter((pKey) => {
-        return gameState.players[pKey].isOnline;
+        return (
+          gameState.players[pKey].isOnline && gameState.players[pKey].isInRoom
+        );
       }).length;
 
     updateData(gameState);

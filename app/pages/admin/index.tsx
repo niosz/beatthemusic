@@ -71,16 +71,16 @@ const Admin: NextPage = () => {
   const getStepInfo = (stepNumber: number) => {
     switch (stepNumber) {
       case 0:
-        return "Corrected Answer";
+        return "Next: Show corrected answers";
       case 1:
-        return "Answers Summary";
+        return "Next: answers summary";
       case 2:
-        return "Ranking";
+        return "Next: Show ranking";
       case 3:
         if (gameData.quizNumber + 1 < gameData.totalQuestions) {
-          return "New quiz";
+          return "Next question";
         }
-        return "Final Summary";
+        return "Show Final Summary";
     }
   };
 
@@ -109,21 +109,43 @@ const Admin: NextPage = () => {
         bg="whiteAlpha.300"
         backdropFilter="blur(10px)"
         w={isLargerThan720 ? "auto" : "100%"}
+        justifyContent="center"
       >
-        <VStack alignItems="stretch">
-          <Select
-            placeholder="Select quiz"
-            value={quizIndex}
-            onChange={(e) => {
-              setQuizIndex(Number(e.target.value));
-            }}
-          >
-            {gameData?.quizList?.map((quiz, index) => (
-              <option key={index} value={index}>
-                {quiz.name}
-              </option>
-            ))}
-          </Select>
+        <VStack
+          minW={!gameData?.quizStarted ? "300px" : undefined}
+          alignItems="stretch"
+        >
+          {!gameData?.started || !gameData?.quizList[quizIndex] ? (
+            <>
+              {gameData?.quizStarted && (
+                <HStack>
+                  <Text>Online players:</Text>
+                  <Text fontWeight="bold">
+                    {Object.keys(onlinePlayers).length}
+                  </Text>
+                </HStack>
+              )}
+              <Select
+                placeholder="Select quiz"
+                value={quizIndex}
+                onChange={(e) => {
+                  setQuizIndex(Number(e.target.value));
+                }}
+              >
+                {gameData?.quizList?.map((quiz, index) => (
+                  <option key={index} value={index}>
+                    {quiz.name}
+                  </option>
+                ))}
+              </Select>
+            </>
+          ) : (
+            <VStack alignItems="flex-start" spacing={0}>
+              <Text>Selected quiz: </Text>
+              <Text>{gameData?.quizList[quizIndex].name}</Text>
+            </VStack>
+          )}
+          <Box h={2} />
           <Button
             size="sm"
             variant="solidAdmin"
@@ -134,67 +156,81 @@ const Admin: NextPage = () => {
           >
             {gameData?.started ? "Close" : "Open"} room
           </Button>
-          {isBetweenQuiz && (
+          {isBetweenQuiz && !isInResultSteps && (
             <Button size="sm" variant="solidAdmin" onClick={startQuiz}>
               Start quiz
             </Button>
           )}
-          {isBetweenQuiz && !isInResultSteps && (
-            <VStack>
-              {gameData.allAnswered && <Text>All players have answered</Text>}
-              <Button size="sm" variant="solidAdmin" onClick={endQuiz}>
-                End quiz now
-              </Button>
-            </VStack>
-          )}
-          {gameData?.quizNumber > -1 && isBetweenQuiz && (
-            <Button
-              size="sm"
-              variant="solidAdmin"
-              onClick={() => {
-                startExtraEvent("ON_STAGE");
-              }}
-            >
-              On Stage
-            </Button>
-          )}
         </VStack>
-        <Divider orientation="vertical" />
-        <VStack h="100%" alignItems="flex-start" spacing={0}>
-          {gameData?.quizStarted && (
-            <Stack direction={isLargerThan720 ? "row" : "column"}>
-              <Text>
-                Question {gameData.quizNumber + 1}/{gameData.totalQuestions}:
-              </Text>
-              <Text fontWeight="bold">
-                {gameData?.quizStarted && quizData?.q}
-              </Text>
-            </Stack>
-          )}
-          <HStack>
-            <Text>Online players:</Text>
-            <Text fontWeight="bold">{Object.keys(onlinePlayers).length}</Text>
-          </HStack>
-          <HStack>
+        {gameData?.started && gameData?.quizStarted && (
+          <>
+            <Divider orientation="vertical" />
+
+            <VStack h="100%" alignItems="flex-start" spacing={0}>
+              {gameData?.quizStarted && (
+                <Stack direction={isLargerThan720 ? "row" : "column"}>
+                  <Text>
+                    Question {gameData.quizNumber + 1}/{gameData.totalQuestions}
+                    :
+                  </Text>
+                  <Text fontWeight="bold">
+                    {gameData?.quizStarted && quizData?.q}
+                  </Text>
+                </Stack>
+              )}
+
+              {/* <HStack>
             <Text>Answers:</Text>
             <Text fontWeight="bold">
               {_.sumBy(quizResult?.answers, (a) => a.people)}
             </Text>
-          </HStack>
-        </VStack>
-        <Text>{}</Text>
-        <VStack h="100%" justifyContent="flex-end">
-          {isInResultSteps && (
-            <>
-              <Text fontSize="sm">
-                On screen: {getStepInfo(gameData.resultStep)}
-              </Text>
-              <Button size="sm" variant="solidAdmin" onClick={goToNextStep}>
-                Next: {getStepInfo(gameData.resultStep + 1)}
-              </Button>
-            </>
-          )}
-        </VStack>
+          </HStack> */}
+              <VStack
+                w="100%"
+                alignItems="flex-end"
+                pt={4}
+                justifyContent="flex-end"
+              >
+                {isInResultSteps && (
+                  <>
+                    <Button
+                      size="sm"
+                      variant="solidAdmin"
+                      onClick={goToNextStep}
+                    >
+                      {getStepInfo(gameData.resultStep + 1)}
+                    </Button>
+                  </>
+                )}
+                {gameData?.quizNumber > -1 && isBetweenQuiz && (
+                  <Button
+                    size="sm"
+                    variant="solidAdmin"
+                    onClick={() => {
+                      startExtraEvent("ON_STAGE");
+                    }}
+                  >
+                    On Stage
+                  </Button>
+                )}
+                {gameData?.quizStarted && !isInResultSteps && (
+                  <Button
+                    h="inherit"
+                    py={2}
+                    size="sm"
+                    variant="solidAdmin"
+                    onClick={endQuiz}
+                  >
+                    <VStack>
+                      <Text>End question</Text>
+                      {gameData.allAnswered && <Text>(All answered)</Text>}
+                    </VStack>
+                  </Button>
+                )}
+              </VStack>
+            </VStack>
+          </>
+        )}
       </Stack>
       <Box>
         {gameData?.quizStarted && counter > 0 && <Counter count={counter} />}
