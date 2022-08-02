@@ -19,7 +19,7 @@ const wrapTags = (text: string, regex: RegExp) => {
         {text.split(" ").map((str, index) => {
           if (regex.test(str)) {
             // remove ** from str
-            const strWithoutMarker = str.replace(/\*\*/g, "");
+            const strWithoutMarker = str.replace(/\*\*/g, "").replace(/\?/g,"_");
             return (
               <Text key={"t-" + index} color="#f00">
                 {strWithoutMarker}
@@ -27,7 +27,7 @@ const wrapTags = (text: string, regex: RegExp) => {
             );
           }
           return (
-            <Text key={"t-" + index} color="white">
+            <Text key={"t-" + index} color="#89e6ff">
               {str}
             </Text>
           );

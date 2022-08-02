@@ -8,7 +8,9 @@
       "keyboard": "ABCD",
       "answer": 1,
       "options": ["Fire","Dynamite","Butter","Fake Love"],
-      "video": "question_000.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_000.mp4",
+      "qblur": true
     },
     {
       "active": true,
@@ -16,7 +18,10 @@
       "keyboard": "ABCD",
       "answer": 2,
       "options": ["Face","Place","Name","Friends"],
-      "video": "question_001.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_001.mp4",
+      "lyrics": "question_001.txt",
+      "qblur": true
     },
     {
       "active": true,
@@ -24,7 +29,8 @@
       "keyboard": "ABCD",
       "answer": 2,
       "options": ["Jack Harlow","Khalid","Post Malone","The Kid LAROI"],
-      "video": "question_002.mp4"
+      "video": "trivia.mp4",
+      "blurImg": "question_002.webp"
     },
     {
       "active": true,
@@ -40,7 +46,11 @@
       "keyboard": "ABCD",
       "answer": 1,
       "options": ["Bad Guy","Therefore I Am","Not Your Friend","The Man"],
-      "video": "question_004.mp4"
+      "video": "background.mp4",
+      "startPitch": 20,
+      "pitchPercentRelease": 60,
+      "qvideo": "question_004.mp4",
+      "qblur": true
     },
     {
       "active": true,
@@ -48,7 +58,10 @@
       "keyboard": "ABCD",
       "answer": 0,
       "options": ["An Angel","A Diva","A Dream","A Model"],
-      "video": "question_005.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_005.mp4",
+      "lyrics": "question_005.txt",
+      "qblur": true
     },
     {
       "active": true,
@@ -56,7 +69,8 @@
       "keyboard": "ABCD",
       "answer": 0,
       "options": ["ARMY","BTSers","BABY","BLINK"],
-      "video": "question_006.mp4"
+      "video": "trivia.mp4",
+      "blurImg": "question_006.jpeg"
     },
     {
       "active": true,
@@ -71,7 +85,9 @@
       "keyboard": "ABCD",
       "answer": 3,
       "options": ["Adore You","Watercolour Eyes","Golden","Watermelon Sugar"],
-      "video": "question_008.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_008.mp4",
+      "qblur": true
     },
     {
       "active": true,
@@ -79,7 +95,10 @@
       "keyboard": "ABCD",
       "answer": 1,
       "options": ["Love","Touch","Kiss","Smile"],
-      "video": "question_009.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_009.mp4",
+      "lyrics": "question_009.txt",
+      "qblur": true
     },
     {
       "active": true,
@@ -87,7 +106,8 @@
       "keyboard": "ABCD",
       "answer": 0,
       "options": ["Selena Gomez","Camila Cabello","Melanie Martinez","Demi Lovato"],
-      "video": "question_010.mp4"
+      "video": "trivia.mp4",
+      "blurImg": "question_010.jpeg"
     },
     {
       "active": true,
@@ -103,7 +123,11 @@
       "keyboard": "ABCD",
       "answer": 3,
       "options": ["Let Her Go","Tragic","Wrong","Stay"],
-      "video": "question_012.mp4"
+      "video": "background.mp4",
+      "startPitch": -20,
+      "pitchPercentRelease": 60,
+      "qvideo": "question_012.mp4",
+      "qblur": true
     },
     {
       "active": true,
@@ -111,7 +135,10 @@
       "keyboard": "ABCD",
       "answer": 2,
       "options": ["Renovating","Relegating","Renegading","Liberating"],
-      "video": "question_013.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_013.mp4",
+      "lyrics": "question_013.txt",
+      "qblur": true
     },
     {
       "active": true,
@@ -119,7 +146,8 @@
       "keyboard": "ABCD",
       "answer": 3,
       "options": ["Piano","Guitar","Cello","Violin"],
-      "video": "question_014.mp4"
+      "video": "trivia.mp4",
+      "blurImg": "question_014.jpeg"
     }
   ]
 }

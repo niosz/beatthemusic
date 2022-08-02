@@ -2,13 +2,15 @@
   "active": true,
   "title": "quiz_001",
   "questions": [
-    {
+  	    {
       "active": true,
       "question": "What is the title of song?",
       "keyboard": "ABCD",
       "answer": 0,
       "options": ["Despacito","Súbeme La Radio","Con Calma","Bailando"],
-      "video": "question_100.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_100.mp4",
+      "qblur": true
     },
     {
       "active": true,
@@ -16,7 +18,10 @@
       "keyboard": "ABCD",
       "answer": 0,
       "options": ["Glow","Flow","So","Show"],
-      "video": "question_101.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_101.mp4",
+      "lyrics": "question_101.txt",
+      "qblur": true
     },
     {
       "active": true,
@@ -24,7 +29,8 @@
       "keyboard": "ABCD",
       "answer": 0,
       "options": ["Hannah Montana","Wizards of Waverly Place","Lizzie McGuire","Good Luck Charlie"],
-      "video": "question_102.mp4"
+      "video": "trivia.mp4",
+      "blurImg": "question_102.jpeg"
     },
     {
       "active": true,
@@ -40,7 +46,11 @@
       "keyboard": "ABCD",
       "answer": 0,
       "options": ["Save Your Tears","Run Away","Blinding Lights","I Feel It Coming"],
-      "video": "question_104.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_104.mp4",
+      "qblur": true,
+      "startPitch": 20,
+      "pitchPercentRelease": 60
     },
     {
       "active": true,
@@ -48,7 +58,10 @@
       "keyboard": "ABCD",
       "answer": 1,
       "options": ["Cheap Thrills","Dollar Bills","Cheap Frills","Dance Skills"],
-      "video": "question_105.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_105.mp4",
+      "lyrics": "question_105.txt",
+      "qblur": true
     },
     {
       "active": true,
@@ -56,7 +69,8 @@
       "keyboard": "ABCD",
       "answer": 2,
       "options": ["Britain’s Got Talent","The Voice","The X Factor","Pop Idol"],
-      "video": "question_106.mp4"
+      "video": "trivia.mp4",
+      "blurImg": "question_106.jpeg"
     },
     {
       "active": true,
@@ -79,7 +93,9 @@
       "keyboard": "ABCD",
       "answer": 1,
       "options": ["Perfect","Drivers License","Deja Vu","Good 4 U"],
-      "video": "question_109.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_109.mp4",
+      "qblur": true
     },
     {
       "active": true,
@@ -102,7 +118,10 @@
       "keyboard": "ABCD",
       "answer": 1,
       "options": ["Generously","Dangerously","Favourably","Shamelessly"],
-      "video": "question_112.mp4"
+      "video": "background.mp4",
+      "qvideo": "question_112.mp4",
+      "lyrics": "question_112.txt",
+      "qblur": true
     },
     {
       "active": true,
@@ -110,7 +129,8 @@
       "keyboard": "ABCD",
       "answer": 1,
       "options": ["Shawn Mendes","Charlie Puth","Austin Mahone","Liam Payne"],
-      "video": "question_113.mp4"
+      "video": "trivia.mp4",
+      "blurImg": "question_113.webp"
     },
     {
       "active": true,
