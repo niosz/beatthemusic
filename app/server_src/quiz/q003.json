@@ -1,0 +1,152 @@
+{
+  "active": true,
+  "title": "quiz_003",
+  "questions": [
+    {
+      "active": true,
+      "question": "What is the title of song?",
+      "keyboard": "ABCD",
+      "answer": 3,
+      "options": ["Holiday","That’s What I Want","Sun Goes Down","Montero (Call Me By Your Name)"],
+      "video": "question_300.mp4"
+     },
+     {
+      "active": true,
+      "question": "What is the missing word?",
+      "keyboard": "ABCD",
+      "answer": 3,
+      "options": ["You Need To Do","You Know It’s True","You Like To Do","You Wanna Do"],
+      "video": "background.mp4",
+      "qvideo": "question_301.mp4",
+      "lyrics": "question_301.txt",
+      "qblur": true
+     },     
+     {
+      "active": true,
+      "question": "Which of her songs has the line: \"We could have had it all!\"",
+      "keyboard": "ABCD",
+      "answer": 3,
+      "options": ["Set Fire to the Rain","Hello","Skyfall","Rolling In the Deep"],
+      "video": "trivia.mp4",
+      "blurImg": "question_302.png"
+     },
+     {
+      "active": true,
+      "question": "Ed Sheeran and Justin Bieber are the same age.",
+      "keyboard": "TRUEFALSE",
+      "answer": false,
+      "video": "trivia.mp4"
+     },
+     {
+      "active": true,
+      "question": "What is the title of song?",
+      "keyboard": "ABCD",
+      "answer": 0,
+      "options": ["X","Hasta El Amanecer","Mi Gente","Échame La Culpa"],
+      "video": "background.mp4",
+      "qvideo": "question_304.mp4",
+      "qblur": true,
+      "startPitch": 20,
+      "pitchPercentRelease": 50
+     },
+     {
+      "active": true,
+      "question": "What is the missing word?",
+      "keyboard": "ABCD",
+      "answer": 3,
+      "options": ["April","May","July","June"],
+      "video": "background.mp4",
+      "qvideo": "question_305.mp4",
+      "lyrics": "question_305.txt",
+      "qblur": true
+     },
+     {
+      "active": true,
+      "question": "This singer studied ballet, true or false?",
+      "keyboard": "TRUEFALSE",
+      "answer": true,
+      "video": "trivia.mp4",
+      "blurImg": "question_306.png"
+     },
+     {
+      "active": true,
+      "question": "In what year did Lady Gaga and Bradley Cooper sing Shallow?",
+      "keyboard": "ABCD",
+      "answer": 1,
+      "options": ["2017","2018","2019","2020"],
+      "video": "trivia.mp4"
+     },
+     {
+      "active": true,
+      "question": "What is the title of song?",
+      "keyboard": "ABCD",
+      "answer": 2,
+      "options": ["The One That Got Away","Teenage Dream","Never Really Over","Teary Eyes"],
+      "video": "background.mp4",
+      "qvideo": "question_308.mp4",
+      "qblur": true,
+      "startPitch": 20,
+      "pitchPercentRelease": 50
+     },  
+     {
+      "active": true,
+      "question": "What is the missing word?",
+      "keyboard": "ABCD",
+      "answer": 1,
+      "options": ["For Its Simplicity","Sacred Simplicity","Normal Simplicity","Perfect Simplicity"],
+      "video": "background.mp4",
+      "qvideo": "question_309.mp4",
+      "lyrics": "question_309.txt",
+      "qblur": true
+     },
+     {
+      "active": true,
+      "question": "Guess the Celebrity",
+      "keyboard": "ABCD",
+      "answer": 2,
+      "options": ["Nicky Jam","Ozuna","Bad Bunny","J Balvin"],
+      "video": "trivia.mp4",
+      "blurImg": "question_310.png"
+     },
+     {
+      "active": true,
+      "question": "In what year was Lizzo singing Juice?",
+      "keyboard": "ABCD",
+      "answer": 3,
+      "options": ["2016","2017","2018","2019"],
+      "video": "trivia.mp4"
+     },
+     {
+      "active": true,
+      "question": "What is the title of song?",
+      "keyboard": "ABCD",
+      "answer": 2,
+      "options": ["Stay","Ready For Love","So Done","Not Sober"],
+      "video": "background.mp4",
+      "qvideo": "question_312.mp4",
+      "qblur": true,
+      "startPitch": 20,
+      "pitchPercentRelease": 50
+     },
+     {
+      "active": true,
+      "question": "What is the missing word?",
+      "keyboard": "ABCD",
+      "answer": 1,
+      "options": ["Eat","Drink","Sleep","Work"],
+      "video": "background.mp4",
+      "qvideo": "question_313.mp4",
+      "lyrics": "question_313.txt",
+      "qblur": true
+     },
+     {
+      "active": true,
+      "question": "Which nationality is this singer?",
+      "keyboard": "ABCD",
+      "answer": 1,
+      "options": ["American","British","Canadian","Australian"],
+      "video": "trivia.mp4",
+      "blurImg": "question_314.png"
+     }
+  ]
+}

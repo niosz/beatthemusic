@@ -1,0 +1,147 @@
+{
+  "active": true,
+  "title": "quiz_002",
+  "questions": [
+    {
+      "active": true,
+      "question": "What is the title of song?",
+      "keyboard": "ABCD",
+      "answer": 2,
+      "options": ["Fly Away","Cheap Thrills","Dance Monkey","Eyes Don’t Lie"],
+     	"video": "background.mp4",
+      "qvideo": "question_200.mp4",
+      "qblur": true
+    },
+    {
+      "active": true,
+      "question": "What is the missing word?",
+      "keyboard": "ABCD",
+      "answer": 0,
+      "options": ["Bathroom","Bedroom","Kitchen","Living Room"],
+      "video": "background.mp4",
+      "qvideo": "question_201.mp4",
+      "lyrics": "question_201.txt",
+      "qblur": true
+    },
+    {
+      "active": true,
+      "question": "Guess the Celebrity",
+      "keyboard": "ABCD",
+      "answer": 0,
+      "options": ["Doja Cat","Cardi B","Nicky Minaj","Megan Thee Stallion"],
+      "video": "trivia.mp4",
+      "blurImg": "question_202.png"
+     },
+     {
+      "active": true,
+      "question": "In what year was Baby by Justin Bieber released?",
+      "keyboard": "ABCD",
+      "answer": 0,
+      "options":["2010","2011","2012","2013"],
+      "video": "trivia.mp4"
+     },
+     {
+      "active": true,
+      "question": "What is the missing word?",
+      "keyboard": "ABCD",
+      "answer": 1,
+      "options": ["Beautiful","Wonderful","Incredible","Terrible"],
+      "video": "background.mp4",
+      "qvideo": "question_204.mp4",
+      "lyrics": "question_204.txt",
+      "qblur": true
+     },
+     {
+      "active": true,
+      "question": "What was her debut song?",
+      "keyboard": "ABCD",
+      "answer": 2,
+      "options": ["Paparazzi","Poker Face","Just Dance","LoveGame"],
+      "video": "trivia.mp4",
+      "blurImg": "question_205.png"
+     },
+     {
+      "active": true,
+      "question": "What is the title of song?",
+      "keyboard": "ABCD",
+      "answer": 0,
+      "options": ["Blinding Lights","Earned It","You Right","Call Out My Name"],
+    	"video": "background.mp4",
+      "qvideo": "question_206.mp4",
+      "qblur": true,
+      "startPitch": 20,
+      "pitchPercentRelease": 60
+     },
+     {
+      "active": true,
+      "question": "What is the missing word?",
+      "keyboard": "ABCD",
+      "answer": 2,
+      "options": ["Breathing","Alright","Alive","Fine"],
+      "video": "question_207.mp4"
+     },
+     {
+      "active": true,
+      "question": "Which song is NOT by this celebrity?",
+      "keyboard": "ABCD",
+      "answer": 1,
+      "options": ["Nice for What","Antidote","Hotline Bling","Legend"],
+      "video": "trivia.mp4",
+      "blurImg": "question_208.png"
+     },
+     {
+      "active": true,
+      "question": "What is the missing word?",
+      "keyboard": "ABCD",
+      "answer": 3,
+      "options": ["In My Thoughts","In My Heart","In My Life","On My Mind"],
+      "video": "question_209.mp4"
+     },
+     {
+      "active": true,
+      "question": "In what year was Reggaetón Lento by CNCO released?",
+      "keyboard": "ABCD",
+      "answer": 2,
+      "options": ["2014","2015","2016","2017"],
+      "video": "trivia.mp4"
+     },
+     {
+      "active": true,
+      "question": "Which song is by this celebrity?",
+      "keyboard": "ABCD",
+      "answer": 0,
+      "options": ["Exile","25","Wild Thoughts","The One that Got Away"],
+      "video": "trivia.mp4",
+      "blurImg": "question_211.jpg"
+     },
+     {
+      "active": true,
+      "question": "What is the title of song?",
+      "keyboard": "ABCD",
+      "answer": 3,
+      "options": ["Bad Habits","Light Switch","Shape Of You","Shivers"],
+      "video": "question_212.mp4"
+     },
+     {
+      "active": true,
+      "question": "Which is NOT the name of a Katy Perry album?",
+      "keyboard": "ABCD",
+      "answer": 3,
+      "options": ["Smile","Witness","Prism","Teary Eyes"],
+      "video": "trivia.mp4"
+     },
+     {
+      "active": true,
+      "question": "What is the title of song?",
+      "keyboard": "ABCD",
+      "answer": 1,
+      "options": [
+       "Te Bote",
+       "Taki Taki",
+       "Loco Contigo",
+       "Pepas"
+      ],
+      "video": "question_214.mp4"
+     }
+  ]
+}
